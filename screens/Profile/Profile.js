@@ -6,7 +6,7 @@ const Profile = ({navigation}) => {
   return (
     <View>
       <HeadBack navigation={navigation} />
-      <Text>Profile</Text>
+      <Text className="font-bold">Profile</Text>
     </View>
   );
 };
