@@ -1,0 +1,12 @@
+import React from 'react';
+import {View, Text} from 'react-native';
+import CustomHeader from '../../components/Header';
+
+export default function DashboardHome({navigation}) {
+  return (
+    <View>
+      <CustomHeader navigation={navigation} />
+      <Text>Dashboard</Text>
+    </View>
+  );
+}
