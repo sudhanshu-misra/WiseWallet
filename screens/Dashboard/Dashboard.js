@@ -1,12 +1,27 @@
-import React from 'react';
-import {View, Text} from 'react-native';
+import React,{useState} from 'react';
+import {View} from 'react-native';
 import CustomHeader from '../../components/Header';
+import SharedUI from './DashUI/SharedUI';
+import DashModal from './DashUI/DashModal';
 
 export default function DashboardHome({navigation}) {
+  const [isModalVisible,SetModalVisible] = useState(false);
+  const transactionHandler=()=>{
+    SetModalVisible(true);
+  }
+  const budgetHandler=()=>{
+   
+  }
+  const goalHandler=()=>{
+    
+  }
   return (
     <View>
       <CustomHeader navigation={navigation} />
-      <Text>Dashboard</Text>
+      <DashModal modalState={isModalVisible}  hideModal={()=>SetModalVisible(false)}></DashModal>
+      <SharedUI name="Transactions" icon="sync" onClick={transactionHandler}></SharedUI>
+      <SharedUI name="Budgets" icon="currency-rupee" onClick={budgetHandler}></SharedUI>
+      <SharedUI name="Goals" icon="savings" onClick={goalHandler}></SharedUI>
     </View>
   );
 }
