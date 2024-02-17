@@ -1,5 +1,7 @@
 //AUTHENTICATION
 import Onboarding from '../screens/Auth/Onboarding';
+import Signup from '../screens/Auth/Signup';
+import Login from '../screens/Auth/Login';
 import BottomTab from './BottomTab';
 import DrawerNav from './DrawerNavigator';
 
@@ -13,6 +15,8 @@ import Profile from '../screens/Profile/Profile';
 const Screens = {
   UNAUTHENTICATED: [
     {name: 'Onboarding', component: Onboarding},
+    {name: 'Signup', component: Signup},
+    {name: 'Login', component: Login},
     {name: 'Tabs', component: BottomTab},
     {name: 'DrawerNav', component: DrawerNav},
     {name: 'BudgetHome', component: BudgetHome},
