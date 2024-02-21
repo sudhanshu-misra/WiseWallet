@@ -8,16 +8,19 @@ const height = Dimensions.get('window').height;
 
 const onboardingData = [
   {
+    id: 1,
     image: require('../../assets/onboarding1.png'),
     title: 'Empower your financial future',
     description: 'Securing and managing your money',
   },
   {
+    id: 2,
     image: require('../../assets/onboarding2.png'),
     title: 'Save today, and thrive tomorrow',
     description: 'Your path to financial freedom starts with every penny saved',
   },
   {
+    id: 3,
     image: require('../../assets/onboarding3.png'),
     title: 'Know where your money goes',
     description:
@@ -87,7 +90,7 @@ const Onboarding = ({navigation}) => {
         <View className="flex flex-row justify-center gap-2 items-center">
           {onboardingData.map((e, index) => (
             <Text
-              key={e}
+              key={e.id}
               className={
                 imageActive == index
                   ? 'text-[#497320] text-4xl leading-10'
@@ -100,11 +103,13 @@ const Onboarding = ({navigation}) => {
       </View>
       <View className="px-4 flex flex-col gap-2">
         <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
-          <ButtonComp title={'Signup'} />
+          <ButtonComp title={'Sign Up'} />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-          <View className="p-3 items-center rounded-xl bg-[#AFDA03]">
-            <Text className="text-[#497320] font-bold text-sm">Login</Text>
+          <View className="p-3 items-center rounded-xl border-[#497320] border-[1px]">
+            <Text className="text-[#497320] font-bold" style={{fontSize: 16}}>
+              Login
+            </Text>
           </View>
         </TouchableOpacity>
       </View>

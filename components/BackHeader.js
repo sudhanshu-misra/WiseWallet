@@ -5,9 +5,9 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default function HeadBack(props) {
   return (
-    <View className="flex flex-row items-center">
+    <View className="p-4 flex flex-row items-center">
       <TouchableOpacity
-        className="p-2 w-[42%]"
+        className="w-[35%]"
         onPress={() => props.navigation.goBack()}>
         <View>
           <Icon name="arrow-left" size={36} color={COLORS.black} />

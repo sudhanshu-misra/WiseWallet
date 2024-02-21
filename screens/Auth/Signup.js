@@ -13,13 +13,14 @@ const Signup = props => {
     console.log('Name:', name);
     console.log('Email:', email);
     console.log('Mobile Number:', mobileNumber);
-    props.navigation.navigate('DrawerNav');
+    props.navigation.navigate('Verification');
   };
   const handleGoogleSignUp = () => {};
   return (
     <View
       style={{
         flex: 1,
+        backgroundColor: 'white',
       }}>
       <HeadBack title="Sign Up" navigation={props.navigation} />
       <View className="m-4 mt-[8vh]">
