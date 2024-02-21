@@ -1,6 +1,7 @@
 import {View, Text, Image} from 'react-native';
 import React, {useEffect} from 'react';
-import logo from '../assets/WealthWiseLogoGreen.png';
+import logo from '../assets/WealthWiseLogoNoBgWhite.png';
+import {COLORS} from '../constants/theme';
 const Splash = ({navigation}) => {
   useEffect(() => {
     setTimeout(() => {
@@ -8,10 +9,18 @@ const Splash = ({navigation}) => {
     }, 2000);
   }, []);
   return (
-    <View style={{flex: 1}}>
-      <View className="flex justify-center items-center h-[100%] w-[100%]">
-        <Image source={logo} width={60} height={60} />
-        <Text className="font-bold text-lg">Wealth Wise</Text>
+    <View style={{flex: 1, backgroundColor: COLORS.primary}}>
+      <View className="p-[10%] flex items-center justify-center h-[100%]">
+        <Image
+          source={logo}
+          style={{
+            width: 240,
+            height: 240,
+            resizeMode: 'contain',
+            alignSelf: 'center',
+          }}
+        />
+        <Text className="font-bold text-3xl text-white">Wealth Wise</Text>
       </View>
     </View>
   );
