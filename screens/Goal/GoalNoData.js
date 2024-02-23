@@ -11,7 +11,11 @@ const GoalNoData = () => {
           <Image
             style={[styles.icon, styles.iconLayout1]}
             contentFit="cover"
+<<<<<<< HEAD
             source={require("../assets/menu@3x.png")}
+=======
+            source={require('../assets/menu.png')}
+>>>>>>> 78e6fa6caccca5dff497a9163fd5e92f678d4123
           />
         </Pressable>
         <Text style={[styles.thuNov19, styles.thuNov19Typo]}>Thu, Nov 19</Text>

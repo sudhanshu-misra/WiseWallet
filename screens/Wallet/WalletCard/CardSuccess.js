@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 import * as React from "react";
 import { Text, StyleSheet, Image, View, Pressable } from "react-native";
@@ -689,10 +690,114 @@ const CardSuccess = () => {
               <View style={[styles.nov08Parent, styles.frameChildFlexBox]}>
                 <Text style={[styles.nov08, styles.nov08Clr]}>{`Nov 11 `}</Text>
                 <Text style={[styles.text4, styles.amClr]}>$6500</Text>
+=======
+import * as React from "react";
+import {
+  FlatList,
+  ScrollView,
+  View,
+  StyleSheet,
+  Image,
+  Text,
+} from "react-native";
+import CustomHeader from '../../components/Header';
+;
+
+function CardSuccess(props) {
+  return (
+    <View className="flex flex-col justify-center mx-auto w-full bg-white max-w-[480px]">
+      <View className="flex flex-col justify-end w-full bg-black bg-opacity-80">
+        <View className="flex flex-col justify-center px-5 py-1.5 w-full bg-white">
+          <View className="flex gap-5 justify-between w-full">
+            <View className="text-sm text-right text-neutral-950">
+              <Text>7:30 AM </Text>
+            </View>
+            <View className="flex gap-2 justify-between py-px pr-8 pl-2.5">
+              <View
+                loading="lazy"
+                src="https://cdn.builder.io/api/v1/image/assets/TEMP/39e03d3ad5688fee746a1af2d2bdd49d11ba1a98d01fb895f5f5a0b44d2c9887?"
+                className="self-start aspect-square w-[19px]"
+              />
+              <View
+                loading="lazy"
+                src="https://cdn.builder.io/api/v1/image/assets/TEMP/044a8291b491a2bfa0bd4eff71816ef4dbd775ae6e5823a092293d3793f50f0e?"
+                className="w-5 aspect-square"
+              />
+            </View>
+          </View>
+        </View>
+        <View className="flex gap-5 justify-between px-5 py-1 w-full text-base text-center bg-white text-neutral-950">
+          <View
+            loading="lazy"
+            src="https://cdn.builder.io/api/v1/image/assets/TEMP/c8ce4270a5ae0fc4abb70aeb0bc7b50917a6afe8f7499717c120c1bb76fe0424?"
+            className="w-6 aspect-square"
+          />
+          <View>
+          <CustomHeader navigation={navigation} />
+          </View>
+          <View
+            loading="lazy"
+            src="https://cdn.builder.io/api/v1/image/assets/TEMP/a7289d08b0f826527c5973d85259b2009c10e8d9c258d927ee6cf7e69e1b6eac?"
+            className="w-6 aspect-square"
+          />
+        </View>
+        <View className="flex gap-0 justify-between self-center px-5 mt-4 whitespace-nowrap">
+          <View className="grow my-auto text-base text-neutral-950">
+            <Text>Cards</Text>
+          </View>
+          <View className="flex gap-2 justify-between px-2 py-2.5 text-sm text-center text-sky-800 rounded-lg">
+            <View
+              loading="lazy"
+              src="https://cdn.builder.io/api/v1/image/assets/TEMP/d4b44c51221bc57a4cc8129c21d57e1860a0fd4959370c5052110c3e051b9dc7?"
+              className="w-5 aspect-square"
+            />
+            <View className="grow my-auto">
+              <Text>Add new</Text>
+            </View>
+          </View>
+        </View>
+        <View className="flex gap-3 justify-center px-5 mt-2">
+          <View className="flex flex-col justify-center basis-0">
+            <View className="flex justify-center items-center rounded-2xl">
+              <View
+                loading="lazy"
+                srcSet="..."
+                className="aspect-[0.19] w-[33px]"
+              />
+            </View>
+          </View>
+          <View className="flex flex-col flex-1 justify-center">
+            <View
+              loading="lazy"
+              srcSet="..."
+              className="w-full aspect-[1.56]"
+            />
+          </View>
+          <View className="flex flex-col justify-center basis-0">
+            <View className="flex justify-center items-center rounded">
+              <View className="flex overflow-hidden relative flex-col py-9 pl-6 aspect-[0.18] w-[31px]">
+                <View
+                  loading="lazy"
+                  srcSet="..."
+                  className="object-cover absolute inset-0 size-full"
+                />
+                <View className="relative text-xs text-white capitalize">
+                  <Text>CHASE BANK</Text>
+                </View>
+                <View
+                  loading="lazy"
+                  srcSet="..."
+                  className="self-center mt-8 w-full aspect-[0.28]"
+                />
+                <View className="relative mt-6 text-xs font-medium text-white">
+                  <Text>35-070-0003-3256-2022</Text>
+                </View>
+>>>>>>> 78e6fa6caccca5dff497a9163fd5e92f678d4123
               </View>
             </View>
           </View>
         </View>
+<<<<<<< HEAD
       </View>
       <View style={[styles.button10, styles.buttonSpaceBlock]}>
         <Image
@@ -788,10 +893,99 @@ const CardSuccess = () => {
             source={require("../assets/vector1.png")}
           />
           <Text style={[styles.wallet2, styles.text9Typo]}>Wallet</Text>
+=======
+        <View className="flex flex-col justify-center self-center px-4 py-1.5 mt-3 aspect-[3.4]">
+          <View className="shrink-0 rounded-md bg-zinc-500 h-[5px]" />
+        </View>
+        <View className="flex flex-col px-5 mt-4 w-full whitespace-nowrap">
+          <View className="text-base text-neutral-950">
+            <Text>This credit card details: </Text>
+          </View>
+          <View className="flex gap-5 justify-between mt-4 w-full">
+            <View className="flex gap-1 justify-between">
+              <View className="grow text-sm text-neutral-950">
+                <Text>Credit line:</Text>
+              </View>
+              <View className="text-xs text-lime-700">
+                <Text>$8000</Text>
+              </View>
+            </View>
+            <View className="flex gap-1 justify-center my-auto text-xs">
+              <View className="grow text-neutral-950">
+                <Text>Due date:</Text>
+              </View>
+              <View className="grow text-lime-700">
+                <Text>11/24</Text>
+              </View>
+            </View>
+          </View>
+          <View className="flex gap-5 justify-between mt-4 text-xs">
+            <View className="flex flex-col justify-center">
+              <View className="text-neutral-950">
+                <Text>Total balance</Text>
+              </View>
+              <View className="self-center mt-1 text-zinc-500">
+                <Text>$3480</Text>
+              </View>
+            </View>
+            <View className="flex flex-col justify-center">
+              <View className="text-neutral-950">
+                <Text>Credit available</Text>
+              </View>
+              <View className="self-center mt-1 text-zinc-500">
+                <Text>$4520</Text>
+              </View>
+            </View>
+          </View>
+        </View>
+        <View className="flex z-10 flex-col items-center px-5 pt-6 pb-3 -mt-2.5 w-full rounded-3xl bg-zinc-50">
+          <View className="flex gap-5 justify-between items-start text-base text-neutral-950">
+            <View className="flex-auto mt-4">
+              <Text>Latest transactions </Text>
+            </View>
+            <View
+              loading="lazy"
+              src="https://cdn.builder.io/api/v1/image/assets/TEMP/378e7aae1ad7efce60bf6cf542976b6bc378109066e97af7754ec62731f3512f?"
+              className="w-5 aspect-square"
+            />
+          </View>
+          <View className="flex z-10 flex-col self-stretch px-5 pb-9 mt-5 w-full text-center">
+            <View
+              loading="lazy"
+              srcSet="..."
+              className="z-10 self-center mt-0 w-80 aspect-[4.55]"
+            />
+            <View className="justify-end items-start pt-3.5 pb-5 text-2xl text-green-700 whitespace-nowrap rounded-lg border border-solid bg-zinc-50 border-[color:var(--Neutral,#CBCBCB)]">
+              <Text>Successful</Text>
+            </View>
+            <View className="text-base text-neutral-950">
+              <Text>
+                Your card has been successfully link to the wise wallet{" "}
+              </Text>
+            </View>
+          </View>
+          <View className="flex flex-col justify-end pt-8 pr-4 pb-3.5 pl-16 mt-0 max-w-full whitespace-nowrap rounded-lg border border-solid bg-zinc-50 border-[color:var(--Neutral,#CBCBCB)] w-[319px]">
+            <View className="flex gap-2 justify-between">
+              <View className="grow text-xs text-zinc-400">
+                <Text>Nov 10</Text>
+              </View>
+              <View className="text-sm text-neutral-950">
+                <Text>$30</Text>
+              </View>
+            </View>
+          </View>
+          <View className="justify-center items-center px-16 pb-6 mt-5 text-sm text-center text-sky-800 whitespace-nowrap bg-sky-800 rounded-lg">
+            <Text>View all</Text>
+          </View>
+          <View className="mt-3.5 text-base whitespace-nowrap text-neutral-950">
+            <Text>Cash transactions </Text>
+          </View>
+>>>>>>> 78e6fa6caccca5dff497a9163fd5e92f678d4123
         </View>
       </View>
     </View>
   );
+<<<<<<< HEAD
 };
 
 const styles = StyleSheet.create({
@@ -1761,3 +1955,1783 @@ const styles = StyleSheet.create({
 });
 
 export default CardSuccess;
+=======
+}
+
+export default CardSuccess;
+
+
+
+
+
+
+
+
+
+
+
+
+
+// import * as React from "react";
+// import { Text, StyleSheet, Image, View, Pressable } from "react-native";
+// import LinearGradient from "react-native-linear-gradient";
+
+// const CardSuccess = () => {
+//   return (
+//     <View style={[styles.wallet, styles.fadeLayout]}>
+//       <View style={styles.header}>
+//         <View style={[styles.amParent, styles.horizontalContainerPosition]}>
+//           <Text style={[styles.am, styles.amClr]}>{`7:30 AM `}</Text>
+//           <View style={styles.wifiParent}>
+//             <Image
+//               style={styles.wifiIcon}
+//               resizeMode="cover"
+//               source={require("../assets/wifi.png")}
+//             />
+//             <Image
+//               style={[styles.signalCellularAltIcon, styles.addIconLayout]}
+//               resizeMode="cover"
+//               source={require("../assets/signal-cellular-alt.png")}
+//             />
+//             <Image
+//               style={[styles.signalCellularAltIcon, styles.addIconLayout]}
+//               resizeMode="cover"
+//               source={require("../assets/battery-5-bar.png")}
+//             />
+//           </View>
+//         </View>
+//       </View>
+//       <View style={styles.menu}>
+//         <Pressable style={styles.iconLayout1} onPress={() => {}}>
+//           <Image
+//             style={styles.icon}
+//             resizeMode="cover"
+//             source={require("../assets/menu.png")}
+//           />
+//         </Pressable>
+//         <Text style={[styles.thuNov19, styles.cardTypo]}>Thu, Nov 19</Text>
+//         <Image
+//           style={styles.iconLayout1}
+//           resizeMode="cover"
+//           source={require("../assets/notification.png")}
+//         />
+//       </View>
+//       <View style={styles.slider}>
+//         <Image
+//           style={styles.sliderChild}
+//           resizeMode="cover"
+//           source={require("../assets/ellipse-2.png")}
+//         />
+//         <View style={[styles.sliderItem, styles.sliderSpaceBlock]} />
+//         <Image
+//           style={[styles.sliderInner, styles.sliderSpaceBlock]}
+//           resizeMode="cover"
+//           source={require("../assets/ellipse-3.png")}
+//         />
+//       </View>
+//       <View
+//         style={[styles.horizontalContainer, styles.horizontalContainerPosition]}
+//       >
+//         <Text style={[styles.cards, styles.cardTypo]}>Cards</Text>
+//         <View style={[styles.button, styles.buttonLayout]}>
+//           <Image
+//             style={[styles.addIcon, styles.addIconLayout]}
+//             resizeMode="cover"
+//             source={require("../assets/add.png")}
+//           />
+//           <Text style={styles.button1}>Add new</Text>
+//           <Image
+//             style={[styles.addIcon1, styles.addIconLayout]}
+//             resizeMode="cover"
+//             source={require("../assets/add1.png")}
+//           />
+//         </View>
+//       </View>
+//       <View style={styles.container}>
+//         <View style={styles.cardLayout2}>
+//           <View style={[styles.card1, styles.cardLayout1]}>
+//             <LinearGradient
+//               style={[styles.container1, styles.textInputPosition]}
+//               locations={[0, 1]}
+//               colors={["#6c009a", "#2d004d"]}
+//               useAngle={true}
+//               angle={90}
+//             />
+//             <Image
+//               style={styles.ratingIcon}
+//               resizeMode="cover"
+//               source={require("../assets/rating.png")}
+//             />
+//             <Image
+//               style={[styles.imageIcon, styles.imageIconLayout]}
+//               resizeMode="cover"
+//               source={require("../assets/image.png")}
+//             />
+//             <Text style={[styles.text, styles.expTypo]}>
+//               2021 0213 2025 2591
+//             </Text>
+//             <Text style={[styles.saraMiller, styles.expTypo]}>sara miller</Text>
+//             <Text style={[styles.text1, styles.textTypo1]}>12/12</Text>
+//             <Text style={[styles.exp, styles.expTypo]}>exp</Text>
+//             <Text style={[styles.creditCard, styles.expTypo]}>Credit Card</Text>
+//             <Image
+//               style={styles.vectorIcon}
+//               resizeMode="cover"
+//               source={require("../assets/vector.png")}
+//             />
+//           </View>
+//         </View>
+//         <View style={[styles.card2, styles.cardLayout]}>
+//           <View style={[styles.card3, styles.cardLayout]}>
+//             <LinearGradient
+//               style={[styles.textInput, styles.textLayout1]}
+//               locations={[0, 1]}
+//               colors={["#00014f", "#3a6073"]}
+//               useAngle={true}
+//               angle={90}
+//             />
+//             <Image
+//               style={[styles.imageIcon1, styles.imageIcon1Position]}
+//               resizeMode="cover"
+//               source={require("../assets/image1.png")}
+//             />
+//             <View style={styles.button2}>
+//               <Text style={[styles.wellsFargo, styles.expTypo]}>
+//                 WELLS FARGO
+//               </Text>
+//               <Text style={[styles.exp1226, styles.expPosition]}>
+//                 Exp. 12/26
+//               </Text>
+//               <View style={styles.switchContainer}>
+//                 <Image
+//                   style={[
+//                     styles.switchContainerIcon,
+//                     styles.mastercardPosition,
+//                   ]}
+//                   resizeMode="cover"
+//                   source={require("../assets/switch-container.png")}
+//                 />
+//                 <Text style={[styles.mastercard, styles.text3Typo]}>
+//                   Mastercard
+//                 </Text>
+//               </View>
+//               <Image
+//                 style={[styles.imageIcon2, styles.imageIconLayout]}
+//                 resizeMode="cover"
+//                 source={require("../assets/image2.png")}
+//               />
+//               <View style={[styles.textInput1, styles.textSpaceBlock]}>
+//                 <Text style={[styles.text2, styles.textTypo1]}>
+//                   3570-0003-3256-2022
+//                 </Text>
+//               </View>
+//               <View style={[styles.textInput2, styles.textLayout]} />
+//             </View>
+//           </View>
+//         </View>
+//         <View style={[styles.card2, styles.cardLayout]}>
+//           <View style={[styles.tooltipContainer1, styles.cardLayout]}>
+//             <View style={[styles.card3, styles.cardLayout]}>
+//               <LinearGradient
+//                 style={[styles.textInput, styles.textLayout1]}
+//                 locations={[0, 1]}
+//                 colors={["#00014f", "#3a6073"]}
+//                 useAngle={true}
+//                 angle={90}
+//               />
+//               <Image
+//                 style={styles.imageIcon3}
+//                 resizeMode="cover"
+//                 source={require("../assets/image3.png")}
+//               />
+//               <View style={[styles.textInput4, styles.imageIcon1Position]} />
+//               <View style={styles.button2}>
+//                 <View style={[styles.textInput5, styles.textLayout]} />
+//                 <Text style={[styles.exp12261, styles.text3Typo]}>
+//                   Exp. 12/26
+//                 </Text>
+//                 <Image
+//                   style={styles.switchContainer}
+//                   resizeMode="cover"
+//                   source={require("../assets/text-input.png")}
+//                 />
+//                 <Image
+//                   style={[styles.imageIcon4, styles.imageIconLayout]}
+//                   resizeMode="cover"
+//                   source={require("../assets/image4.png")}
+//                 />
+//                 <View style={styles.textInput6} />
+//                 <View style={[styles.textInput7, styles.textSpaceBlock]}>
+//                   <Text style={[styles.text3, styles.text3Typo]}>
+//                     35-070-0003-3256-2022
+//                   </Text>
+//                 </View>
+//                 <Text style={[styles.chaseBank, styles.textTypo1]}>
+//                   CHASE BANK
+//                 </Text>
+//               </View>
+//             </View>
+//           </View>
+//         </View>
+//       </View>
+//       <View
+//         style={[styles.horizontalContainer1, styles.transactionCardPosition]}
+//       >
+//         <Text
+//           style={[styles.cards, styles.cardTypo]}
+//         >{`Cash transactions `}</Text>
+//       </View>
+//       <View style={[styles.container2, styles.containerPosition]}>
+//         <View style={styles.transactionCard}>
+//           <View style={styles.transactionCard1}>
+//             <View
+//               style={[styles.transactionCardInner, styles.frameChildFlexBox]}
+//             >
+//               <View style={styles.transactionParent}>
+//                 <View style={styles.transaction}>
+//                   <Image
+//                     style={styles.transactionChild}
+//                     resizeMode="cover"
+//                     source={require("../assets/group-12339.png")}
+//                   />
+//                   <Image
+//                     style={[styles.wineBarIcon, styles.iconPosition]}
+//                     resizeMode="cover"
+//                     source={require("../assets/wine-bar.png")}
+//                   />
+//                 </View>
+//                 <View style={styles.frameParent}>
+//                   <View
+//                     style={[
+//                       styles.superStoreParent,
+//                       styles.checkBoxSingInFlexBox,
+//                     ]}
+//                   >
+//                     <Text style={[styles.superStore, styles.amClr]}>LCBO</Text>
+//                     <Image
+//                       style={styles.editIconLayout}
+//                       resizeMode="cover"
+//                       source={require("../assets/edit.png")}
+//                     />
+//                   </View>
+//                   <View style={[styles.nov08Parent, styles.frameChildFlexBox]}>
+//                     <Text style={[styles.nov08, styles.nov08Clr]}>Nov 20</Text>
+//                     <Text style={[styles.text4, styles.amClr]}>$145</Text>
+//                   </View>
+//                 </View>
+//               </View>
+//             </View>
+//             <View style={styles.transactionCardChild}>
+//               <View style={[styles.frameChild, styles.frameChildFlexBox]} />
+//             </View>
+//           </View>
+//           <View style={styles.setUpBudgetCardseeMore}>
+//             <View style={[styles.checkBoxSingIn, styles.buttonSpaceBlock]}>
+//               <Image
+//                 style={[styles.checkBoxIcon, styles.iconLayout1]}
+//                 resizeMode="cover"
+//                 source={require("../assets/check-box.png")}
+//               />
+//               <Image
+//                 style={[styles.editIcon1, styles.editIconLayout]}
+//                 resizeMode="cover"
+//                 source={require("../assets/edit1.png")}
+//               />
+//               <Text style={styles.button1}>Edit</Text>
+//             </View>
+//             <View style={[styles.checkBoxSingIn, styles.buttonSpaceBlock]}>
+//               <Image
+//                 style={[styles.checkBoxIcon1, styles.iconLayout]}
+//                 resizeMode="cover"
+//                 source={require("../assets/check-box1.png")}
+//               />
+//               <Image
+//                 style={[styles.editIcon1, styles.editIconLayout]}
+//                 resizeMode="cover"
+//                 source={require("../assets/edit2.png")}
+//               />
+//               <Text style={[styles.rememberMe1, styles.nov08Clr]}>Delete</Text>
+//             </View>
+//           </View>
+//         </View>
+//         <View style={[styles.transactionCard2, styles.button4FlexBox]}>
+//           <View style={[styles.verticalContainer, styles.frameChildFlexBox]}>
+//             <View
+//               style={[
+//                 styles.verticalContainer1,
+//                 styles.verticalContainer1Layout,
+//               ]}
+//             >
+//               <View style={styles.transaction1}>
+//                 <Image
+//                   style={styles.transactionLayout}
+//                   resizeMode="cover"
+//                   source={require("../assets/switch-container1.png")}
+//                 />
+//               </View>
+//               <View style={styles.frameParent}>
+//                 <View
+//                   style={[
+//                     styles.horizontalContainer3,
+//                     styles.checkBoxSingInFlexBox,
+//                   ]}
+//                 >
+//                   <Text style={[styles.superStore, styles.amClr]}>Macy's</Text>
+//                   <Image
+//                     style={styles.editIconLayout}
+//                     resizeMode="cover"
+//                     source={require("../assets/edit3.png")}
+//                   />
+//                 </View>
+//                 <View style={[styles.nov08Parent, styles.frameChildFlexBox]}>
+//                   <Text
+//                     style={[styles.nov08, styles.nov08Clr]}
+//                   >{`Nov 11 `}</Text>
+//                   <Text style={[styles.text4, styles.amClr]}>$150</Text>
+//                 </View>
+//               </View>
+//             </View>
+//           </View>
+//         </View>
+//         <View style={[styles.transactionCard2, styles.button4FlexBox]}>
+//           <View style={[styles.verticalContainer, styles.frameChildFlexBox]}>
+//             <View
+//               style={[
+//                 styles.verticalContainer1,
+//                 styles.verticalContainer1Layout,
+//               ]}
+//             >
+//               <View style={[styles.transaction2, styles.transactionLayout]}>
+//                 <Image
+//                   style={styles.switchContainerIcon2}
+//                   resizeMode="cover"
+//                   source={require("../assets/switch-container2.png")}
+//                 />
+//                 <Image
+//                   style={[styles.localGasStationIcon, styles.iconPosition]}
+//                   resizeMode="cover"
+//                   source={require("../assets/local-gas-station.png")}
+//                 />
+//               </View>
+//               <View style={styles.frameParent}>
+//                 <View
+//                   style={[
+//                     styles.horizontalContainer3,
+//                     styles.checkBoxSingInFlexBox,
+//                   ]}
+//                 >
+//                   <Text style={[styles.superStore, styles.amClr]}>Shell</Text>
+//                   <Image
+//                     style={styles.editIconLayout}
+//                     resizeMode="cover"
+//                     source={require("../assets/edit4.png")}
+//                   />
+//                 </View>
+//                 <View style={[styles.nov08Parent, styles.frameChildFlexBox]}>
+//                   <Text style={[styles.nov08, styles.nov08Clr]}>Nov 10</Text>
+//                   <Text style={[styles.text4, styles.amClr]}>$80</Text>
+//                 </View>
+//               </View>
+//             </View>
+//           </View>
+//         </View>
+//         <View style={[styles.button4, styles.button4FlexBox]}>
+//           <Image
+//             style={[
+//               styles.vuesaxoutlinearrowSquareLeIcon,
+//               styles.addIconLayout,
+//             ]}
+//             resizeMode="cover"
+//             source={require("../assets/vuesaxoutlinearrowsquareleft.png")}
+//           />
+//           <Text style={styles.button1}>View all</Text>
+//           <Image
+//             style={[styles.vuesaxoutlinelogoutIcon, styles.addIconLayout]}
+//             resizeMode="cover"
+//             source={require("../assets/vuesaxoutlinelogout.png")}
+//           />
+//         </View>
+//       </View>
+//       <View style={styles.verticalContainer2}>
+//         <Text
+//           style={[styles.thisCreditCard, styles.cardTypo]}
+//         >{`This credit card details:  `}</Text>
+//         <View style={styles.verticalContainer3}>
+//           <View style={styles.horizontalContainer7}>
+//             <View style={styles.paragraphContainer2}>
+//               <Text style={[styles.creditLine, styles.amClr]}>
+//                 Credit line:
+//               </Text>
+//               <Text style={[styles.text7, styles.textTypo]}>$8000</Text>
+//             </View>
+//             <View style={styles.paragraphContainer2}>
+//               <Text style={[styles.dueDate, styles.amClr]}>Due date:</Text>
+//               <Text style={[styles.text8, styles.textTypo]}>11/24</Text>
+//             </View>
+//           </View>
+//           <View style={styles.horizontalContainer8}>
+//             <View style={styles.paragraphContainer4}>
+//               <Text style={[styles.totalBalance, styles.amClr]}>
+//                 Total balance
+//               </Text>
+//               <Text style={[styles.text9, styles.text9Typo]}>$3480</Text>
+//             </View>
+//             <View style={styles.paragraphContainer4}>
+//               <Text style={[styles.totalBalance, styles.amClr]}>
+//                 Credit available
+//               </Text>
+//               <Text style={[styles.text9, styles.text9Typo]}>$4520</Text>
+//             </View>
+//           </View>
+//         </View>
+//       </View>
+//       <View style={styles.card4}>
+//         <View style={styles.transactionCard}>
+//           <View style={styles.transactionCard1}>
+//             <View
+//               style={[styles.transactionCardInner, styles.frameChildFlexBox]}
+//             >
+//               <View style={styles.transactionParent}>
+//                 <View style={styles.transaction}>
+//                   <Image
+//                     style={[styles.transactionItem, styles.transactionLayout]}
+//                     resizeMode="cover"
+//                     source={require("../assets/group-123391.png")}
+//                   />
+//                   <Image
+//                     style={[styles.budgetIcon, styles.iconPosition]}
+//                     resizeMode="cover"
+//                     source={require("../assets/budget.png")}
+//                   />
+//                 </View>
+//                 <View style={styles.frameParent}>
+//                   <View
+//                     style={[
+//                       styles.superStoreParent,
+//                       styles.checkBoxSingInFlexBox,
+//                     ]}
+//                   >
+//                     <Text style={[styles.superStore, styles.amClr]}>
+//                       Super store
+//                     </Text>
+//                     <Image
+//                       style={styles.editIconLayout}
+//                       resizeMode="cover"
+//                       source={require("../assets/edit5.png")}
+//                     />
+//                   </View>
+//                   <View style={[styles.nov08Parent, styles.frameChildFlexBox]}>
+//                     <Text
+//                       style={[styles.nov08, styles.nov08Clr]}
+//                     >{`Nov 08 `}</Text>
+//                     <Text style={[styles.text4, styles.amClr]}>$55</Text>
+//                   </View>
+//                 </View>
+//               </View>
+//             </View>
+//             <View style={styles.transactionCardChild}>
+//               <View style={[styles.frameChild, styles.frameChildFlexBox]} />
+//             </View>
+//           </View>
+//           <View style={styles.setUpBudgetCardseeMore}>
+//             <View style={[styles.checkBoxSingIn, styles.buttonSpaceBlock]}>
+//               <Image
+//                 style={[styles.checkBoxIcon, styles.iconLayout1]}
+//                 resizeMode="cover"
+//                 source={require("../assets/check-box2.png")}
+//               />
+//               <Image
+//                 style={[styles.editIcon1, styles.editIconLayout]}
+//                 resizeMode="cover"
+//                 source={require("../assets/edit6.png")}
+//               />
+//               <Text style={styles.button1}>Edit</Text>
+//             </View>
+//             <View style={[styles.checkBoxSingIn, styles.buttonSpaceBlock]}>
+//               <Image
+//                 style={[styles.checkBoxIcon1, styles.iconLayout]}
+//                 resizeMode="cover"
+//                 source={require("../assets/check-box3.png")}
+//               />
+//               <Image
+//                 style={[styles.editIcon1, styles.editIconLayout]}
+//                 resizeMode="cover"
+//                 source={require("../assets/edit7.png")}
+//               />
+//               <Text style={[styles.rememberMe1, styles.nov08Clr]}>Delete</Text>
+//             </View>
+//           </View>
+//         </View>
+//         <View style={[styles.transactionCard2, styles.button4FlexBox]}>
+//           <View style={[styles.verticalContainer, styles.frameChildFlexBox]}>
+//             <View
+//               style={[
+//                 styles.verticalContainer1,
+//                 styles.verticalContainer1Layout,
+//               ]}
+//             >
+//               <View style={styles.transaction}>
+//                 <Image
+//                   style={[styles.transactionItem, styles.transactionLayout]}
+//                   resizeMode="cover"
+//                   source={require("../assets/switch-container3.png")}
+//                 />
+//                 <Image
+//                   style={[styles.localGasStationIcon, styles.iconPosition]}
+//                   resizeMode="cover"
+//                   source={require("../assets/fitness-center.png")}
+//                 />
+//               </View>
+//               <View style={styles.frameParent}>
+//                 <View
+//                   style={[
+//                     styles.horizontalContainer3,
+//                     styles.checkBoxSingInFlexBox,
+//                   ]}
+//                 >
+//                   <Text
+//                     style={[styles.superStore, styles.amClr]}
+//                   >{`La fitness `}</Text>
+//                   <Image
+//                     style={styles.editIconLayout}
+//                     resizeMode="cover"
+//                     source={require("../assets/edit8.png")}
+//                   />
+//                 </View>
+//                 <View style={[styles.nov08Parent, styles.frameChildFlexBox]}>
+//                   <Text
+//                     style={[styles.nov08, styles.nov08Clr]}
+//                   >{`Nov 11 `}</Text>
+//                   <Text style={[styles.text4, styles.amClr]}>$300</Text>
+//                 </View>
+//               </View>
+//             </View>
+//           </View>
+//         </View>
+//         <View style={[styles.transactionCard2, styles.button4FlexBox]}>
+//           <View style={[styles.verticalContainer, styles.frameChildFlexBox]}>
+//             <View
+//               style={[
+//                 styles.verticalContainer1,
+//                 styles.verticalContainer1Layout,
+//               ]}
+//             >
+//               <Image
+//                 style={styles.transactionLayout}
+//                 resizeMode="cover"
+//                 source={require("../assets/transaction.png")}
+//               />
+//               <View style={styles.frameParent}>
+//                 <View
+//                   style={[
+//                     styles.horizontalContainer3,
+//                     styles.checkBoxSingInFlexBox,
+//                   ]}
+//                 >
+//                   <Text
+//                     style={[styles.superStore, styles.amClr]}
+//                   >{`Amazon `}</Text>
+//                   <Image
+//                     style={styles.editIconLayout}
+//                     resizeMode="cover"
+//                     source={require("../assets/edit9.png")}
+//                   />
+//                 </View>
+//                 <View style={[styles.nov08Parent, styles.frameChildFlexBox]}>
+//                   <Text style={[styles.nov08, styles.nov08Clr]}>Nov 10</Text>
+//                   <Text style={[styles.text4, styles.amClr]}>$30</Text>
+//                 </View>
+//               </View>
+//             </View>
+//           </View>
+//         </View>
+//         <View style={[styles.button4, styles.button4FlexBox]}>
+//           <Image
+//             style={[
+//               styles.vuesaxoutlinearrowSquareLeIcon,
+//               styles.addIconLayout,
+//             ]}
+//             resizeMode="cover"
+//             source={require("../assets/vuesaxoutlinearrowsquareleft1.png")}
+//           />
+//           <Text style={styles.button1}>View all</Text>
+//           <Image
+//             style={[styles.vuesaxoutlinelogoutIcon, styles.addIconLayout]}
+//             resizeMode="cover"
+//             source={require("../assets/vuesaxoutlinelogout1.png")}
+//           />
+//         </View>
+//       </View>
+//       <Text
+//         style={[styles.latestTransactionsTitle, styles.transactionCardPosition]}
+//       >{`Latest transactions `}</Text>
+//       <View style={styles.walletChild} />
+//       <View
+//         style={[
+//           styles.horizontalContainer12,
+//           styles.horizontalContainerPosition,
+//         ]}
+//       >
+//         <Text style={[styles.cards, styles.cardTypo]}>Income</Text>
+//         <View style={[styles.button, styles.buttonLayout]}>
+//           <Image
+//             style={[styles.addIcon, styles.addIconLayout]}
+//             resizeMode="cover"
+//             source={require("../assets/add2.png")}
+//           />
+//           <Text style={styles.button1}>Add new</Text>
+//           <Image
+//             style={[styles.addIcon1, styles.addIconLayout]}
+//             resizeMode="cover"
+//             source={require("../assets/add3.png")}
+//           />
+//         </View>
+//       </View>
+//       <View style={[styles.transactionCard8, styles.transactionCardBorder]}>
+//         <View style={[styles.verticalContainer, styles.frameChildFlexBox]}>
+//           <View
+//             style={[styles.verticalContainer1, styles.verticalContainer1Layout]}
+//           >
+//             <View style={styles.transaction}>
+//               <Image
+//                 style={styles.transactionChild}
+//                 resizeMode="cover"
+//                 source={require("../assets/switch-container4.png")}
+//               />
+//               <Image
+//                 style={[styles.familyRestroomIcon, styles.iconPosition]}
+//                 resizeMode="cover"
+//                 source={require("../assets/family-restroom.png")}
+//               />
+//             </View>
+//             <View style={styles.frameParent}>
+//               <View
+//                 style={[
+//                   styles.horizontalContainer3,
+//                   styles.checkBoxSingInFlexBox,
+//                 ]}
+//               >
+//                 <Text style={[styles.superStore, styles.amClr]}>
+//                   property rent
+//                 </Text>
+//                 <Image
+//                   style={styles.editIconLayout}
+//                   resizeMode="cover"
+//                   source={require("../assets/edit10.png")}
+//                 />
+//               </View>
+//               <View style={[styles.nov08Parent, styles.frameChildFlexBox]}>
+//                 <Text style={[styles.nov08, styles.nov08Clr]}>{`Nov 18 `}</Text>
+//                 <Text style={[styles.text4, styles.amClr]}>$650</Text>
+//               </View>
+//             </View>
+//           </View>
+//         </View>
+//       </View>
+//       <View style={[styles.transactionCard9, styles.transactionCardBorder]}>
+//         <View style={[styles.verticalContainer, styles.frameChildFlexBox]}>
+//           <View
+//             style={[styles.verticalContainer1, styles.verticalContainer1Layout]}
+//           >
+//             <View style={styles.transaction}>
+//               <Image
+//                 style={styles.transactionChild}
+//                 resizeMode="cover"
+//                 source={require("../assets/switch-container5.png")}
+//               />
+//               <Image
+//                 style={[styles.familyRestroomIcon, styles.iconPosition]}
+//                 resizeMode="cover"
+//                 source={require("../assets/work-outline.png")}
+//               />
+//             </View>
+//             <View style={styles.frameParent}>
+//               <View
+//                 style={[
+//                   styles.horizontalContainer3,
+//                   styles.checkBoxSingInFlexBox,
+//                 ]}
+//               >
+//                 <Text style={[styles.superStore, styles.amClr]}>salary</Text>
+//                 <Image
+//                   style={styles.editIconLayout}
+//                   resizeMode="cover"
+//                   source={require("../assets/edit11.png")}
+//                 />
+//               </View>
+//               <View style={[styles.nov08Parent, styles.frameChildFlexBox]}>
+//                 <Text style={[styles.nov08, styles.nov08Clr]}>{`Nov 11 `}</Text>
+//                 <Text style={[styles.text4, styles.amClr]}>$6500</Text>
+//               </View>
+//             </View>
+//           </View>
+//         </View>
+//       </View>
+//       <View style={[styles.button10, styles.buttonSpaceBlock]}>
+//         <Image
+//           style={[styles.vuesaxoutlinearrowSquareLeIcon, styles.addIconLayout]}
+//           resizeMode="cover"
+//           source={require("../assets/vuesaxoutlinearrowsquareleft2.png")}
+//         />
+//         <Text style={styles.button1}>View all</Text>
+//         <Image
+//           style={[styles.vuesaxoutlinelogoutIcon, styles.addIconLayout]}
+//           resizeMode="cover"
+//           source={require("../assets/vuesaxoutlinelogout2.png")}
+//         />
+//       </View>
+//       <View style={[styles.fade, styles.containerPosition]}>
+//         <View style={styles.verticalContainer10}>
+//           <View style={[styles.button12, styles.buttonSpaceBlock]}>
+//             <Image
+//               style={[
+//                 styles.vuesaxoutlinearrowSquareLeIcon,
+//                 styles.addIconLayout,
+//               ]}
+//               resizeMode="cover"
+//               source={require("../assets/vuesaxoutlinearrowsquareleft3.png")}
+//             />
+//             <Text style={[styles.rememberMe1, styles.nov08Clr]} />
+//             <Image
+//               style={[styles.signalCellularAltIcon, styles.addIconLayout]}
+//               resizeMode="cover"
+//               source={require("../assets/eye.png")}
+//             />
+//           </View>
+//           <View style={[styles.verticalContainer11, styles.containerPosition]}>
+//             <Image
+//               style={styles.checkCircleIcon}
+//               resizeMode="cover"
+//               source={require("../assets/check-circle.png")}
+//             />
+//             <Text style={[styles.successful, styles.successfulTypo]}>
+//               Successful
+//             </Text>
+//             <Text
+//               style={[styles.yourCardHas, styles.successfulTypo]}
+//             >{`Your card has been successfully link to the wise wallet `}</Text>
+//           </View>
+//           <View style={[styles.button14, styles.footerFlexBox]}>
+//             <Image
+//               style={[
+//                 styles.vuesaxoutlinearrowSquareLeIcon,
+//                 styles.addIconLayout,
+//               ]}
+//               resizeMode="cover"
+//               source={require("../assets/vuesaxoutlinearrowsquareleft4.png")}
+//             />
+//             <Text style={styles.button15}>Done</Text>
+//             <Image
+//               style={[styles.vuesaxoutlinelogoutIcon, styles.addIconLayout]}
+//               resizeMode="cover"
+//               source={require("../assets/vuesaxoutlinelogout3.png")}
+//             />
+//           </View>
+//         </View>
+//       </View>
+//       <View style={[styles.footer, styles.footerFlexBox]}>
+//         <View style={styles.goalLayout}>
+//           <Image
+//             style={[styles.localAtmIcon, styles.iconLayout]}
+//             resizeMode="cover"
+//             source={require("../assets/local-atm.png")}
+//           />
+//           <Text style={[styles.budget1, styles.text9Typo]}>Budget</Text>
+//         </View>
+//         <View style={[styles.goal, styles.goalLayout]}>
+//           <Image
+//             style={[styles.savingsIcon, styles.iconLayout1]}
+//             resizeMode="cover"
+//             source={require("../assets/savings.png")}
+//           />
+//           <Text style={[styles.budget1, styles.text9Typo]}>Goal</Text>
+//         </View>
+//         <View style={[styles.goal, styles.goalLayout]}>
+//           <Image
+//             style={[styles.assessmentIcon, styles.iconLayout1]}
+//             resizeMode="cover"
+//             source={require("../assets/assessment.png")}
+//           />
+//           <Text style={[styles.budget1, styles.text9Typo]}>Dashboard</Text>
+//         </View>
+//         <View style={[styles.goal, styles.goalLayout]}>
+//           <Image
+//             style={styles.vectorIcon1}
+//             resizeMode="cover"
+//             source={require("../assets/vector1.png")}
+//           />
+//           <Text style={[styles.wallet2, styles.text9Typo]}>Wallet</Text>
+//         </View>
+//       </View>
+//     </View>
+//   );
+// };
+
+// const styles = StyleSheet.create({
+//   fadeLayout: {
+//     height: 801,
+//     overflow: "hidden",
+//   },
+//   horizontalContainerPosition: {
+//     left: 20,
+//     flexDirection: "row",
+//     position: "absolute",
+//   },
+//   amClr: {
+//     color: "#0c0c0c",
+//     fontFamily: "Roboto-Regular",
+//   },
+//   addIconLayout: {
+//     width: 20,
+//     height: 20,
+//   },
+//   cardTypo: {
+//     fontSize: 16,
+//     color: "#0c0c0c",
+//   },
+//   sliderSpaceBlock: {
+//     marginLeft: 5,
+//     height: 5,
+//   },
+//   buttonLayout: {
+//     height: 40,
+//     overflow: "hidden",
+//   },
+//   cardLayout1: {
+//     borderRadius: 15,
+//     left: 0,
+//   },
+//   textInputPosition: {
+//     backgroundColor: "transparent",
+//     top: 0,
+//     position: "absolute",
+//   },
+//   imageIconLayout: {
+//     height: 29,
+//     width: 40,
+//     position: "absolute",
+//   },
+//   expTypo: {
+//     fontFamily: "Roboto-Medium",
+//     fontWeight: "500",
+//     color: "#fff",
+//     textTransform: "capitalize",
+//     textAlign: "left",
+//     position: "absolute",
+//   },
+//   textTypo1: {
+//     textTransform: "capitalize",
+//     color: "#fff",
+//     textAlign: "left",
+//     fontFamily: "Roboto-Regular",
+//   },
+//   cardLayout: {
+//     width: 272,
+//     height: 173,
+//   },
+//   textLayout1: {
+//     borderRadius: 4,
+//     height: 173,
+//     width: 272,
+//     left: 0,
+//   },
+//   imageIcon1Position: {
+//     opacity: 0.2,
+//     top: 0,
+//     position: "absolute",
+//   },
+//   expPosition: {
+//     opacity: 0.4,
+//     top: 118,
+//     position: "absolute",
+//   },
+//   mastercardPosition: {
+//     left: 5,
+//     position: "absolute",
+//   },
+//   text3Typo: {
+//     fontFamily: "Inter-Medium",
+//     color: "#fff",
+//     fontWeight: "500",
+//     textAlign: "left",
+//   },
+//   textSpaceBlock: {
+//     paddingVertical: 1,
+//     paddingHorizontal: 0,
+//     flexDirection: "row",
+//     left: 0,
+//     position: "absolute",
+//   },
+//   textLayout: {
+//     height: 26,
+//     width: 54,
+//     top: 0,
+//     position: "absolute",
+//   },
+//   transactionCardPosition: {
+//     left: 21,
+//     position: "absolute",
+//   },
+//   containerPosition: {
+//     marginLeft: -180,
+//     left: "50%",
+//     position: "absolute",
+//   },
+//   frameChildFlexBox: {
+//     justifyContent: "flex-end",
+//     alignItems: "center",
+//   },
+//   iconPosition: {
+//     zIndex: 1,
+//     position: "absolute",
+//   },
+//   checkBoxSingInFlexBox: {
+//     alignSelf: "stretch",
+//     flexDirection: "row",
+//   },
+//   nov08Clr: {
+//     color: "#adadad",
+//     fontFamily: "Roboto-Regular",
+//   },
+//   buttonSpaceBlock: {
+//     paddingHorizontal: 8,
+//     paddingVertical: 4,
+//   },
+//   iconLayout1: {
+//     height: 24,
+//     width: 24,
+//   },
+//   editIconLayout: {
+//     height: 16,
+//     width: 16,
+//   },
+//   iconLayout: {
+//     width: 26,
+//     height: 26,
+//   },
+//   button4FlexBox: {
+//     marginTop: 8,
+//     borderRadius: 8,
+//     alignItems: "center",
+//     flexDirection: "row",
+//   },
+//   verticalContainer1Layout: {
+//     width: 287,
+//     flexDirection: "row",
+//   },
+//   transactionLayout: {
+//     height: 38,
+//     width: 38,
+//   },
+//   textTypo: {
+//     marginLeft: 4,
+//     color: "#4f8124",
+//     textAlign: "left",
+//     fontFamily: "Roboto-Regular",
+//   },
+//   text9Typo: {
+//     marginTop: 4,
+//     textAlign: "left",
+//     fontFamily: "Roboto-Regular",
+//   },
+//   transactionCardBorder: {
+//     borderColor: "#cbcbcb",
+//     justifyContent: "flex-end",
+//     paddingVertical: 12,
+//     paddingHorizontal: 16,
+//     borderWidth: 1,
+//     borderStyle: "solid",
+//     backgroundColor: "#fbfcfb",
+//     width: 319,
+//   },
+//   successfulTypo: {
+//     marginTop: 12,
+//     textAlign: "center",
+//     fontFamily: "Roboto-Regular",
+//   },
+//   footerFlexBox: {
+//     backgroundColor: "#125a93",
+//     justifyContent: "center",
+//     alignItems: "center",
+//     flexDirection: "row",
+//     position: "absolute",
+//   },
+//   goalLayout: {
+//     height: 48,
+//     width: 36,
+//     justifyContent: "center",
+//     alignItems: "center",
+//   },
+//   am: {
+//     textAlign: "right",
+//     fontSize: 14,
+//   },
+//   wifiIcon: {
+//     height: 19,
+//     width: 19,
+//     overflow: "hidden",
+//   },
+//   signalCellularAltIcon: {
+//     marginLeft: 8,
+//     overflow: "hidden",
+//   },
+//   wifiParent: {
+//     width: 90,
+//     paddingHorizontal: 10,
+//     paddingVertical: 0,
+//     marginLeft: 186,
+//     height: 20,
+//     flexDirection: "row",
+//   },
+//   amParent: {
+//     marginTop: -9.67,
+//     flexDirection: "row",
+//     top: "50%",
+//   },
+//   header: {
+//     height: 32,
+//     width: 360,
+//     left: 0,
+//     top: 0,
+//     position: "absolute",
+//     overflow: "hidden",
+//     backgroundColor: "#fff",
+//   },
+//   icon: {
+//     height: "100%",
+//     overflow: "hidden",
+//     width: "100%",
+//   },
+//   thuNov19: {
+//     opacity: 0.9,
+//     textAlign: "center",
+//     fontFamily: "Roboto-Regular",
+//   },
+//   menu: {
+//     top: 32,
+//     paddingHorizontal: 20,
+//     paddingVertical: 4,
+//     justifyContent: "space-between",
+//     alignItems: "center",
+//     left: "50%",
+//     marginLeft: -180,
+//     flexDirection: "row",
+//     width: 360,
+//     position: "absolute",
+//     backgroundColor: "#fff",
+//   },
+//   sliderChild: {
+//     opacity: 0.3,
+//     height: 5,
+//     width: 5,
+//   },
+//   sliderItem: {
+//     borderRadius: 6,
+//     backgroundColor: "#868686",
+//     width: 21,
+//   },
+//   sliderInner: {
+//     opacity: 0.3,
+//     width: 5,
+//     marginLeft: 5,
+//   },
+//   slider: {
+//     marginLeft: -26,
+//     top: 314,
+//     padding: 5,
+//     alignItems: "center",
+//     left: "50%",
+//     flexDirection: "row",
+//     position: "absolute",
+//   },
+//   cards: {
+//     textAlign: "left",
+//     fontFamily: "Roboto-Regular",
+//     flex: 1,
+//   },
+//   addIcon: {
+//     overflow: "hidden",
+//   },
+//   button1: {
+//     color: "#125a93",
+//     textAlign: "center",
+//     marginLeft: 8,
+//     fontFamily: "Roboto-Regular",
+//     fontSize: 14,
+//   },
+//   addIcon1: {
+//     display: "none",
+//     marginLeft: 8,
+//     overflow: "hidden",
+//   },
+//   button: {
+//     padding: 8,
+//     justifyContent: "center",
+//     borderRadius: 8,
+//     alignItems: "center",
+//     flexDirection: "row",
+//   },
+//   horizontalContainer: {
+//     top: 80,
+//     width: 320,
+//     justifyContent: "space-between",
+//     alignItems: "center",
+//     flexDirection: "row",
+//   },
+//   container1: {
+//     borderRadius: 15,
+//     left: 0,
+//     height: 174,
+//     width: 274,
+//   },
+//   ratingIcon: {
+//     top: -118,
+//     left: -77,
+//     width: 462,
+//     height: 349,
+//     opacity: 0.3,
+//     position: "absolute",
+//   },
+//   imageIcon: {
+//     top: 62,
+//     left: 23,
+//   },
+//   text: {
+//     top: 116,
+//     color: "#fff",
+//     fontSize: 11,
+//     left: 23,
+//   },
+//   saraMiller: {
+//     top: 134,
+//     fontSize: 12,
+//     color: "#fff",
+//     left: 23,
+//   },
+//   text1: {
+//     top: 147,
+//     left: 224,
+//     fontSize: 9,
+//     color: "#fff",
+//     position: "absolute",
+//   },
+//   exp: {
+//     top: 146,
+//     left: 204,
+//     opacity: 0.5,
+//     color: "#fff",
+//     fontSize: 11,
+//   },
+//   creditCard: {
+//     top: 24,
+//     fontSize: 12,
+//     color: "#fff",
+//     left: 23,
+//   },
+//   vectorIcon: {
+//     height: "7.56%",
+//     width: "28.49%",
+//     top: "16%",
+//     right: "10.45%",
+//     bottom: "76.44%",
+//     left: "61.06%",
+//     maxWidth: "100%",
+//     maxHeight: "100%",
+//     position: "absolute",
+//     overflow: "hidden",
+//   },
+//   card1: {
+//     height: 174,
+//     width: 274,
+//     top: 0,
+//     position: "absolute",
+//     overflow: "hidden",
+//   },
+//   cardLayout2: {
+//     height: 174,
+//     width: 274,
+//   },
+//   textInput: {
+//     backgroundColor: "transparent",
+//     top: 0,
+//     position: "absolute",
+//   },
+//   imageIcon1: {
+//     left: 12,
+//     width: 219,
+//     height: 124,
+//   },
+//   wellsFargo: {
+//     fontSize: 12,
+//     color: "#fff",
+//     left: 0,
+//     top: 0,
+//   },
+//   exp1226: {
+//     fontSize: 9,
+//     color: "#fff",
+//     textTransform: "capitalize",
+//     textAlign: "left",
+//     fontFamily: "Roboto-Regular",
+//     left: 0,
+//   },
+//   switchContainerIcon: {
+//     width: 32,
+//     height: 19,
+//     top: 0,
+//   },
+//   mastercard: {
+//     top: 21,
+//     fontSize: 6,
+//     left: 5,
+//     position: "absolute",
+//   },
+//   switchContainer: {
+//     left: 184,
+//     width: 42,
+//     height: 30,
+//     top: 0,
+//     position: "absolute",
+//   },
+//   imageIcon2: {
+//     top: 38,
+//     left: 0,
+//   },
+//   text2: {
+//     color: "#fff",
+//     fontSize: 11,
+//   },
+//   textInput1: {
+//     top: 93,
+//   },
+//   textInput2: {
+//     left: 172,
+//   },
+//   button2: {
+//     top: 23,
+//     width: 226,
+//     height: 127,
+//     left: 23,
+//     position: "absolute",
+//   },
+//   card3: {
+//     height: 173,
+//     borderRadius: 15,
+//     left: 0,
+//     top: 0,
+//     position: "absolute",
+//     overflow: "hidden",
+//   },
+//   card2: {
+//     marginLeft: 12,
+//     height: 173,
+//   },
+//   imageIcon3: {
+//     left: -3,
+//     width: 275,
+//     height: 173,
+//     top: 0,
+//     position: "absolute",
+//   },
+//   textInput4: {
+//     shadowColor: "rgba(0, 0, 0, 0.25)",
+//     shadowOffset: {
+//       width: 9.22033977508545,
+//       height: 9.22033977508545,
+//     },
+//     shadowRadius: 3.07,
+//     elevation: 3.07,
+//     shadowOpacity: 1,
+//     borderRadius: 4,
+//     height: 173,
+//     width: 272,
+//     left: 0,
+//     display: "none",
+//     backgroundColor: "#fff",
+//   },
+//   textInput5: {
+//     left: 0,
+//   },
+//   exp12261: {
+//     left: 187,
+//     fontSize: 8,
+//     opacity: 0.4,
+//     top: 118,
+//     position: "absolute",
+//   },
+//   imageIcon4: {
+//     top: 49,
+//     left: 0,
+//   },
+//   textInput6: {
+//     top: 115,
+//     left: 0,
+//     position: "absolute",
+//   },
+//   text3: {
+//     fontSize: 9,
+//   },
+//   textInput7: {
+//     top: 101,
+//     overflow: "hidden",
+//   },
+//   chaseBank: {
+//     left: 2,
+//     top: 7,
+//     fontSize: 12,
+//     color: "#fff",
+//     position: "absolute",
+//   },
+//   tooltipContainer1: {
+//     height: 173,
+//     left: 0,
+//     top: 0,
+//     position: "absolute",
+//   },
+//   container: {
+//     marginLeft: -421,
+//     top: 128,
+//     justifyContent: "center",
+//     left: "50%",
+//     flexDirection: "row",
+//     position: "absolute",
+//   },
+//   horizontalContainer1: {
+//     top: 771,
+//     width: 319,
+//     justifyContent: "space-between",
+//     alignItems: "center",
+//     flexDirection: "row",
+//   },
+//   transactionChild: {
+//     zIndex: 0,
+//     width: 40,
+//     height: 40,
+//   },
+//   wineBarIcon: {
+//     width: 26,
+//     height: 26,
+//     left: 7,
+//     zIndex: 1,
+//     top: 7,
+//     overflow: "hidden",
+//   },
+//   transaction: {
+//     flexDirection: "row",
+//   },
+//   superStore: {
+//     textAlign: "left",
+//     fontSize: 14,
+//     flex: 1,
+//   },
+//   superStoreParent: {
+//     justifyContent: "space-between",
+//   },
+//   nov08: {
+//     fontSize: 12,
+//     textAlign: "left",
+//     flex: 1,
+//   },
+//   text4: {
+//     textAlign: "left",
+//     marginLeft: 8,
+//     fontSize: 14,
+//   },
+//   nov08Parent: {
+//     width: 242,
+//     flexDirection: "row",
+//   },
+//   frameParent: {
+//     height: 36,
+//     justifyContent: "space-between",
+//     marginLeft: 8,
+//   },
+//   transactionParent: {
+//     alignItems: "center",
+//     flexDirection: "row",
+//     flex: 1,
+//   },
+//   transactionCardInner: {
+//     width: 287,
+//     flexDirection: "row",
+//   },
+//   frameChild: {
+//     flex: 1,
+//   },
+//   transactionCardChild: {
+//     alignItems: "center",
+//     marginLeft: 8,
+//     flexDirection: "row",
+//     flex: 1,
+//   },
+//   transactionCard1: {
+//     top: "0%",
+//     right: "0%",
+//     bottom: "0%",
+//     left: "0%",
+//     borderColor: "#87c55f",
+//     paddingVertical: 12,
+//     paddingHorizontal: 16,
+//     borderWidth: 1,
+//     borderStyle: "solid",
+//     backgroundColor: "#fbfcfb",
+//     borderRadius: 8,
+//     height: "100%",
+//     alignItems: "center",
+//     flexDirection: "row",
+//     position: "absolute",
+//     width: "100%",
+//   },
+//   checkBoxIcon: {
+//     display: "none",
+//   },
+//   editIcon1: {
+//     marginLeft: 8,
+//   },
+//   checkBoxSingIn: {
+//     alignSelf: "stretch",
+//     flexDirection: "row",
+//     alignItems: "center",
+//   },
+//   checkBoxIcon1: {
+//     display: "none",
+//   },
+//   rememberMe1: {
+//     textAlign: "center",
+//     marginLeft: 8,
+//     fontSize: 14,
+//   },
+//   setUpBudgetCardseeMore: {
+//     height: "79.03%",
+//     width: "30.41%",
+//     top: "8.06%",
+//     right: "9.72%",
+//     bottom: "12.9%",
+//     left: "59.87%",
+//     borderColor: "#868686",
+//     borderWidth: 1,
+//     borderStyle: "solid",
+//     backgroundColor: "#fbfcfb",
+//     display: "none",
+//     justifyContent: "center",
+//     borderRadius: 8,
+//     position: "absolute",
+//   },
+//   transactionCard: {
+//     height: 62,
+//     width: 319,
+//   },
+//   transaction1: {
+//     flexDirection: "row",
+//   },
+//   horizontalContainer3: {
+//     justifyContent: "space-between",
+//     alignItems: "center",
+//   },
+//   verticalContainer1: {
+//     alignItems: "center",
+//   },
+//   verticalContainer: {
+//     flexDirection: "row",
+//   },
+//   transactionCard2: {
+//     borderColor: "#cbcbcb",
+//     justifyContent: "flex-end",
+//     paddingVertical: 12,
+//     paddingHorizontal: 16,
+//     borderWidth: 1,
+//     borderStyle: "solid",
+//     backgroundColor: "#fbfcfb",
+//     width: 319,
+//   },
+//   switchContainerIcon2: {
+//     width: 39,
+//     height: 39,
+//     zIndex: 0,
+//   },
+//   localGasStationIcon: {
+//     width: 25,
+//     height: 25,
+//     left: 7,
+//     zIndex: 1,
+//     top: 7,
+//     overflow: "hidden",
+//   },
+//   transaction2: {
+//     flexDirection: "row",
+//   },
+//   vuesaxoutlinearrowSquareLeIcon: {
+//     display: "none",
+//   },
+//   vuesaxoutlinelogoutIcon: {
+//     display: "none",
+//     marginLeft: 8,
+//   },
+//   button4: {
+//     paddingHorizontal: 8,
+//     paddingVertical: 4,
+//     justifyContent: "center",
+//     height: 40,
+//     overflow: "hidden",
+//     width: 320,
+//   },
+//   container2: {
+//     top: 819,
+//     alignItems: "center",
+//     left: "50%",
+//     width: 360,
+//   },
+//   thisCreditCard: {
+//     width: 319,
+//     textAlign: "left",
+//     fontFamily: "Roboto-Regular",
+//   },
+//   creditLine: {
+//     textAlign: "left",
+//     fontSize: 14,
+//   },
+//   text7: {
+//     fontSize: 12,
+//   },
+//   paragraphContainer2: {
+//     justifyContent: "center",
+//     alignItems: "center",
+//     flexDirection: "row",
+//   },
+//   dueDate: {
+//     fontSize: 10,
+//     textAlign: "left",
+//   },
+//   text8: {
+//     fontSize: 10,
+//   },
+//   horizontalContainer7: {
+//     width: 319,
+//     justifyContent: "space-between",
+//     alignItems: "center",
+//     flexDirection: "row",
+//   },
+//   totalBalance: {
+//     fontSize: 12,
+//     textAlign: "left",
+//   },
+//   text9: {
+//     color: "#868686",
+//     fontSize: 12,
+//   },
+//   paragraphContainer4: {
+//     justifyContent: "center",
+//     alignItems: "center",
+//   },
+//   horizontalContainer8: {
+//     marginTop: 16,
+//     width: 319,
+//     justifyContent: "space-between",
+//     flexDirection: "row",
+//   },
+//   verticalContainer3: {
+//     marginTop: 16,
+//   },
+//   verticalContainer2: {
+//     top: 345,
+//     alignItems: "center",
+//     width: 360,
+//     left: 0,
+//     position: "absolute",
+//   },
+//   transactionItem: {
+//     zIndex: 0,
+//   },
+//   budgetIcon: {
+//     left: 6,
+//     top: 7,
+//     height: 24,
+//     width: 24,
+//   },
+//   card4: {
+//     top: 495,
+//     alignItems: "center",
+//     width: 360,
+//     left: 0,
+//     position: "absolute",
+//   },
+//   latestTransactionsTitle: {
+//     top: 468,
+//     width: 319,
+//     textAlign: "left",
+//     fontSize: 16,
+//     color: "#0c0c0c",
+//     height: 19,
+//     fontFamily: "Roboto-Regular",
+//   },
+//   walletChild: {
+//     top: 480,
+//     left: 4,
+//     width: 352,
+//     height: 0,
+//     position: "absolute",
+//   },
+//   horizontalContainer12: {
+//     top: 1093,
+//     width: 320,
+//     justifyContent: "space-between",
+//     alignItems: "center",
+//     flexDirection: "row",
+//   },
+//   familyRestroomIcon: {
+//     marginTop: -13,
+//     marginLeft: -13,
+//     width: 26,
+//     height: 26,
+//     left: "50%",
+//     top: "50%",
+//     overflow: "hidden",
+//   },
+//   transactionCard8: {
+//     top: 1141,
+//     left: 21,
+//     position: "absolute",
+//     borderRadius: 8,
+//     alignItems: "center",
+//     flexDirection: "row",
+//   },
+//   transactionCard9: {
+//     top: 1213,
+//     left: 21,
+//     position: "absolute",
+//     borderRadius: 8,
+//     alignItems: "center",
+//     flexDirection: "row",
+//   },
+//   button10: {
+//     top: 1285,
+//     justifyContent: "center",
+//     height: 40,
+//     overflow: "hidden",
+//     borderRadius: 8,
+//     width: 320,
+//     alignItems: "center",
+//     flexDirection: "row",
+//     left: 20,
+//     position: "absolute",
+//   },
+//   button12: {
+//     top: 12,
+//     right: 0,
+//     width: 68,
+//     justifyContent: "center",
+//     height: 40,
+//     overflow: "hidden",
+//     borderRadius: 8,
+//     alignItems: "center",
+//     flexDirection: "row",
+//     position: "absolute",
+//   },
+//   checkCircleIcon: {
+//     width: 64,
+//     height: 64,
+//     overflow: "hidden",
+//   },
+//   successful: {
+//     fontSize: 24,
+//     color: "#009618",
+//     width: 360,
+//   },
+//   yourCardHas: {
+//     width: 320,
+//     fontSize: 16,
+//     color: "#0c0c0c",
+//   },
+//   verticalContainer11: {
+//     marginTop: -115.5,
+//     height: 191,
+//     alignItems: "center",
+//     left: "50%",
+//     top: "50%",
+//   },
+//   button15: {
+//     color: "#fff",
+//     textAlign: "center",
+//     marginLeft: 8,
+//     fontFamily: "Roboto-Regular",
+//     fontSize: 14,
+//   },
+//   button14: {
+//     top: 283,
+//     left: 19,
+//     width: 322,
+//     paddingHorizontal: 8,
+//     paddingVertical: 4,
+//     height: 40,
+//     overflow: "hidden",
+//     borderRadius: 8,
+//   },
+//   verticalContainer10: {
+//     bottom: 0,
+//     borderTopLeftRadius: 24,
+//     borderTopRightRadius: 24,
+//     height: 367,
+//     backgroundColor: "#fbfcfb",
+//     left: "50%",
+//     marginLeft: -180,
+//     width: 360,
+//     position: "absolute",
+//     overflow: "hidden",
+//   },
+//   fade: {
+//     backgroundColor: "rgba(0, 0, 0, 0.75)",
+//     left: "50%",
+//     width: 360,
+//     top: 0,
+//     overflow: "hidden",
+//     height: 801,
+//   },
+//   localAtmIcon: {
+//     overflow: "hidden",
+//   },
+//   budget1: {
+//     color: "#a5c8fc",
+//     fontSize: 10,
+//   },
+//   savingsIcon: {
+//     overflow: "hidden",
+//   },
+//   goal: {
+//     marginLeft: 48,
+//   },
+//   assessmentIcon: {
+//     borderRadius: 8,
+//     overflow: "hidden",
+//   },
+//   vectorIcon1: {
+//     height: 18,
+//     width: 19,
+//   },
+//   wallet2: {
+//     fontSize: 10,
+//     color: "#fff",
+//   },
+//   footer: {
+//     bottom: -620,
+//     borderTopLeftRadius: 12,
+//     borderTopRightRadius: 12,
+//     height: 72,
+//     paddingTop: 16,
+//     paddingBottom: 8,
+//     paddingHorizontal: 16,
+//     backgroundColor: "#125a93",
+//     left: "50%",
+//     marginLeft: -180,
+//     width: 360,
+//   },
+//   wallet: {
+//     overflow: "hidden",
+//     width: "100%",
+//     height: 801,
+//     flex: 1,
+//     backgroundColor: "#fff",
+//   },
+// });
+
+// export default CardSuccess;
+>>>>>>> 78e6fa6caccca5dff497a9163fd5e92f678d4123

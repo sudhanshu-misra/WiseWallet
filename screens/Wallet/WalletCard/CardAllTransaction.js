@@ -20,6 +20,13 @@ export default function CardTransaction({navigation}) {
 import React from 'react';
 import { View, Text, FlatList } from 'react-native';
 import { Card } from 'react-native-paper';
+<<<<<<< HEAD
+=======
+import CustomHeader from '../../components/Header';
+
+
+<CustomHeader navigation={navigation} />
+>>>>>>> 78e6fa6caccca5dff497a9163fd5e92f678d4123
 
 const transactions = [
   { id: 1, time: '7:30 AM', merchant: 'LCBO', amount: 145 },
