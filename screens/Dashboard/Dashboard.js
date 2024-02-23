@@ -1,12 +1,36 @@
-import React,{useState} from 'react';
-import {View} from 'react-native';
+import React, {useState} from 'react';
+import {View, ScrollView} from 'react-native';
 import CustomHeader from '../../components/Header';
-import SharedUI from './DashUI/SharedUI';
-import DashModal from './DashUI/DashModal';
+import DashboardSharedUI from '../../components/DashBoardUI/DashBoardSharedUI';
+import Modal from '../../components/Modal/Modal';
+import TransactionForm from './DashForm/TransactionForm';
+import SuccessModal from '../../components/Modal/SuccessModal';
+
+const temp_data = [
+  {
+    TransactionName:"asd",
+    TransactionDate:"2024-02-21",
+    amount:123,
+    icon:'Restaurant',
+  },
+  {
+    TransactionName:"asd2",
+    TransactionDate:"2024-02-21",
+    amount:123,
+    icon:'Restaurant',
+  },
+  {
+    TransactionName:"asd3",
+    TransactionDate:"2024-02-21",
+    amount:123,
+    icon:'Restaurant',
+  },
+]
 
 export default function DashboardHome({navigation}) {
-  const [isModalVisible,SetModalVisible] = useState(false);
-  const transactionHandler=()=>{
+  const [isModalVisible, SetModalVisible] = useState(false);
+
+  const transactionHandler = () => {
     SetModalVisible(true);
   }
   const budgetHandler=()=>{
@@ -16,11 +40,27 @@ export default function DashboardHome({navigation}) {
     
   }
   return (
-    <View>
-      <CustomHeader navigation={navigation} />
-      <DashModal modalState={isModalVisible}  hideModal={()=>SetModalVisible(false)}></DashModal>
-      <SharedUI name="Transactions" icon="sync" onClick={transactionHandler}></SharedUI>
-    
+    <View
+      style={{
+        flex: 1,
+      }}
+      >
+      <View>
+        <CustomHeader navigation={navigation} />
+        <ScrollView>
+          <DashboardSharedUI
+            name="Transactions"
+            icon="sync"
+            onClick={transactionHandler}></DashboardSharedUI>
+        </ScrollView>
+
+        <Modal modalState={isModalVisible}>
+          <TransactionForm hideModal={() => SetModalVisible(false)}></TransactionForm>
+        </Modal>
+
+      {/* <SuccessModal modalState={isModalVisible} hideModal={()=>SetModalVisible(false)}></SuccessModal> */}
+      
+      </View>
     </View>
   );
 }
