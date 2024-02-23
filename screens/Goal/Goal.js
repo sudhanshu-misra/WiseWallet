@@ -2,6 +2,9 @@ import React from 'react';
 import {View, Text} from 'react-native';
 import CustomHeader from '../../components/Header';
 
+
+
+
 export default function GoalHome({navigation}) {
   return (
     <View>
@@ -10,3 +13,4 @@ export default function GoalHome({navigation}) {
     </View>
   );
 }
+
