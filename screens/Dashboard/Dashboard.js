@@ -10,7 +10,7 @@ export default function DashboardHome({navigation}) {
     SetModalVisible(true);
   }
   const budgetHandler=()=>{
-   
+    
   }
   const goalHandler=()=>{
     
@@ -20,8 +20,7 @@ export default function DashboardHome({navigation}) {
       <CustomHeader navigation={navigation} />
       <DashModal modalState={isModalVisible}  hideModal={()=>SetModalVisible(false)}></DashModal>
       <SharedUI name="Transactions" icon="sync" onClick={transactionHandler}></SharedUI>
-      <SharedUI name="Budgets" icon="currency-rupee" onClick={budgetHandler}></SharedUI>
-      <SharedUI name="Goals" icon="savings" onClick={goalHandler}></SharedUI>
+    
     </View>
   );
 }
