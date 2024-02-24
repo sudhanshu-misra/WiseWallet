@@ -13,6 +13,30 @@ import DashboardHome from '../screens/Dashboard/Dashboard';
 import WalletHome from '../screens/Wallet/Wallet';
 import Profile from '../screens/Profile/Profile';
 
+//GOAL
+
+
+
+
+
+
+
+
+
+
+//WALLET-CARD
+
+
+
+//INCOME
+
+//KEYBOARD
+
+
+
+//CALENDAR
+
+
 const Screens = {
   UNAUTHENTICATED: [
     {name: 'Onboarding', component: Onboarding},
@@ -26,6 +50,9 @@ const Screens = {
     {name: 'GoalHome', component: GoalHome},
     {name: 'WalletHome', component: WalletHome},
     {name: 'Profile', component: Profile},
+    
+
+
   ],
   AUTHENTICATED: [],
 };
