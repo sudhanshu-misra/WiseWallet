@@ -32,8 +32,13 @@ export default function DashboardHome({navigation}) {
 
   const transactionHandler = () => {
     SetModalVisible(true);
-  };
-
+  }
+  const budgetHandler=()=>{
+    
+  }
+  const goalHandler=()=>{
+    
+  }
   return (
     <View
       style={{
