@@ -40,13 +40,6 @@ export default function DashboardHome({navigation}) {
     
   }
   return (
-<<<<<<< HEAD
-    <View>
-      <CustomHeader navigation={navigation} />
-      <DashModal modalState={isModalVisible}  hideModal={()=>SetModalVisible(false)}></DashModal>
-      <SharedUI name="Transactions" icon="sync" onClick={transactionHandler}></SharedUI>
-    
-=======
     <View
       style={{
         flex: 1,
@@ -68,7 +61,6 @@ export default function DashboardHome({navigation}) {
       {/* <SuccessModal modalState={isModalVisible} hideModal={()=>SetModalVisible(false)}></SuccessModal> */}
       
       </View>
->>>>>>> 78e6fa6caccca5dff497a9163fd5e92f678d4123
     </View>
   );
 }
