@@ -12,56 +12,48 @@ const temp_data = [
     TransactionDate: '2024-02-21',
     amount: 123,
     icon: 'Restaurant',
-  }
+  },
 ];
 
 export default function DashboardHome({navigation}) {
   const [isModalVisible, SetModalVisible] = useState(false);
   const [successVisible, SetSuccessVisible] = useState(false);
 
-
   const transactionHandler = () => {
     SetModalVisible(true);
   };
-
   const onSubmit = () => {
     SetModalVisible(false);
-    //data extraction here 
-    // if(data) received then set success visible  else show error modal with message 
-    if(temp_data){
-       SetSuccessVisible(true);
-    }
-    else{
+    //data extraction here
+    // if(data) received then set success visible  else show error modal with message
+    if (temp_data) {
+      SetSuccessVisible(true);
+    } else {
       //error modal
     }
-
-   
   };
-
   return (
-      <View>
-        <CustomHeader navigation={navigation} />
-        <ScrollView>
-          <DashboardSharedUI
-            name="Transactions"
-            icon="sync"
-            onClick={transactionHandler}></DashboardSharedUI>
-        </ScrollView>
-      
-        <Modal modalState={isModalVisible}  hideModal={() => SetModalVisible(false)}>
-          <TransactionForm
-            hideModal={() => SetModalVisible(false)}
-            onSubmit={onSubmit}></TransactionForm>
-        </Modal>
-
-        {temp_data && (
-          <SuccessModal
-            modalState={successVisible}
-            hideModal={() => SetSuccessVisible(false)}
-            formData={temp_data[0]}
-            ></SuccessModal>
-        )}
-      </View>
+    <View>
+      <CustomHeader navigation={navigation} />
+      <ScrollView>
+        <DashboardSharedUI
+          name="Transactions"
+          icon="sync"
+          onClick={transactionHandler}></DashboardSharedUI>
+      </ScrollView>
+      <Modal
+        modalState={isModalVisible}
+        hideModal={() => SetModalVisible(false)}>
+        <TransactionForm
+          hideModal={() => SetModalVisible(false)}
+          onSubmit={onSubmit}></TransactionForm>
+      </Modal>
+      {temp_data && (
+        <SuccessModal
+          modalState={successVisible}
+          hideModal={() => SetSuccessVisible(false)}
+          formData={temp_data[0]}></SuccessModal>
+      )}
+    </View>
   );
 }
-
