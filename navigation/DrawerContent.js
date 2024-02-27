@@ -46,6 +46,7 @@ const DrawerItems = props => {
 };
 
 const DrawerContent = props => {
+  const navigation = useNavigation();
   return (
     <View style={{flex: 1}}>
       <DrawerContentScrollView {...props}>
@@ -76,6 +77,9 @@ const DrawerContent = props => {
           icon={({color, size}) => (
             <Icon name="sign-out" color={color} size={size} />
           )}
+          onPress={() => {
+            navigation.navigate('Onboarding');
+          }}
           label="Sign Out"
         />
       </View>

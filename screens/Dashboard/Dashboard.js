@@ -8,43 +8,38 @@ import SuccessModal from '../../components/Modal/SuccessModal';
 
 const temp_data = [
   {
-    TransactionName:"asd",
-    TransactionDate:"2024-02-21",
-    amount:123,
-    icon:'Restaurant',
+    TransactionName: 'asd',
+    TransactionDate: '2024-02-21',
+    amount: 123,
+    icon: 'Restaurant',
   },
   {
-    TransactionName:"asd2",
-    TransactionDate:"2024-02-21",
-    amount:123,
-    icon:'Restaurant',
+    TransactionName: 'asd2',
+    TransactionDate: '2024-02-21',
+    amount: 123,
+    icon: 'Restaurant',
   },
   {
-    TransactionName:"asd3",
-    TransactionDate:"2024-02-21",
-    amount:123,
-    icon:'Restaurant',
+    TransactionName: 'asd3',
+    TransactionDate: '2024-02-21',
+    amount: 123,
+    icon: 'Restaurant',
   },
-]
+];
 
 export default function DashboardHome({navigation}) {
   const [isModalVisible, SetModalVisible] = useState(false);
 
   const transactionHandler = () => {
     SetModalVisible(true);
-  }
-  const budgetHandler=()=>{
-    
-  }
-  const goalHandler=()=>{
-    
-  }
+  };
+  const budgetHandler = () => {};
+  const goalHandler = () => {};
   return (
     <View
       style={{
         flex: 1,
-      }}
-      >
+      }}>
       <View>
         <CustomHeader navigation={navigation} />
         <ScrollView>
@@ -55,11 +50,11 @@ export default function DashboardHome({navigation}) {
         </ScrollView>
 
         <Modal modalState={isModalVisible}>
-          <TransactionForm hideModal={() => SetModalVisible(false)}></TransactionForm>
+          <TransactionForm
+            hideModal={() => SetModalVisible(false)}></TransactionForm>
         </Modal>
 
-      {/* <SuccessModal modalState={isModalVisible} hideModal={()=>SetModalVisible(false)}></SuccessModal> */}
-      
+        {/* <SuccessModal modalState={isModalVisible} hideModal={()=>SetModalVisible(false)}></SuccessModal> */}
       </View>
     </View>
   );
