@@ -6,17 +6,17 @@ import {Button} from 'react-native-paper';
 import {globalStyles} from '../../../constants/globalStyles';
 import IconPicker from '../../../components/Form/Icon/IconPicker';
 import DateField from '../../../components/Form/DateField';
-import {expenseIcon,accountIcon} from '../../../components/Form/Icon/IconData';
+import {goalIcon,accountIcon} from '../../../components/Form/Icon/IconData';
 
 let endDate = '';
 let startDate = '';
 let icon = '';
-let budget = '';
+let goal = '';
 
 export const Form = ({closeModal}) => {
   const [iconError, setIconError] = useState('');
   const [dateError, setdateError] = useState('');
-  const [budgetError, setBudgetError] = useState('');
+  const [goalError, setGoalError] = useState('');
 
   const validate = values => {
     const errors = {};
@@ -30,8 +30,8 @@ export const Form = ({closeModal}) => {
   const iconData = role => {
     icon = role;
   };
-  const budgetData = budgetName => {
-    budget = budgetName;
+  const goalData = goalName => {
+    goal = goalName;
   };
 
   const getStartDate = selectedDate => {
@@ -46,11 +46,11 @@ export const Form = ({closeModal}) => {
 
     if (icon != '') {
 
-      if (budget != '') {
+      if (goal != '') {
 
         if (startDate < endDate) {
           const data = {
-            BudgetName: budget,
+            GoalName: goal,
             amount: parseFloat(values.amount),
             startDate: startDate,
             EndDate: endDate,
@@ -62,12 +62,12 @@ export const Form = ({closeModal}) => {
           endDate = '';
           startDate = '';
           icon = '';
-          budget = '';
+          goal = '';
         } else {
           setdateError('The end date cannot be earlier than the start date');
         }
       } else {
-        setBudgetError('Enter Budget Name');
+        setGoalError('Enter goal Name');
       }
     } else {
       setIconError('select an account');
@@ -92,11 +92,11 @@ export const Form = ({closeModal}) => {
       }) => (
         <View>
           <IconPicker
-            getIcon={budgetData}
-            iconError={budgetError}
-            iconData={expenseIcon}
-            title={'Budget name'}
-            label={'Select budget'}></IconPicker>
+            getIcon={goalData}
+            iconError={goalError}
+            iconData={goalIcon}
+            title={'Goal name'}
+            label={'Select goal'}></IconPicker>
 
           <InputData
             label="Amount"
@@ -133,7 +133,7 @@ export const Form = ({closeModal}) => {
             className="mx-10 p-1 mt-4"
             disabled={!isValid}
            >
-            <Text className="text-base text-white">Add budget</Text>
+            <Text className="text-base text-white">Add goal</Text>
           </Button>
           </TouchableOpacity>
         </View>

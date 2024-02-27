@@ -1,5 +1,5 @@
 import {View, Text} from 'react-native';
-import React,{useState} from 'react';
+import React, {useState} from 'react';
 import {Modal} from 'react-native';
 import {StyleSheet} from 'react-native';
 import {Button} from 'react-native-paper';
@@ -7,26 +7,38 @@ import successIcon from '../../assets/successful.png';
 import {Avatar} from 'react-native-paper';
 import {COLORS} from '../../constants/theme';
 
-export default function SuccessModal({modalState,hideModal,formData}) {
-        // console.log(formData);
-        let message='';
-        if("TransactionName" in formData){
-             message='your expense has been successfully added to transactions';   
-        }
-        else if("IncomeName" in formData){
-                 message='your income has been successfully added to earnings';
-        } 
-        else if("BudgetName" in formData){
-          message="your budget has been successfully added to budgets"
-        }
-      
+export default function SuccessModal({modalState, hideModal, formData}) {
+  // console.log(formData);
+  let message = '';
+  if ('TransactionName' in formData) {
+    message = 'Your expense has been successfully added to transactions';
+  } else if ('IncomeName' in formData) {
+    message = 'Your income has been successfully added to earnings';
+  } else if ('BudgetName' in formData) {
+    message = 'Your budget has been successfully added to budgets';
+  } else if ('GoalName' in formData) {
+    message = 'Your goal has been successfully added to goal';
+  }
+  else if( 'walletName' in formData){
+    message = 'Your wallet details has been successfully added to the wise wallet';
+  }
+  else if( 'cashAmount' in formData){
+    message = 'Your cash details has been successfully added to the wise wallet';
+  }
+  else if( 'cardAmount' in formData){
+    message = 'Your card details has been successfully added to the wise wallet';
+  }
 
   return (
-    <Modal visible={modalState} transparent={true} animationType="slide"
-     onRequestClose={() =>hideModal}
-    >
-    {/* background black */}
-    {/* <View style={{backgroundColor: 'rgba(52, 52, 52, 0.8)'}} className="flex-1 w-full"></View> */}
+    <Modal
+      visible={modalState}
+      transparent={true}
+      animationType="fade"
+      onRequestClose={() => hideModal}>
+      {/* background black */}
+      <View
+        style={{backgroundColor: 'rgba(52, 52, 52, 0.6)'}}
+        className="flex-1 w-full"></View>
       <View style={styles.modalContent}>
         <View>
           <View className="flex-1 justify-center items-center gap-3">
@@ -41,7 +53,9 @@ export default function SuccessModal({modalState,hideModal,formData}) {
               Successful
             </Text>
           </View>
-          <Text className="mt-5 text-center font-bold text-xl px-10">{message}</Text>
+          <Text className="mt-5 text-center font-bold text-xl px-10">
+            {message}
+          </Text>
           <View className="border-2 rounded-md mx-4 h-max my-5 p-5">
             <Text>Category,date,amount data</Text>
           </View>

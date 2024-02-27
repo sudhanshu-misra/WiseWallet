@@ -10,11 +10,11 @@ export default function SharedModal({modalState, children, hideModal}) {
     <Modal
       visible={modalState}
       transparent={true}
-      animationType="slide"
+      animationType="fade"
       onRequestClose={() => hideModal}
       >  
       {/* background- black */}
-      {/* <View style={{backgroundColor: 'rgba(52, 52, 52, 0.8)'}} className="flex-1 w-full"></View> */}
+      <View style={{backgroundColor: 'rgba(52, 52, 52, 0.6)'}} className="flex-1 w-full"></View>
       <View style={styles.modalContent}>{children}</View>
     </Modal>
        
