@@ -5,7 +5,7 @@ import {ExpenseForm} from './ExpenseForm';
 import {IncomeForm} from './IncomeForm';
 import { COLORS } from '../../../constants/theme';
 
-const TransactionForm = ({hideModal}) => {
+const TransactionForm = ({hideModal,onSubmit}) => {
   const [activeForm, SetActiveForm] = useState('expense');
 
   const incomeFormHandler = () => {
@@ -56,9 +56,10 @@ const TransactionForm = ({hideModal}) => {
       </View>
 
       <View className="mt-2">
-        {activeForm === 'expense' && <ExpenseForm></ExpenseForm>}
-        {activeForm === 'income' && <IncomeForm></IncomeForm>}
+        {activeForm === 'expense' && <ExpenseForm closeModal={onSubmit}></ExpenseForm>}
+        {activeForm === 'income' && <IncomeForm closeModal={onSubmit}></IncomeForm>}
       </View>
+      
       <View className="mt-10"></View>
     </ScrollView>
   );

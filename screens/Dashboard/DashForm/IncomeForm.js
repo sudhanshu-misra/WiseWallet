@@ -6,9 +6,9 @@ import {Button} from 'react-native-paper';
 import {globalStyles} from '../../../constants/globalStyles';
 import IconPicker from '../../../components/Form/Icon/IconPicker';
 import DateField from '../../../components/Form/DateField';
-import { incomeIcon } from '../../../components/Form/Icon/IconData';
+import {incomeIcon} from '../../../components/Form/Icon/IconData';
 
-export const IncomeForm = () => {
+export const IncomeForm = ({closeModal}) => {
   const [iconError, setIconError] = useState('');
 
   const validate = values => {
@@ -22,12 +22,12 @@ export const IncomeForm = () => {
     }
     return errors;
   };
-
+  let date = '';
   let icon = '';
   const iconData = role => {
     icon = role;
   };
-  let date = '';
+
   const getDate = selectedDate => {
     date = selectedDate;
   };
@@ -40,9 +40,10 @@ export const IncomeForm = () => {
         amount: parseFloat(values.amount),
         icon: icon,
       };
+      closeModal();
       console.log(data);
     } else {
-      setIconError('select an icon');
+      setIconError('select a category');
     }
   };
 
@@ -74,8 +75,14 @@ export const IncomeForm = () => {
             placeholder="Description"
             keyboardType="default"></InputData>
 
-          <DateField selectedDate={getDate} dateLabel={"Date"}></DateField>
-          <IconPicker getIcon={iconData} iconError={iconError}  iconData={incomeIcon}></IconPicker>
+          <DateField selectedDate={getDate} dateLabel={'Date'}></DateField>
+
+          <IconPicker
+            getIcon={iconData}
+            iconError={iconError}
+            iconData={incomeIcon}
+            title={'Select Category'}
+            label={'Categories'}></IconPicker>
 
           <InputData
             label="Amount"

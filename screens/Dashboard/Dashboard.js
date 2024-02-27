@@ -29,6 +29,7 @@ const temp_data = [
 
 export default function DashboardHome({navigation}) {
   const [isModalVisible, SetModalVisible] = useState(false);
+  const [successVisible, SetSuccessVisible] = useState(false);
 
   const transactionHandler = () => {
     SetModalVisible(true);

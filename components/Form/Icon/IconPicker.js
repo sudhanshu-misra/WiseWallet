@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { Picker } from '@react-native-picker/picker';
 import {COLORS} from '../../../constants/theme';
 
-const IconPicker = ({getIcon,iconError,iconData}) => {
+const IconPicker = ({getIcon,iconError,iconData,title,label}) => {
 
     const [role,setRole] = useState('');
        const iconPickHandler=(itemValue)=>{
@@ -11,27 +11,28 @@ const IconPicker = ({getIcon,iconError,iconData}) => {
                 setRole(itemValue);
                 } 
   return (
-    <View className="mt-2 h-20">
+    <View className="mt-2 ">
     <Text className="text-lg  antialiased  mx-5">
-      Select Category
+      {title}
     </Text>
+    <View className="border-2 rounded-md border-gray-600 mx-4 overflow-hidden">
     <Picker
       selectedValue={role}
       style={{
-        flex:1,
-        backgroundColor: "#EBEBEB",
-        borderRadius: 30,
+        backgroundColor: "white",
+        borderBlockColor:"black",
         color:'#696969',
-        marginHorizontal:17,
-        paddingVertical:1,
-        fontWeight:'bold'
+        fontWeight:'bold',
+        margin: -7,
+        height:56
       }}
       dropdownIconColor={COLORS.primary}
       onValueChange={iconPickHandler}
     >
-      <Picker.Item label="Select Category" value=""/>
-      {iconData.map((icon,index)=> <Picker.Item key={index} label={icon.data} value={icon.data}/>)}
+      <Picker.Item label={label} value="" />
+      {iconData.map((icon,index)=> <Picker.Item key={index} label={icon.data} value={icon.data}  />)}
     </Picker>
+    </View>
     {  iconError!='' && role=='' && <Text className="text-red-700 ml-5">{iconError}</Text> } 
   </View>
   )
