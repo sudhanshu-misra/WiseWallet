@@ -16,7 +16,6 @@ const DateField = ({selectedDate, dateLabel, error}) => {
   const toggleDatepicker = () => {
     setShowPicker(!showPicker);
   };
- 
 
   const formatDate = rawDate => {
     let date = new Date(rawDate);
@@ -30,7 +29,6 @@ const DateField = ({selectedDate, dateLabel, error}) => {
     return `${year}-${month}-${day}`;
   };
 
-  
   const onChange = (event, recentDate) => {
     const currentDate = recentDate || date;
     if (event.type == 'set') {
@@ -39,7 +37,7 @@ const DateField = ({selectedDate, dateLabel, error}) => {
     }
   };
 
-  selectedDate(formatDate(date)); 
+  selectedDate(formatDate(date));
 
   return (
     <View className="mt-2">
@@ -54,19 +52,21 @@ const DateField = ({selectedDate, dateLabel, error}) => {
         />
       )}
 
-        <View className="flex flex-row border-2 rounded-md border-gray-600 mx-4  items-center">
-        <TextInput
-          value={formatDate(date)}
-          editable={false}
-          className={`py-1.5 px-3 text-base  text-slate-600 
-             ${ error && 'border-red-600'}
+      <View className="flex flex-row border-2 rounded-md border-gray-600 mx-4  items-center">
+        <Pressable onPress={toggleDatepicker}>
+          <TextInput
+            value={formatDate(date)}
+            editable={false}
+            className={`py-1.5 px-3 text-base text-slate-600 
+             ${error && 'border-red-600'}
           `}></TextInput>
-           <Pressable onPress={toggleDatepicker} className=" absolute right-1 ">
+        </Pressable>
+        <Pressable onPress={toggleDatepicker} className=" absolute right-1 ">
           <Icon className="text-slate-400" name="date-range" size={28}></Icon>
-          </Pressable>
-          </View>
+        </Pressable>
+      </View>
 
-     { error && <Text className="text-red-700 ml-5">{error}</Text>}
+      {error && <Text className="text-red-700 ml-5">{error}</Text>}
     </View>
   );
 };

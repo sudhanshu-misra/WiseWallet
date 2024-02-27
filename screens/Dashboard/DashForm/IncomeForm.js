@@ -1,15 +1,16 @@
 import React, {useState} from 'react';
-import {View, Text} from 'react-native';
+import {View, Text,TouchableOpacity} from 'react-native';
 import {Formik} from 'formik';
 import InputData from '../../../components/Form/InputData';
 import {Button} from 'react-native-paper';
 import {globalStyles} from '../../../constants/globalStyles';
 import IconPicker from '../../../components/Form/Icon/IconPicker';
 import DateField from '../../../components/Form/DateField';
-import {incomeIcon} from '../../../components/Form/Icon/IconData';
+import {accountIcon, incomeIcon} from '../../../components/Form/Icon/IconData';
 
 export const IncomeForm = ({closeModal}) => {
   const [iconError, setIconError] = useState('');
+  const [accountError, setAccountError] = useState('');
 
   const validate = values => {
     const errors = {};
@@ -32,16 +33,26 @@ export const IncomeForm = ({closeModal}) => {
     date = selectedDate;
   };
 
+  let account = '';
+  const accountData = role => {
+    account = role;
+  };
+
   const formSubmitHandler = values => {
     if (icon != '') {
-      const data = {
-        incomeName: values.incomeName,
-        incomeDate: date,
-        amount: parseFloat(values.amount),
-        icon: icon,
-      };
-      closeModal();
-      console.log(data);
+      if (account != '') {
+        const data = {
+          incomeName: values.incomeName,
+          incomeDate: date,
+          amount: parseFloat(values.amount),
+          category: icon,
+          account: account,
+        };
+        closeModal();
+        console.log(data);
+      } else {
+        setAccountError('select an account');
+      }
     } else {
       setIconError('select a category');
     }
@@ -84,6 +95,13 @@ export const IncomeForm = ({closeModal}) => {
             title={'Select Category'}
             label={'Categories'}></IconPicker>
 
+          <IconPicker
+            getIcon={accountData}
+            iconError={accountError}
+            iconData={accountIcon}
+            title={'Account'}
+            label={'Select account'}></IconPicker>
+
           <InputData
             label="Amount"
             errors={errors.amount}
@@ -94,13 +112,15 @@ export const IncomeForm = ({closeModal}) => {
             placeholder="0.0"
             keyboardType="numeric"></InputData>
 
-          <Button
-            style={globalStyles.BtnView}
-            className="mx-10 p-1 mt-4"
-            disabled={!isValid}
-            onPress={handleSubmit}>
-            <Text className="text-base text-white">Add Transaction</Text>
-          </Button>
+          <TouchableOpacity onPress={handleSubmit}>
+            <Button
+              style={globalStyles.BtnView}
+              className="mx-10 p-1 mt-4"
+              disabled={!isValid}>
+              <Text className="text-base text-white">Add transaction</Text>
+            </Button>
+          </TouchableOpacity>
+
         </View>
       )}
     </Formik>
