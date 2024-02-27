@@ -15,4 +15,9 @@ export const expenseIcon=[
     {data:"Grocery"},
   ]
 
+  export const accountIcon=[
+    {data:"account1"},
+    {data:"account2"},
+    {data:"account3"},
+  ]
   
