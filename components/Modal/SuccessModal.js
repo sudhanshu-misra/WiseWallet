@@ -7,11 +7,26 @@ import successIcon from '../../assets/successful.png';
 import {Avatar} from 'react-native-paper';
 import {COLORS} from '../../constants/theme';
 
-export default function SuccessModal({modalState,hideModal}) {
+export default function SuccessModal({modalState,hideModal,formData}) {
+        // console.log(formData);
+        let message='';
+        if("TransactionName" in formData){
+             message='your expense has been successfully added to transactions';   
+        }
+        else if("IncomeName" in formData){
+                 message='your income has been successfully added to earnings';
+        } 
+        else if("BudgetName" in formData){
+          message="your budget has been successfully added to budgets"
+        }
+      
 
   return (
     <Modal visible={modalState} transparent={true} animationType="slide"
+     onRequestClose={() =>hideModal}
     >
+    {/* background black */}
+    {/* <View style={{backgroundColor: 'rgba(52, 52, 52, 0.8)'}} className="flex-1 w-full"></View> */}
       <View style={styles.modalContent}>
         <View>
           <View className="flex-1 justify-center items-center gap-3">
@@ -26,7 +41,7 @@ export default function SuccessModal({modalState,hideModal}) {
               Successful
             </Text>
           </View>
-          <Text className="mt-5 text-center font-bold text-xl px-10">Your expense has been successfully added to transactions</Text>
+          <Text className="mt-5 text-center font-bold text-xl px-10">{message}</Text>
           <View className="border-2 rounded-md mx-4 h-max my-5 p-5">
             <Text>Category,date,amount data</Text>
           </View>

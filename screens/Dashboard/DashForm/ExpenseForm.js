@@ -6,9 +6,10 @@ import {Button} from 'react-native-paper';
 import {globalStyles} from '../../../constants/globalStyles';
 import IconPicker from '../../../components/Form/Icon/IconPicker';
 import DateField from '../../../components/Form/DateField';
-import { expenseIcon } from '../../../components/Form/Icon/IconData';
+import {expenseIcon} from '../../../components/Form/Icon/IconData';
 
-export const ExpenseForm = () => {
+
+export const ExpenseForm = ({closeModal}) => {
   const [iconError, setIconError] = useState('');
 
   const validate = values => {
@@ -40,9 +41,10 @@ export const ExpenseForm = () => {
         amount: parseFloat(values.amount),
       };
 
+      closeModal();
       console.log(data);
     } else {
-      setIconError('select an icon');
+      setIconError('select a category');
     }
   };
 
@@ -74,9 +76,16 @@ export const ExpenseForm = () => {
             placeholder="Description"
             keyboardType="default"></InputData>
 
-          <DateField selectedDate={getDate} dateLabel={"Transaction Date"}></DateField>
+          <DateField
+            selectedDate={getDate}
+            dateLabel={'Transaction Date'}></DateField>
 
-          <IconPicker getIcon={iconData} iconError={iconError} iconData={expenseIcon}></IconPicker>
+          <IconPicker
+            getIcon={iconData}
+            iconError={iconError}
+            iconData={expenseIcon}
+            title={'Select Category'}
+            label={'Categories'}></IconPicker>
 
           <InputData
             label="Amount"

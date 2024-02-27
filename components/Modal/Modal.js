@@ -1,13 +1,23 @@
-import {View} from 'react-native';
+import { Pressable, View} from 'react-native';
 import React from 'react';
 import {Modal} from 'react-native';
 import {StyleSheet} from 'react-native';
+;
 
-export default function SharedModal({modalState, children}) {
+export default function SharedModal({modalState, children, hideModal}) {
   return (
-    <Modal visible={modalState} transparent={true} animationType="slide">
+    
+    <Modal
+      visible={modalState}
+      transparent={true}
+      animationType="slide"
+      onRequestClose={() => hideModal}
+      >  
+      {/* background- black */}
+      {/* <View style={{backgroundColor: 'rgba(52, 52, 52, 0.8)'}} className="flex-1 w-full"></View> */}
       <View style={styles.modalContent}>{children}</View>
     </Modal>
+       
   );
 }
 

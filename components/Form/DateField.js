@@ -1,25 +1,24 @@
-import React, { useState } from 'react';
-import { Pressable, Text, View } from 'react-native';
+import React, {useState} from 'react';
+import {Pressable, Text, View} from 'react-native';
 import RNDateTimePicker from '@react-native-community/datetimepicker';
-import { TextInput } from 'react-native-gesture-handler';
+import {TextInput} from 'react-native-gesture-handler';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
-const DateField = ({selectedDate,dateLabel}) => {
+const DateField = ({selectedDate, dateLabel, error}) => {
   const [date, setDate] = useState(new Date());
   const [showPicker, setShowPicker] = useState(false);
+
+  let selectableDate = '';
+  if (dateLabel === 'Start Date' || dateLabel === 'End Date') {
+    selectableDate = date;
+  }
 
   const toggleDatepicker = () => {
     setShowPicker(!showPicker);
   };
+ 
 
-  const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate || date;
-   if(event.type=='set'){
-    toggleDatepicker();
-    setDate(currentDate);
-   }
-  };
-
-  const formatDate = (rawDate) => {
+  const formatDate = rawDate => {
     let date = new Date(rawDate);
     let year = date.getFullYear();
     let month = date.getMonth() + 1;
@@ -31,8 +30,16 @@ const DateField = ({selectedDate,dateLabel}) => {
     return `${year}-${month}-${day}`;
   };
 
-  let dateValue = formatDate(date);
-   selectedDate(dateValue);
+  
+  const onChange = (event, recentDate) => {
+    const currentDate = recentDate || date;
+    if (event.type == 'set') {
+      toggleDatepicker();
+      setDate(currentDate);
+    }
+  };
+
+  selectedDate(formatDate(date)); 
 
   return (
     <View className="mt-2">
@@ -43,16 +50,23 @@ const DateField = ({selectedDate,dateLabel}) => {
           display="spinner"
           value={date}
           onChange={onChange}
+          minimumDate={selectableDate !== '' ? selectableDate : null}
         />
       )}
-      <Pressable onPress={toggleDatepicker}>
+
+        <View className="flex flex-row border-2 rounded-md border-gray-600 mx-4  items-center">
         <TextInput
-          value={dateValue}
+          value={formatDate(date)}
           editable={false}
-          className='border-2 rounded-md border-gray-600 mx-4 py-1 px-3 text-base  text-slate-600'
-        >
-        </TextInput>
-      </Pressable>
+          className={`py-1.5 px-3 text-base  text-slate-600 
+             ${ error && 'border-red-600'}
+          `}></TextInput>
+           <Pressable onPress={toggleDatepicker} className=" absolute right-1 ">
+          <Icon className="text-slate-400" name="date-range" size={28}></Icon>
+          </Pressable>
+          </View>
+
+     { error && <Text className="text-red-700 ml-5">{error}</Text>}
     </View>
   );
 };
