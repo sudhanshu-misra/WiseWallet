@@ -105,7 +105,7 @@ export const Form = ({closeModal}) => {
             onChangeText={handleChange('amount')}
             onBlur={handleBlur('amount')}
             value={values.amount}
-            placeholder="0.0"
+            placeholder="&#8377; 0.0"
             keyboardType="numeric"></InputData>
 
           <DateField
