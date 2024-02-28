@@ -51,7 +51,7 @@ export const CashForm = ({closeModal}) => {
             onChangeText={handleChange('amount')}
             onBlur={handleBlur('amount')}
             value={values.amount}
-            placeholder="Amount"
+            placeholder="&#8377; 0.0"
             keyboardType="numeric"></InputData>
          
           <TouchableOpacity  onPress={handleSubmit}>
