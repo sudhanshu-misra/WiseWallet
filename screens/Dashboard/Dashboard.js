@@ -5,6 +5,12 @@ import DashboardSharedUI from '../../components/DashBoardUI/DashBoardSharedUI';
 import Modal from '../../components/Modal/Modal';
 import TransactionForm from './DashForm/TransactionForm';
 import SuccessModal from '../../components/Modal/SuccessModal';
+import {
+  BarChart,
+  LineChart,
+  PieChart,
+  PopulationPyramid,
+} from 'react-native-gifted-charts';
 
 const temp_data = [
   {
@@ -14,6 +20,8 @@ const temp_data = [
     icon: 'Restaurant',
   },
 ];
+
+const data = [{value: 50}, {value: 80}, {value: 90}, {value: 70}];
 
 export default function DashboardHome({navigation}) {
   const [isModalVisible, SetModalVisible] = useState(false);
@@ -36,6 +44,9 @@ export default function DashboardHome({navigation}) {
     <View>
       <CustomHeader navigation={navigation} />
       <ScrollView>
+        <BarChart data={data} />
+        <LineChart data={data} />
+        <PieChart data={data} />
         <DashboardSharedUI
           name="Transactions"
           icon="sync"
