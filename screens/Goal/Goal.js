@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, ScrollView, StyleSheet, FlatList, Text, TouchableOpacity } from 'react-native';
 import CustomHeader from '../../components/Header';
 import GoalSharedUI from '../../components/GoalUI/GoalSharedUI';
@@ -39,12 +39,17 @@ export default function GoalHome({navigation}) {
   };
 
   const widthAndHeight = 170;
-  const series = [100, 100, 100, 100];
+  const series = [90,100, 100, 100, 100, 100, 100, 100];
   const sliceColor = [
+    'rgba(255, 87, 51, 1)',
     'rgba(255, 87, 51, 0.5)',
+    'rgba(255, 165, 0, 1)',
     'rgba(255, 165, 0, 0.5)',
+    'rgba(51, 255, 87, 1)',
     'rgba(51, 255, 87, 0.5)',
-    'rgba(51, 87, 255, 0.5)',
+    'rgba(51, 87, 255, 1)',
+    'rgba(51, 87, 255, 0.5)'
+ 
   ];
 
   const totalAmount = data.reduce((acc, item) => acc + item.Amount, 0);
@@ -57,8 +62,10 @@ export default function GoalHome({navigation}) {
 
     const totalAmount = item.rsLeft + item.totalRsSaving;
 
+
+
     return (
-      <View style={[styles.item, { backgroundColor: getColor(index) }]}>
+      <View style={[styles.item,  { borderColor: getColor(index), border:"2px solid" }]}>
         <View style={styles.itemLeft}>
           <Text style={styles.itemTitle}>{item.key}</Text>
           <Text>Start Date: {item.startDate}</Text>
@@ -87,6 +94,20 @@ export default function GoalHome({navigation}) {
     setShowAllItems(!showAllItems);
   };
 
+
+  const [graphSeries, setGraphSeries] = useState([90, 90, 100, 100, 100,100, 100, 100]);
+
+ useEffect(() => {
+  const series2 = [];
+  data.forEach(item => {
+    const totalRsSavingPercentage = Math.ceil((item.totalRsSaving / item.Amount) * 100);
+    const rsLeftPercentage = Math.floor((item.rsLeft / item.Amount) * 100);
+    series2.push(totalRsSavingPercentage, rsLeftPercentage);
+  });
+  console.log(series2);
+  setGraphSeries(series2);
+}, []);
+
   return (
     <View style={styles.container}>
       <CustomHeader navigation={navigation} />
@@ -94,7 +115,7 @@ export default function GoalHome({navigation}) {
         <View style={styles.chartContainer}>
           <PieChart
             widthAndHeight={widthAndHeight}
-            series={series}
+            series={graphSeries ? graphSeries : series}
             sliceColor={sliceColor}
             coverRadius={0.45}
             coverFill={'#FFF'}
@@ -137,6 +158,7 @@ export default function GoalHome({navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: 'white',
   },
   chartContainer: {
     alignItems: 'center',
@@ -176,6 +198,7 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     marginHorizontal: 16,
     borderRadius: 8,
+    borderWidth: 2,
   },
   itemLeft: {
     flex: 1,

@@ -9,6 +9,13 @@ import GoalIcons from './GoalIcons';
 // import {PieChart} from 'react-native-gifted-charts';
  
 
+const data = [
+  { key: 'Buy Item 1', startDate: '01/01/2024', endDate: '12/31/2024', Amount: 6000, rsLeft: 1000, totalRsSaving: 5000 },
+  { key: 'Buy Item 2', startDate: '01/01/2024', endDate: '12/31/2024', Amount: 8000, rsLeft: 2000, totalRsSaving: 6000 },
+  { key: 'Buy Item 3', startDate: '01/01/2024', endDate: '12/31/2024', Amount: 8500, rsLeft: 1500, totalRsSaving: 7000 },
+  { key: 'Buy Item 4', startDate: '01/01/2024', endDate: '12/31/2024', Amount: 9200, rsLeft: 1200, totalRsSaving: 8000 },
+];
+
 const GoalSharedUI = ({name, icon , onClick}) => {
   return (
 
@@ -46,7 +53,7 @@ const GoalSharedUI = ({name, icon , onClick}) => {
               <Text style={{ color: '#333', fontSize: 14, textAlign: 'center' }}>Buy item 1</Text>
             </View>
             <View style={{ marginTop: 1 }}>
-              <Text style={{ color: '#666', fontSize: 10, textAlign: 'center' }}>Rs 0</Text>
+              <Text style={{ color: '#666', fontSize: 10, textAlign: 'center' }}>Rs {data[0].Amount}</Text>
             </View>
           </TouchableOpacity>
 
@@ -58,7 +65,7 @@ const GoalSharedUI = ({name, icon , onClick}) => {
               <Text style={{ color: '#333', fontSize: 14, textAlign: 'center' }}>Buy item 2</Text>
             </View>
             <View style={{ marginTop: 1 }}>
-              <Text style={{ color: '#666', fontSize: 10, textAlign: 'center' }}>Rs 0</Text>
+              <Text style={{ color: '#666', fontSize: 10, textAlign: 'center' }}>Rs {data[1].Amount}</Text>
             </View>
           </TouchableOpacity>
         </View>
@@ -72,7 +79,7 @@ const GoalSharedUI = ({name, icon , onClick}) => {
               <Text style={{ color: '#333', fontSize: 14, textAlign: 'center' }}>Buy item 3</Text>
             </View>
             <View style={{ marginTop: 1 }}>
-              <Text style={{ color: '#666', fontSize: 10, textAlign: 'center' }}>Rs 0</Text>
+              <Text style={{ color: '#666', fontSize: 10, textAlign: 'center' }}>Rs {data[2].Amount}</Text>
             </View>
           </TouchableOpacity>
 
@@ -84,7 +91,7 @@ const GoalSharedUI = ({name, icon , onClick}) => {
               <Text style={{ color: '#333', fontSize: 14, textAlign: 'center' }}>Buy item 4</Text>
             </View>
             <View style={{ marginTop: 1 }}>
-              <Text style={{ color: '#666', fontSize: 10, textAlign: 'center' }}>Rs 0</Text>
+              <Text style={{ color: '#666', fontSize: 10, textAlign: 'center' }}>Rs {data[3].Amount}</Text>
             </View>
           </TouchableOpacity>
         </View>

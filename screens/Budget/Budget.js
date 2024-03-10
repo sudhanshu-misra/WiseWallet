@@ -1,5 +1,5 @@
 
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { View, ScrollView, StyleSheet, FlatList, Text, TouchableOpacity } from 'react-native';
 import CustomHeader from '../../components/Header';
 import BudgetSharedUI from '../../components/BudgetUI/BudgetSharedUI';
@@ -15,10 +15,10 @@ const temp_data = [
 ];
 
 const data = [
-  { key: 'Medication', startDate: '01/01/2024', endDate: '12/31/2024', Amount: 6000, rsLeft: 1000, totalRsSaving: 5000 },
-  { key: 'Transport', startDate: '01/01/2024', endDate: '12/31/2024', Amount: 8000, rsLeft: 2000, totalRsSaving: 6000 },
-  { key: 'Restaurant', startDate: '01/01/2024', endDate: '12/31/2024', Amount: 8500, rsLeft: 1500, totalRsSaving: 7000 },
-  { key: 'Grocery', startDate: '01/01/2024', endDate: '12/31/2024', Amount: 9200, rsLeft: 1200, totalRsSaving: 8000 },
+  { key: 'Medication', monthsSpending: 220, startDate: '01/01/2024',endDate: '12/31/2024', Amount: 6000, monthlyBudget: 1000  },
+  { key: 'Transport', monthsSpending: 500, startDate: '01/01/2024',endDate: '12/31/2024', Amount: 8000, monthlyBudget: 2000  },
+  { key: 'Restaurant', monthsSpending:  450, startDate: '01/01/2024',endDate: '12/31/2024', Amount: 8500, monthlyBudget: 1500},
+  { key: 'Grocery', monthsSpending: 230, startDate: '01/01/2024',endDate: '12/31/2024', Amount: 9200, monthlyBudget: 1200},
 ];
 
 export default function BudgetHome({navigation}) {
@@ -45,39 +45,47 @@ export default function BudgetHome({navigation}) {
   };
 
   const widthAndHeight = 170;
-  const series = [100, 100, 100, 100];
+  const series = [90,100, 100, 100, 100, 100, 100, 100];
+  // here
+
   const sliceColor = [
+    'rgba(255, 87, 51, 1)',
     'rgba(255, 87, 51, 0.5)',
+    'rgba(255, 165, 0, 1)',
     'rgba(255, 165, 0, 0.5)',
+    'rgba(51, 255, 87, 1)',
     'rgba(51, 255, 87, 0.5)',
-    'rgba(51, 87, 255, 0.5)',
+    'rgba(51, 87, 255, 1)',
+    'rgba(51, 87, 255, 0.5)'
   ];
 
-  const totalAmount = data.reduce((acc, item) => acc + item.Amount, 0);
 
+
+  const totalAmount = data.reduce((acc, item) => acc + item.monthlyBudget, 0);
   
   const renderItem = ({ item, index }) => {
     if (!showAllItems && index > 1) {
       return null; // Hide items 3 and 4 if showAllItems is false
     }
 
-    const totalAmount = item.rsLeft + item.totalRsSaving;
+
 
     return (
-      <View style={[styles.item, { backgroundColor: getColor(index) }]}>
+      <View style={[styles.item,  { borderColor: getColor(index), border:"2px solid" }]}>
         <View style={styles.itemLeft}>
-          <Text style={styles.itemTitle}>{item.key}</Text>
-          <Text>Start Date: {item.startDate}</Text>
-          <Text>End Date: {item.endDate}</Text>
-        </View>
-        <View style={styles.itemRight}>
-          <Text style={styles.amountText}> Amount: {totalAmount}</Text>
-          <Text>Rupees Left: {item.rsLeft}</Text>
-          <Text>Total Rupees Saving: {item.totalRsSaving}</Text>
-        </View>
+        <Text style={styles.itemTitle}>{item.key}</Text>
+        <Text style={styles.dateText}>Start Date: {item.startDate}</Text>
+        <Text style={styles.dateText}>End Date: {item.endDate}</Text>
       </View>
-    );
-  };
+      <View style={styles.itemRight}>
+        <Text style={styles.monthSpending}>Month's Spending:</Text>
+        <Text style={styles.monthSpendingRs}>Rs {item.monthsSpending}</Text>
+        <Text style={styles.monthlyBudget}>Monthly Budget:</Text>
+        <Text style={styles.monthlyBudgetRs}>Rs {item.monthlyBudget}</Text>
+      </View>
+    </View>
+  );
+};
 
   const getColor = (index) => {
     const colors = [
@@ -93,21 +101,35 @@ export default function BudgetHome({navigation}) {
     setShowAllItems(!showAllItems);
   };
 
+  const [graphSeries, setGraphSeries] = useState([90, 90, 100, 100, 100,100, 100, 100]);
+
+  useEffect(() => {
+    const series2 = [];
+    data.forEach(item => {
+      const monthsSpendingPercentage = Math.ceil((item.monthsSpending / item.monthlyBudget) * 100);
+      const rsLeftPercentage = Math.floor(((item.monthlyBudget-item.monthsSpending) / item.monthlyBudget) * 100);
+      series2.push(monthsSpendingPercentage, rsLeftPercentage);
+    });
+    console.log(series2);
+    setGraphSeries(series2);
+  }, []);
+
   return (
+    <ScrollView>
       <View style={styles.container}>
         <CustomHeader navigation={navigation} />
-          <ScrollView>
+          
         <View style={styles.chartContainer}>
           <PieChart
             widthAndHeight={widthAndHeight}
-            series={series}
+            series={graphSeries ? graphSeries : series}
             sliceColor={sliceColor}
             coverRadius={0.45}
             coverFill={'#FFF'}
             doughnut={true}
           />
           <View style={styles.centerTextContainer}>
-            <Text style={styles.centerText}>Goal</Text>
+            <Text style={styles.centerText}>Budget</Text>
             <Text style={styles.totalAmountText}>Rs {totalAmount}</Text>
           </View>
         </View>
@@ -125,7 +147,7 @@ export default function BudgetHome({navigation}) {
           )}
         </View>
         <BudgetSharedUI name="Budget" icon="track-changes" onClick={budgetHandler} />
-      </ScrollView>
+     
       <Modal modalState={isModalVisible} hideModal={() => SetModalVisible(false)}>
         <BudgetForm hideModal={() => SetModalVisible(false)} onSubmit={onSubmit} />
       </Modal>
@@ -137,12 +159,14 @@ export default function BudgetHome({navigation}) {
         />
       )}
     </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: 'white',
   },
   chartContainer: {
     alignItems: 'center',
@@ -173,26 +197,6 @@ const styles = StyleSheet.create({
   flatList: {
     flexGrow: 1,
   },
-  item: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    marginVertical: 8,
-    marginHorizontal: 16,
-    borderRadius: 8,
-  },
-  itemLeft: {
-    flex: 1,
-  },
-  itemRight: {
-    alignItems: 'flex-end',
-  },
-  itemTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
   amountText: {
     fontSize: 18,
     fontWeight: 'bold',
@@ -206,6 +210,48 @@ const styles = StyleSheet.create({
     color: 'blue',
     fontWeight: 'bold',
   },
+  item: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    marginVertical: 8,
+    marginHorizontal: 16,
+    borderRadius: 8,
+    borderWidth: 2,
+  },
+  itemLeft: {
+    flex: 1,
+  },
+  itemRight: {
+    alignItems: 'flex-end',
+  },
+  itemTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 1,
+    marginTop: -31,
+  },
+  dateText: {
+    fontSize: 13.5,
+    marginBottom: 1,
+  },
+  monthSpending: {
+    fontSize: 14,
+    marginBottom: -2,
+    marginTop: 32,
+    marginRight: -3,
+  },
+  monthlyBudget: {
+    fontSize: 14,
+    marginRight:-3,
+  },
+  monthSpendingRs: {
+    marginRight: -3,
+
+  },
+  monthlyBudgetRs: {
+    marginRight: -3,
+  }
 });
-
-
