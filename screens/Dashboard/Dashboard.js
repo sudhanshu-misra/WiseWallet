@@ -21,6 +21,8 @@ const temp_data = [
   },
 ];
 
+const data = [{value: 50}, {value: 80}, {value: 90}, {value: 70}];
+
 
 const IncomeNames = ['Monthly Paycheck', 'Mileage Compensation', 'Dining Refund', 'Pantry Support'];
 
