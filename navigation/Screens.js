@@ -15,27 +15,13 @@ import Profile from '../screens/Profile/Profile';
 
 //GOAL
 
-
-
-
-
-
-
-
-
-
 //WALLET-CARD
-
-
 
 //INCOME
 
 //KEYBOARD
 
-
-
 //CALENDAR
-
 
 const Screens = {
   UNAUTHENTICATED: [
@@ -43,6 +29,8 @@ const Screens = {
     {name: 'Signup', component: Signup},
     {name: 'Login', component: Login},
     {name: 'Verification', component: Verification},
+  ],
+  AUTHENTICATED: [
     {name: 'Tabs', component: BottomTab},
     {name: 'DrawerNav', component: DrawerNav},
     {name: 'BudgetHome', component: BudgetHome},
@@ -50,11 +38,7 @@ const Screens = {
     {name: 'GoalHome', component: GoalHome},
     {name: 'WalletHome', component: WalletHome},
     {name: 'Profile', component: Profile},
-    
-
-
   ],
-  AUTHENTICATED: [],
 };
 
 export default Screens;

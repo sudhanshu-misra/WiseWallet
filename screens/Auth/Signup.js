@@ -4,6 +4,8 @@ import HeadBack from '../../components/BackHeader';
 import ButtonComp from '../../components/ButtonComp';
 import {Formik} from 'formik';
 import * as yup from 'yup';
+import host from '../../constants/config';
+import axios from 'axios';
 
 const Signup = props => {
   const validationSchema = yup.object().shape({
@@ -22,17 +24,29 @@ const Signup = props => {
       .required('mobile number is required'),
   });
 
-  const handleSignUp = values => {
+  const handleSignUp = async values => {
     //signUpData
     const signUpData = {
       name: values.name,
       email: values.email,
       mobileNumber: values.mobileNumber,
     };
-
     console.log(signUpData);
 
-    props.navigation.navigate('Verification');
+    try {
+      const res = await axios.post(`${host.apiUrl}/api/user/request-signup`, {
+        email: values.email,
+      });
+
+      console.log('here', res.data);
+      const token = res.data.token;
+      props.navigation.navigate('Verification', {
+        signUpData: signUpData,
+        token: token,
+      });
+    } catch (err) {
+      console.log('here', err);
+    }
   };
 
   return (
