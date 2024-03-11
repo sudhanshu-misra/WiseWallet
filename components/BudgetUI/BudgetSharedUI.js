@@ -9,6 +9,14 @@ import BudgetIcons from './BudgetIcons';
 // import {PieChart} from 'react-native-gifted-charts';
  
 
+const data = [
+  { key: 'Medication', monthsSpending: 220, endDate: '12/31/2024', Amount: 6000, monthlyBudget: 1000, totalRsSaving: 5000 },
+  { key: 'Transport', monthsSpending: 500, endDate: '12/31/2024', Amount: 8000, monthlyBudget: 2000, totalRsSaving: 6000 },
+  { key: 'Restaurant', monthsSpending:  450, endDate: '12/31/2024', Amount: 8500, monthlyBudget: 1500, totalRsSaving: 7000 },
+  { key: 'Grocery', monthsSpending: 230, endDate: '12/31/2024', Amount: 9200, monthlyBudget: 1200, totalRsSaving: 8000 },
+];
+
+
 const BudgetSharedUI = ({name, icon , onClick}) => {
   return (
 
@@ -46,7 +54,7 @@ const BudgetSharedUI = ({name, icon , onClick}) => {
               <Text style={{ color: '#333', fontSize: 14, textAlign: 'center' }}>Medication</Text>
             </View>
             <View style={{ marginTop: 1 }}>
-              <Text style={{ color: '#666', fontSize: 10, textAlign: 'center' }}>Rs 0</Text>
+              <Text style={{ color: '#666', fontSize: 10, textAlign: 'center' }}>Rs {data[0].monthsSpending}</Text>
             </View>
           </TouchableOpacity>
 
@@ -58,7 +66,7 @@ const BudgetSharedUI = ({name, icon , onClick}) => {
               <Text style={{ color: '#333', fontSize: 14, textAlign: 'center' }}>Transport</Text>
             </View>
             <View style={{ marginTop: 1 }}>
-              <Text style={{ color: '#666', fontSize: 10, textAlign: 'center' }}>Rs 0</Text>
+              <Text style={{ color: '#666', fontSize: 10, textAlign: 'center' }}>Rs {data[1].monthsSpending}</Text>
             </View>
           </TouchableOpacity>
         </View>
@@ -72,7 +80,7 @@ const BudgetSharedUI = ({name, icon , onClick}) => {
               <Text style={{ color: '#333', fontSize: 14, textAlign: 'center' }}>Restaurant</Text>
             </View>
             <View style={{ marginTop: 1 }}>
-              <Text style={{ color: '#666', fontSize: 10, textAlign: 'center' }}>Rs 0</Text>
+              <Text style={{ color: '#666', fontSize: 10, textAlign: 'center' }}>Rs {data[2].monthsSpending}</Text>
             </View>
           </TouchableOpacity>
 
@@ -84,7 +92,7 @@ const BudgetSharedUI = ({name, icon , onClick}) => {
               <Text style={{ color: '#333', fontSize: 14, textAlign: 'center' }}>Grocery</Text>
             </View>
             <View style={{ marginTop: 1 }}>
-              <Text style={{ color: '#666', fontSize: 10, textAlign: 'center' }}>Rs 0</Text>
+              <Text style={{ color: '#666', fontSize: 10, textAlign: 'center' }}>Rs {data[3].monthsSpending}</Text>
             </View>
           </TouchableOpacity>
         </View>

@@ -12,7 +12,9 @@ const DashBoardSharedUI = ({name, icon , onClick}) => {
  }
   return (
     <View className=" mt-5 w-max">
+      
       <View className="mx-7 flex flex-row justify-between">
+
         <Text className="text-xl text-black">{name}</Text>
         <Text className="text-lg" style={{color: `${COLORS.neutral}`}}
          onPress={()=>onClick()}

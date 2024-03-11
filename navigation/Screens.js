@@ -16,12 +16,18 @@ import Profile from '../screens/Profile/Profile';
 //GOAL
 
 //WALLET-CARD
+import Cash from '../screens/Wallet/WalletScreen/Cash';
+import Card from '../screens/Wallet/WalletScreen/Card';
+import Upi from '../screens/Wallet/WalletScreen/Upi';
+
 
 //INCOME
+import IncomeHome from '../screens/Dashboard/FullScreen/Income';
+import ExpenseHome from '../screens/Dashboard/FullScreen/Expense';
 
-//KEYBOARD
+//FILTER
+import Filter from '../screens/Filter';
 
-//CALENDAR
 
 const Screens = {
   UNAUTHENTICATED: [
@@ -38,6 +44,13 @@ const Screens = {
     {name: 'GoalHome', component: GoalHome},
     {name: 'WalletHome', component: WalletHome},
     {name: 'Profile', component: Profile},
+    {name: 'IncomeHome', component: IncomeHome},
+    {name: 'ExpenseHome', component: ExpenseHome},
+    {name: 'Cash', component: Cash},
+    {name: 'Card', component: Card},
+    {name: 'Upi', component: Upi},
+    {name: 'Filter', component: Filter}
+    
   ],
 };
 
