@@ -48,7 +48,7 @@ const Screens = {
     {name: 'GoalHome', component: GoalHome},
     {name: 'WalletHome', component: WalletHome},
     {name: 'Profile', component: Profile},
-    {name: 'EditProfile', component:EditProfile}
+    {name: 'EditProfile', component: EditProfile},
     {name: 'IncomeHome', component: IncomeHome},
     {name: 'ExpenseHome', component: ExpenseHome},
     {name: 'Cash', component: Cash},
