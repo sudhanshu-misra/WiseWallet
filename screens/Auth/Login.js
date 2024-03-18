@@ -4,37 +4,42 @@ import HeadBack from '../../components/BackHeader';
 import ButtonComp from '../../components/ButtonComp';
 import {Formik} from 'formik';
 import * as yup from 'yup';
-
+import host from '../../constants/config';
+import axios from 'axios';
 
 const Login = ({navigation}) => {
-
   const validationSchema = yup.object().shape({
     email: yup
-    .string()
-    .email('Invalid email format')
-    .required('Email is required'),
+      .string()
+      .email('Invalid email format')
+      .required('Email is required'),
   });
 
-  const handleLogIn = (values) => {
-    
-    const email= values.email;
-   
-
-    //send verification code to the email
-    //check then navigate
-    
-    navigation.navigate('Verification');
-
+  const handleLogIn = async values => {
+    const email = values.email;
+    console.log(email);
+    try {
+      const res = await axios.post(`${host.apiUrl}/api/user/request-login`, {
+        email: email,
+      });
+      console.log('here1', res.data);
+      const token = res.data.token;
+      navigation.navigate('Verification', {
+        email: email,
+        token: token,
+      });
+    } catch (err) {
+      console.log('here2', err.response.data);
+    }
   };
-
 
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
       <HeadBack title="Login" navigation={navigation} />
-          
+
       <View className="m-4 mt-[4vh] ">
         <Formik
-          initialValues={{ email: ''}}
+          initialValues={{email: ''}}
           validationSchema={validationSchema}
           onSubmit={handleLogIn}>
           {({
@@ -46,7 +51,7 @@ const Login = ({navigation}) => {
             touched,
           }) => (
             <View className="flex flex-col gap-4 ">
-            <View>
+              <View>
                 <TextInput
                   placeholder="Email"
                   onChangeText={handleChange('email')}
@@ -71,7 +76,7 @@ const Login = ({navigation}) => {
 
       <View className="mt-3">
         <Text className="text-center text-base">
-           Don't have an account?{' '}
+          Don't have an account?{' '}
           <Text
             className="text-[#497320] font-bold text-base"
             onPress={() => navigation.navigate('Signup')}>
@@ -79,7 +84,6 @@ const Login = ({navigation}) => {
           </Text>
         </Text>
       </View>
-
     </View>
   );
 };
