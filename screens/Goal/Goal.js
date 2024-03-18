@@ -1,23 +1,58 @@
-import React, { useState, useEffect } from 'react';
-import { View, ScrollView, StyleSheet, FlatList, Text, TouchableOpacity } from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {
+  View,
+  ScrollView,
+  StyleSheet,
+  FlatList,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
 import CustomHeader from '../../components/Header';
 import GoalSharedUI from '../../components/GoalUI/GoalSharedUI';
 import Modal from '../../components/Modal/Modal';
-import SuccessModal from '../../components/Modal/SuccessModal';
 import GoalForm from './GoalForm/GoalForm';
+import StatusModal from '../../components/Modal/StatusModal';
 import PieChart from 'react-native-pie-chart';
 
 const temp_data = [
   {
-    GoalName: "Goal"
-  }
+    GoalName: 'Goal',
+  },
 ];
 
 const data = [
-  { key: 'Buy Item 1', startDate: '01/01/2024', endDate: '12/31/2024', Amount: 6000, rsLeft: 1000, totalRsSaving: 5000 },
-  { key: 'Buy Item 2', startDate: '01/01/2024', endDate: '12/31/2024', Amount: 8000, rsLeft: 2000, totalRsSaving: 6000 },
-  { key: 'Buy Item 3', startDate: '01/01/2024', endDate: '12/31/2024', Amount: 8500, rsLeft: 1500, totalRsSaving: 7000 },
-  { key: 'Buy Item 4', startDate: '01/01/2024', endDate: '12/31/2024', Amount: 9200, rsLeft: 1200, totalRsSaving: 8000 },
+  {
+    key: 'Buy Item 1',
+    startDate: '01/01/2024',
+    endDate: '12/31/2024',
+    Amount: 6000,
+    rsLeft: 1000,
+    totalRsSaving: 5000,
+  },
+  {
+    key: 'Buy Item 2',
+    startDate: '01/01/2024',
+    endDate: '12/31/2024',
+    Amount: 8000,
+    rsLeft: 2000,
+    totalRsSaving: 6000,
+  },
+  {
+    key: 'Buy Item 3',
+    startDate: '01/01/2024',
+    endDate: '12/31/2024',
+    Amount: 8500,
+    rsLeft: 1500,
+    totalRsSaving: 7000,
+  },
+  {
+    key: 'Buy Item 4',
+    startDate: '01/01/2024',
+    endDate: '12/31/2024',
+    Amount: 9200,
+    rsLeft: 1200,
+    totalRsSaving: 8000,
+  },
 ];
 
 export default function GoalHome({navigation}) {
@@ -39,7 +74,7 @@ export default function GoalHome({navigation}) {
   };
 
   const widthAndHeight = 170;
-  const series = [90,100, 100, 100, 100, 100, 100, 100];
+  const series = [90, 100, 100, 100, 100, 100, 100, 100];
   const sliceColor = [
     'rgba(80, 116, 36, 1)',
     'rgba(80, 116, 36, 0.5)',
@@ -54,18 +89,19 @@ export default function GoalHome({navigation}) {
 
   const totalAmount = data.reduce((acc, item) => acc + item.Amount, 0);
 
-  
-  const renderItem = ({ item, index }) => {
+  const renderItem = ({item, index}) => {
     if (!showAllItems && index > 1) {
       return null; // Hide items 3 and 4 if showAllItems is false
     }
 
     const totalAmount = item.rsLeft + item.totalRsSaving;
 
-
-
     return (
-      <View style={[styles.item,  { borderColor: getColor(index), border:"2px solid" }]}>
+      <View
+        style={[
+          styles.item,
+          {borderColor: getColor(index), border: '2px solid'},
+        ]}>
         <View style={styles.itemLeft}>
           <Text style={styles.itemTitle}>{item.key}</Text>
           <Text>Start Date: {item.startDate}</Text>
@@ -80,7 +116,7 @@ export default function GoalHome({navigation}) {
     );
   };
 
-  const getColor = (index) => {
+  const getColor = index => {
     const colors = [
       'rgba(80, 116, 36, 1)',
       'rgba(136, 224, 28, 1)',
@@ -94,62 +130,47 @@ export default function GoalHome({navigation}) {
     setShowAllItems(!showAllItems);
   };
 
+  const [graphSeries, setGraphSeries] = useState([
+    90, 90, 100, 100, 100, 100, 100, 100,
+  ]);
 
-  const [graphSeries, setGraphSeries] = useState([90, 90, 100, 100, 100,100, 100, 100]);
-
- useEffect(() => {
-  const series2 = [];
-  data.forEach(item => {
-    const totalRsSavingPercentage = Math.ceil((item.totalRsSaving / item.Amount) * 100);
-    const rsLeftPercentage = Math.floor((item.rsLeft / item.Amount) * 100);
-    series2.push(totalRsSavingPercentage, rsLeftPercentage);
-  });
-  console.log(series2);
-  setGraphSeries(series2);
-}, []);
+  useEffect(() => {
+    const series2 = [];
+    data.forEach(item => {
+      const totalRsSavingPercentage = Math.ceil(
+        (item.totalRsSaving / item.Amount) * 100,
+      );
+      const rsLeftPercentage = Math.floor((item.rsLeft / item.Amount) * 100);
+      series2.push(totalRsSavingPercentage, rsLeftPercentage);
+    });
+    console.log(series2);
+    setGraphSeries(series2);
+  }, []);
 
   return (
-    <View style={styles.container}>
+    <View>
       <CustomHeader navigation={navigation} />
       <ScrollView>
-        <View style={styles.chartContainer}>
-          <PieChart
-            widthAndHeight={widthAndHeight}
-            series={graphSeries ? graphSeries : series}
-            sliceColor={sliceColor}
-            coverRadius={0.45}
-            coverFill={'#FFF'}
-            doughnut={true}
-          />
-          <View style={styles.centerTextContainer}>
-            <Text style={styles.centerText}>Goal</Text>
-            <Text style={styles.totalAmountText}>Rs {totalAmount}</Text>
-          </View>
-        </View>
-        <View style={styles.flatListContainer}>
-          <FlatList
-            data={data}
-            renderItem={renderItem}
-            keyExtractor={item => item.key}
-            style={styles.flatList}
-          />
-          {data.length > 2 && (
-            <TouchableOpacity onPress={toggleItems} style={styles.viewAllButton}>
-              <Text style={styles.viewAllText}>{showAllItems ? 'View Less' : 'View All'}</Text>
-            </TouchableOpacity>
-          )}
-        </View>
-        <GoalSharedUI name="Goal" icon="track-changes" onClick={goalHandler} />
+        <DashboardSharedUI
+          name="Goals"
+          icon="piggy-bank"
+          onClick={goalHandler}></DashboardSharedUI>
       </ScrollView>
-      <Modal modalState={isModalVisible} hideModal={() => SetModalVisible(false)}>
-        <GoalForm hideModal={() => SetModalVisible(false)} onSubmit={onSubmit} />
+
+      <Modal
+        modalState={isModalVisible}
+        hideModal={() => SetModalVisible(false)}>
+        <GoalForm
+          hideModal={() => SetModalVisible(false)}
+          onSubmit={onSubmit}></GoalForm>
       </Modal>
+
       {temp_data && (
-        <SuccessModal
+        <StatusModal
+          modalType="success"
           modalState={successVisible}
           hideModal={() => SetSuccessVisible(false)}
-          formData={temp_data[0]}
-        />
+          formData={temp_data[0]}></StatusModal>
       )}
     </View>
   );

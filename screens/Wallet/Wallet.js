@@ -1,44 +1,50 @@
-import React, { useState } from 'react';
-import { View, ScrollView, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import React, {useState} from 'react';
+import {
+  View,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+} from 'react-native';
 import CustomHeader from '../../components/Header';
 import DashboardSharedUI from '../../components/DashBoardUI/DashBoardSharedUI';
 import Modal from '../../components/Modal/Modal';
-import SuccessModal from '../../components/Modal/SuccessModal';
 import WalletForm from './WalletForm/WalletForm';
-import { MenuProvider, Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu';
+import StatusModal from '../../components/Modal/StatusModal';
+import {
+  MenuProvider,
+  Menu,
+  MenuOptions,
+  MenuOption,
+  MenuTrigger,
+} from 'react-native-popup-menu';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-
-
-const exampleDate = "2024-03-05";
+const exampleDate = '2024-03-05';
 // CASH
 const balance = 320;
 
 // CARD
 const cardDetails = {
-  "bankname": "State Bank of India",
-  "cardnumber": "1234 5678 9012 3456",
-  "expirydate": "12/25",
-  "balance": 5000
+  bankname: 'State Bank of India',
+  cardnumber: '1234 5678 9012 3456',
+  expirydate: '12/25',
+  balance: 5000,
 };
 
 //UPI-WALLET
 const upiDetails = {
-  "app": "Gpay",
-  "balance": 3000
+  app: 'Gpay',
+  balance: 3000,
 };
-
-
-
-
 
 const temp_data = [
   {
-    WalletName: "wallet"
-  }
+    WalletName: 'wallet',
+  },
 ];
 
-export default function WalletHome({ navigation }) {
+export default function WalletHome({navigation}) {
   const [isModalVisible, SetModalVisible] = useState(false);
   const [successVisible, SetSuccessVisible] = useState(false);
 
@@ -48,12 +54,11 @@ export default function WalletHome({ navigation }) {
 
   const onSubmit = () => {
     SetModalVisible(false);
-    //data extraction here 
-    // if(data) received then set success visible  else show error modal with message 
+    //data extraction here
+    // if(data) received then set success visible  else show error modal with message
     if (temp_data) {
       SetSuccessVisible(true);
-    }
-    else {
+    } else {
       //error modal
     }
   };
@@ -69,25 +74,43 @@ export default function WalletHome({ navigation }) {
             icon="credit-card"
             onClick={walletHandler}></DashboardSharedUI>
 
-
-          <Modal modalState={isModalVisible} hideModal={() => SetModalVisible(false)}>
+          <Modal
+            modalState={isModalVisible}
+            hideModal={() => SetModalVisible(false)}>
             <WalletForm
               hideModal={() => SetModalVisible(false)}
               onSubmit={onSubmit}></WalletForm>
           </Modal>
 
           {temp_data && (
-            <SuccessModal
+            <StatusModal
+              modalType="success"
               modalState={successVisible}
               hideModal={() => SetSuccessVisible(false)}
-              formData={temp_data[0]}
-            ></SuccessModal>
+              formData={temp_data[0]}></StatusModal>
           )}
 
-          <Text style={{ textAlign: 'center', fontWeight: 'bold', fontSize: 20, marginTop: 5, marginBottom: 10 }}>CASH</Text>
+          <Text
+            style={{
+              textAlign: 'center',
+              fontWeight: 'bold',
+              fontSize: 20,
+              marginTop: 5,
+              marginBottom: 10,
+            }}>
+            CASH
+          </Text>
 
-
-          <Text style={{ textAlign: 'left', fontSize: 17, marginLeft: 20, marginTop: 5, marginBottom: 10 }}>Balance: Rs {balance}</Text>
+          <Text
+            style={{
+              textAlign: 'left',
+              fontSize: 17,
+              marginLeft: 20,
+              marginTop: 5,
+              marginBottom: 10,
+            }}>
+            Balance: Rs {balance}
+          </Text>
 
           {/* <View style={{ flexDirection: 'column', justifyContent: 'space-between', paddingHorizontal: 7 }}>
             <View style={{ flex: 1, height: 70, padding: 22, margin: 8, borderWidth: 1.5, borderColor: '#6B7280', flexDirection: 'row', alignItems: 'center' }}>
@@ -108,7 +131,7 @@ export default function WalletHome({ navigation }) {
               </Menu>
             </View>
           </View> */}
-{/* 
+          {/* 
           <View style={{ flexDirection: 'column', justifyContent: 'space-between', paddingHorizontal: 7 }}>
             <View style={{ flex: 1, height: 70, padding: 22, margin: 8, borderWidth: 1.5, borderColor: '#6B7280', flexDirection: 'row', alignItems: 'center' }}>
               <Text style={styles.itemText}>Item</Text>
@@ -132,30 +155,68 @@ export default function WalletHome({ navigation }) {
           {/* <TouchableOpacity onPress={() => navigation.navigate('Cash')} style={{ backgroundColor: 'white', padding: 3, borderRadius: 5 }}>
             <Text style={{ color: 'blue', fontWeight: 'bold', textAlign: 'center' }}>View All</Text>
           </TouchableOpacity> */}
-          </View>
-<Text style={{textAlign: 'center', fontWeight: 'bold', fontSize: 20, marginTop: 2, marginBottom: 10}}>CARD</Text>
+        </View>
+        <Text
+          style={{
+            textAlign: 'center',
+            fontWeight: 'bold',
+            fontSize: 20,
+            marginTop: 2,
+            marginBottom: 10,
+          }}>
+          CARD
+        </Text>
 
-<View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-  <Text style={{ fontSize: 14, textAlign: 'left', marginLeft: 7, marginTop: 0, marginBottom: 0 }}>
-    Bank Name: {cardDetails.bankname}
-  </Text>
-  <Text style={{ fontSize: 14, textAlign: 'right', marginTop: 0, marginRight: 4, marginBottom: 10 }}>
-    Expiry Date: <Text style= {{color:'green'}}>{cardDetails.expirydate} </Text>
-  </Text>
-</View>
+        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+          <Text
+            style={{
+              fontSize: 14,
+              textAlign: 'left',
+              marginLeft: 7,
+              marginTop: 0,
+              marginBottom: 0,
+            }}>
+            Bank Name: {cardDetails.bankname}
+          </Text>
+          <Text
+            style={{
+              fontSize: 14,
+              textAlign: 'right',
+              marginTop: 0,
+              marginRight: 4,
+              marginBottom: 10,
+            }}>
+            Expiry Date:{' '}
+            <Text style={{color: 'green'}}>{cardDetails.expirydate} </Text>
+          </Text>
+        </View>
 
-<View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-<Text style={{ fontSize: 14, textAlign: 'left', marginLeft: 7, marginTop: 0, marginBottom: 0 }}>
-  Card Number: {cardDetails.cardnumber}
-</Text>
+        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+          <Text
+            style={{
+              fontSize: 14,
+              textAlign: 'left',
+              marginLeft: 7,
+              marginTop: 0,
+              marginBottom: 0,
+            }}>
+            Card Number: {cardDetails.cardnumber}
+          </Text>
 
-<Text style={{ fontSize: 14, textAlign: 'right', marginTop: 0, marginRight: 7, marginBottom: 10 }}>
-  Balance: <Text style= {{color:'green'}}>Rs {cardDetails.balance}</Text>
-</Text>
+          <Text
+            style={{
+              fontSize: 14,
+              textAlign: 'right',
+              marginTop: 0,
+              marginRight: 7,
+              marginBottom: 10,
+            }}>
+            Balance:{' '}
+            <Text style={{color: 'green'}}>Rs {cardDetails.balance}</Text>
+          </Text>
+        </View>
 
-</View>
-
-{/*  
+        {/*  
 <View style={{ flexDirection: 'column', justifyContent: 'space-between', paddingHorizontal: 7 }}>
             <View style={{ flex: 1, height: 70, padding: 22, margin: 8, borderWidth: 1.5, borderColor: '#6B7280', flexDirection: 'row', alignItems: 'center' }}>
               <Text style={styles.itemText}>Item</Text>
@@ -200,13 +261,39 @@ export default function WalletHome({ navigation }) {
           </TouchableOpacity>
 </View> */}
 
+        <Text
+          style={{
+            textAlign: 'center',
+            fontWeight: 'bold',
+            fontSize: 20,
+            marginTop: 10,
+            marginBottom: 10,
+          }}>
+          UPI WALLET
+        </Text>
 
-<Text style={{textAlign: 'center', fontWeight: 'bold', fontSize: 20, marginTop: 10, marginBottom: 10}}>UPI WALLET</Text>
+        <Text
+          style={{
+            textAlign: 'left',
+            fontSize: 17,
+            marginLeft: 20,
+            marginTop: 5,
+            marginBottom: 10,
+          }}>
+          App: {upiDetails.app}
+        </Text>
 
-<Text style={{ textAlign: 'left', fontSize: 17, marginLeft: 20, marginTop: 5, marginBottom: 10 }}>App: {upiDetails.app}</Text>
- 
-<Text style={{ textAlign: 'left', fontSize: 17, marginLeft: 20, marginTop: 5, marginBottom: 10 }}>Balance: Rs {upiDetails.balance}</Text>
-{/*  
+        <Text
+          style={{
+            textAlign: 'left',
+            fontSize: 17,
+            marginLeft: 20,
+            marginTop: 5,
+            marginBottom: 10,
+          }}>
+          Balance: Rs {upiDetails.balance}
+        </Text>
+        {/*  
 <View style={{ flexDirection: 'column', justifyContent: 'space-between', paddingHorizontal: 7 }}>
             <View style={{ flex: 1, height: 70, padding: 22, margin: 8, borderWidth: 1.5, borderColor: '#6B7280', flexDirection: 'row', alignItems: 'center' }}>
               <Text style={styles.itemText}>Item</Text>
@@ -252,9 +339,8 @@ export default function WalletHome({ navigation }) {
           </TouchableOpacity>
 </View>
        */}
-      
       </ScrollView>
-      </MenuProvider>
+    </MenuProvider>
   );
 }
 
@@ -264,7 +350,6 @@ const styles = StyleSheet.create({
     color: '#666',
     marginTop: 7,
     marginLeft: -35,
-
   },
   itemText: {
     fontSize: 16,
@@ -272,6 +357,4 @@ const styles = StyleSheet.create({
     color: '#333',
     marginTop: -15,
   },
-
 });
-

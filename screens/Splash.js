@@ -5,7 +5,8 @@ import {COLORS} from '../constants/theme';
 const Splash = ({navigation}) => {
   useEffect(() => {
     setTimeout(() => {
-      navigation.navigate('Onboarding');
+      console.log('splash timeout');
+      // navigation.navigate('Onboarding');
     }, 2000);
   }, []);
   return (

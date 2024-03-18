@@ -6,9 +6,12 @@ import ButtonComp from '../../components/ButtonComp';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import host from '../../constants/config';
+import ErrorModal from '../../components/Modal/ErrorModal';
 
 const Verification = props => {
   const [code, setCode] = useState('');
+  const [modalState, setModalState] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
 
   const email = props.route.params.email;
   const signUpData = props.route.params.signUpData;
@@ -50,16 +53,20 @@ const Verification = props => {
         Authorization: `Bearer ${bearerToken}`,
       },
     };
+    console.log('Submitted OTP:', code);
+    console.log('Bearer Token:', config);
+    console.log('Url:', `${host.apiUrl}/api/user/verify-signup`);
+    console.log('Data:', signUpData);
     try {
       const res = await axios.post(
-        `${config.apiUrl}/api/user/verify-signup`,
-        config,
+        `${host.apiUrl}/api/user/verify-signup`,
         {
           name: signUpData.name,
-          mobileNo: signUpData.mobileNo,
+          mobileNo: signUpData.mobileNumber,
           email: signUpData.email,
           otp: code,
         },
+        config,
       );
       console.log('here', res.data);
       const token = res.data.token;
@@ -67,19 +74,25 @@ const Verification = props => {
       props.navigation.navigate('DrawerNav');
     } catch (error) {
       console.log('here4', error);
+      setModalState(true);
+      setModalMessage(error.response.data.message);
     }
   };
 
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
       <HeadBack title="Verification" navigation={props.navigation} />
-
+      <ErrorModal
+        modalState={modalState}
+        hideModal={() => setModalState(false)}
+        modalMessage={modalMessage}
+      />
       <View className="flex items-center my-4">
         <Text className="text-black text-4xl font-semibold ">
           Enter your verification code
         </Text>
         <OTPInput code={setCode} />
-        <Text>{code}</Text>
+        {/* <Text>{code}</Text> */}
       </View>
 
       <View className="mt-10 mx-5">

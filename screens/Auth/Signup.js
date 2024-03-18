@@ -1,11 +1,12 @@
 import {View, Text, TextInput, TouchableOpacity} from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import HeadBack from '../../components/BackHeader';
 import ButtonComp from '../../components/ButtonComp';
 import {Formik} from 'formik';
 import * as yup from 'yup';
 import host from '../../constants/config';
 import axios from 'axios';
+import ErrorModal from '../../components/Modal/ErrorModal';
 
 const Signup = props => {
   const validationSchema = yup.object().shape({
@@ -20,9 +21,13 @@ const Signup = props => {
       .required('Email is required'),
     mobileNumber: yup
       .string()
+      .matches(/^\d+$/, 'Mobile number must be digits only')
       .length(10, 'Mobile number must be 10 digits')
       .required('mobile number is required'),
   });
+
+  const [modalState, setModalState] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
 
   const handleSignUp = async values => {
     //signUpData
@@ -34,16 +39,23 @@ const Signup = props => {
     console.log(signUpData);
 
     try {
-      const res = await axios.post(`${host.apiUrl}/api/user/request-signup`, {
-        email: values.email,
-      });
-
-      console.log('here', res.data);
-      const token = res.data.token;
-      props.navigation.navigate('Verification', {
-        signUpData: signUpData,
-        token: token,
-      });
+      await axios
+        .post(`${host.apiUrl}/api/user/request-signup`, {
+          email: values.email,
+        })
+        .then(res => {
+          console.log('here', res.data);
+          const token = res.data.token;
+          props.navigation.navigate('Verification', {
+            signUpData: signUpData,
+            token: token,
+          });
+        })
+        .catch(err => {
+          console.log('here', err);
+          setModalState(true);
+          setModalMessage(err.response.data.message);
+        });
     } catch (err) {
       console.log('here', err);
     }
@@ -55,6 +67,11 @@ const Signup = props => {
         flex: 1,
         backgroundColor: 'white',
       }}>
+      <ErrorModal
+        modalState={modalState}
+        hideModal={() => setModalState(false)}
+        modalMessage={modalMessage}
+      />
       <HeadBack title="Sign Up" navigation={props.navigation} />
       <View className="m-4 mt-[4vh] ">
         <Formik

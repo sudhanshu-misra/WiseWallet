@@ -5,6 +5,7 @@ export const COLORS = {
   success: '#7ABF36', //Lime Green
   neutral: '#2E9AA6', //Teal Blue
   warning: '#AFDA03', //Lemon Yellow
+  error: '#FF0000', //Red
 
   black: '#1E1F20',
   white: '#FFFFFF',
