@@ -10,11 +10,11 @@ export default function HeadBack(props) {
         className="w-[35%]"
         onPress={() => props.navigation.goBack()}>
         <View>
-          <Icon name="arrow-back-ios" size={30} color={COLORS.black} />
+          <Icon name="arrow-back-ios" size={30} color={props.profile? "white" : COLORS.black} />
         </View>
       </TouchableOpacity>
       <View>
-        <Text style={{color:COLORS.primary}} className="text-center text-2xl font-bold">
+        <Text style={{color:props.profile? "white" :COLORS.primary}} className="text-center text-2xl font-bold">
           {props.title}
         </Text>
       </View>

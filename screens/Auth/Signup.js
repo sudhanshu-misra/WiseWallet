@@ -18,6 +18,7 @@ const Signup = props => {
       .required('Email is required'),
     mobileNumber: yup
       .string()
+      .matches(/^\d+$/, 'Mobile number must be digits only')
       .length(10, 'Mobile number must be 10 digits')
       .required('mobile number is required'),
   });
