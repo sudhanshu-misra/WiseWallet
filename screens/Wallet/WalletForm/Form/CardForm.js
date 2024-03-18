@@ -19,6 +19,9 @@ export const CardForm = ({closeModal}) => {
     if (!values.bankName) {
       errors.bankName = 'Enter bank name';
     }
+    if(values.bankName.length<=2){
+      errors.bankName = 'too short';
+    }
     if (!values.cardNumber) {
       errors.cardNumber= 'Enter your card number';
     }
@@ -36,11 +39,10 @@ export const CardForm = ({closeModal}) => {
   
   const formSubmitHandler = values => {
         const data = {
-          cardName:card , 
           bankName: values.bankName,
           expiryDate: expirydate,
           cardAmount: parseFloat(values.amount),
-          cardNumber:cardNumber
+          cardNumber:values.cardNumber
         };
 
         closeModal();
@@ -89,7 +91,7 @@ export const CardForm = ({closeModal}) => {
 
           <DateField
             selectedDate={getexpiryDate}
-            dateLabel={'Expire date'}></DateField>
+            dateLabel={'Expiry date'}></DateField>
 
           <InputData
             label="Balance"

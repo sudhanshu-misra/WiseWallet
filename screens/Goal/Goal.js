@@ -4,8 +4,8 @@ import {View, ScrollView} from 'react-native';
 import CustomHeader from '../../components/Header';
 import DashboardSharedUI from '../../components/DashBoardUI/DashBoardSharedUI';
 import Modal from '../../components/Modal/Modal';
-import SuccessModal from '../../components/Modal/SuccessModal';
 import GoalForm from './GoalForm/GoalForm';
+import StatusModal from '../../components/Modal/StatusModal';
 
 const temp_data = [
   {
@@ -55,11 +55,12 @@ export default function GoalHome({navigation}) {
         </Modal>
 
         {temp_data && (
-          <SuccessModal
+          <StatusModal
+             modalType="success"
             modalState={successVisible}
             hideModal={() => SetSuccessVisible(false)}
             formData={temp_data[0]}
-            ></SuccessModal>
+            ></StatusModal>
         )}
       </View>
 

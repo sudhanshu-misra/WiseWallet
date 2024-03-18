@@ -4,7 +4,7 @@ import CustomHeader from '../../components/Header';
 import DashboardSharedUI from '../../components/DashBoardUI/DashBoardSharedUI';
 import Modal from '../../components/Modal/Modal';
 import TransactionForm from './DashForm/TransactionForm';
-import SuccessModal from '../../components/Modal/SuccessModal';
+import StatusModal from '../../components/Modal/StatusModal';
 
 const temp_data = [
   {
@@ -33,27 +33,29 @@ export default function DashboardHome({navigation}) {
     }
   };
   return (
-    <View>
-      <CustomHeader navigation={navigation} />
-      <ScrollView>
-        <DashboardSharedUI
-          name="Transactions"
-          icon="sync"
-          onClick={transactionHandler}></DashboardSharedUI>
-      </ScrollView>
-      <Modal
-        modalState={isModalVisible}
-        hideModal={() => SetModalVisible(false)}>
-        <TransactionForm
-          hideModal={() => SetModalVisible(false)}
-          onSubmit={onSubmit}></TransactionForm>
-      </Modal>
-      {temp_data && (
-        <SuccessModal
-          modalState={successVisible}
-          hideModal={() => SetSuccessVisible(false)}
-          formData={temp_data[0]}></SuccessModal>
-      )}
-    </View>
+      <View>
+        <CustomHeader navigation={navigation} />
+        <ScrollView>
+          <DashboardSharedUI
+            name="Transactions"
+            icon="sync"
+            onClick={transactionHandler}></DashboardSharedUI>
+        </ScrollView>
+      
+        <Modal modalState={isModalVisible}  hideModal={() => SetModalVisible(false)}>
+          <TransactionForm
+            hideModal={() => SetModalVisible(false)}
+            onSubmit={onSubmit}></TransactionForm>
+        </Modal>
+
+        {temp_data && (
+          <StatusModal
+             modalType="success"
+            modalState={successVisible}
+            hideModal={() => SetSuccessVisible(false)}
+            formData={temp_data[0]}
+            ></StatusModal>
+        )}
+      </View>
   );
 }
