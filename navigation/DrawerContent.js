@@ -1,5 +1,5 @@
 import {View, Text, TouchableOpacity} from 'react-native';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   DrawerContentScrollView,
   DrawerItem,
@@ -10,6 +10,9 @@ import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {COLORS} from '../constants/theme';
 import userIcon from '../assets/user.png';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import host from '../constants/config';
 
 const DrawerList = [
   //   {icon: 'home-outline', label: 'Home', navigateTo: 'Tabs'},
@@ -47,6 +50,37 @@ const DrawerItems = props => {
 
 const DrawerContent = props => {
   const navigation = useNavigation();
+
+  const [profileData, setProfileData] = useState({});
+
+  const getProfile = async () => {
+    const token = await AsyncStorage.getItem('token');
+    try {
+      let config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const response = await axios.get(
+        `${host.apiUrl}/api/user/profile`,
+        config,
+      );
+      console.log(response.data);
+      if (response.data.user) {
+        console.log('user found');
+        setProfileData(response.data.user);
+      } else {
+        console.log('user not found');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getProfile();
+  }, []);
+
   return (
     <View style={{flex: 1}}>
       <DrawerContentScrollView {...props}>
@@ -61,8 +95,8 @@ const DrawerContent = props => {
                   style={{marginTop: 5}}
                 />
                 <View className="ml-10 flex flex-col">
-                  <Title>Name</Title>
-                  <Text>something@gmail.com</Text>
+                  <Title>{profileData?.name || 'Name'}</Title>
+                  <Text>{profileData?.email || 'something@gmail.com'}</Text>
                 </View>
               </View>
             </View>
@@ -78,6 +112,7 @@ const DrawerContent = props => {
             <Icon name="sign-out" color={color} size={size} />
           )}
           onPress={() => {
+            AsyncStorage.removeItem('token');
             navigation.navigate('Onboarding');
           }}
           label="Sign Out"
