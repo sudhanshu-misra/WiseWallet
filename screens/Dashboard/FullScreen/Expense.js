@@ -4,12 +4,46 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { MenuProvider, Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu';
 
 export default function ExpenseHome({ navigation }) {
-  // Example static date, you can replace this with dynamic dates as needed
-  const exampleDate = "2024-03-05";
 
-
-  const ExpenseNames = ['Health Supplements', 'Public Transit Fees', 'Business Meals', 'Household Supplies'];
-
+  const ExpenseNames = [
+    'Health Supplements',
+    'Public Transit Fees',
+    'Business Meals',
+    'Household Supplies',
+    'Medical Expenses',
+    'Transportation Costs',
+    'Client Dinners',
+    'Home Essentials',
+    'Fitness Expenses',
+    'Commuter Expenses',
+    'Corporate Dining',
+    'Cleaning Supplies',
+    'Wellness Products',
+    'Subway Passes',
+    'Office Meals',
+    'Kitchen Supplies',
+    'Gym Memberships',
+    'Bus Fares',
+    'Team Lunches',
+    'Toiletries',
+    'Personal Care Items',
+    'Taxi Rides',
+    'Networking Meals',
+    'Laundry Detergent',
+    'Supplements',
+    'Train Tickets',
+    'Client Entertainment',
+    'Household Cleaning',
+    'Health and Wellness',
+    'Public Transportation',
+    'Professional Meals',
+    'Home Maintenance',
+    'Fitness Memberships',
+    'Rideshare Services',
+    'Corporate Events',
+    'Home Goods'
+  ]
+  
   const ExpenseCategory = ['Medication', 'Transport', 'Restaurant', 'Grocery'];
 
 
@@ -70,7 +104,7 @@ return (
 
         <Text style={styles.headerTitle}>EXPENSE</Text>
 
-        <TouchableOpacity onPress={() => console.log('Filter button pressed')}>
+        <TouchableOpacity onPress={() => navigation.navigate('Filter')}>
           <MaterialIcons name="filter-list" size={24} color="black" />
         </TouchableOpacity>
       </View>
@@ -79,11 +113,11 @@ return (
           {ExpenseData.map((item, index) => (
             <View key={index} style={styles.itemContainer}>
               <View>
-                <Text style={styles.itemText}>{ExpenseNames[index]} ({ExpenseCategory[index]}): Rs {item.value}</Text>
+                <Text style={styles.itemText}>{ExpenseNames[index]} ({ExpenseCategory[index % ExpenseCategory.length]})</Text>
                 <Text style={styles.dateText}>{item.date}</Text>
               </View>
-              <View style={styles.randomNumberContainer}>
-                <Menu>
+              <View style={{ flex: 1 }}>
+              <Menu style={styles.threeButton}>
                   <MenuTrigger>
                     <MaterialIcons name="more-vert" size={20} color="black" />
                   </MenuTrigger>
@@ -97,6 +131,7 @@ return (
                   </MenuOptions>
                 </Menu>
               </View>
+              <Text style={{marginTop: 20 }}>Rs {item.value}</Text>
             </View>
           ))}
         </View>
@@ -138,30 +173,30 @@ const styles = StyleSheet.create({
     borderColor: '#6B7280',
   },
   itemText: {
-    fontSize: 16,
+    fontSize: 15,
     color: '#333',
+    marginTop: -5,
+    fontWeight: 'bold',
   },
   dateText: {
     fontSize: 14,
     color: '#666',
+    marginTop: 7,
   },
-  randomNumberContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
+
   rsText: {
     fontSize: 19,
     color: '#333',
     marginBottom: -27,
     marginLeft: 21
   },
-  randomNumber: {
-    fontSize: 18,
-    color: '#333',
-    marginRight: -19,
-    marginBottom: -27 
-  },
   backButton: {
   
   },
+  threeButton:{
+    marginLeft: 'auto',
+    marginRight: -48,
+    marginTop: -25,
+    marginBottom: -20
+  }
 });

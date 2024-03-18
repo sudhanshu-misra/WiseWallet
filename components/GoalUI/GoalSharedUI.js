@@ -3,12 +3,8 @@ import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {COLORS} from '../../constants/theme';
 import GoalIcons from './GoalIcons';
-// import { VictoryPie } from 'victory-native';
-// import {Svg} from 'react-native-svg';
-// import Pie from 'react-native-pie';
-// import {PieChart} from 'react-native-gifted-charts';
- 
 
+ 
 const data = [
   { key: 'Buy Item 1', startDate: '01/01/2024', endDate: '12/31/2024', Amount: 6000, rsLeft: 1000, totalRsSaving: 5000 },
   { key: 'Buy Item 2', startDate: '01/01/2024', endDate: '12/31/2024', Amount: 8000, rsLeft: 2000, totalRsSaving: 6000 },
@@ -46,7 +42,7 @@ const GoalSharedUI = ({name, icon , onClick}) => {
         <View style={{ flexDirection: 'row' }}>
           <TouchableOpacity style={{ width: 85, height: 85, padding: 3, margin: 2.5, borderWidth: 1.5, borderColor: '#888', borderRadius: 5, justifyContent: 'center', alignItems: 'center' }}>
           <View style={styles.container}>
-      <Icon name="shopping-bag" size={23} color="#FF5733" />
+      <Icon name="shopping-bag" size={23} color='rgba(80, 116, 36, 1)' />
     
     </View>
             <View style={{ marginTop: 1 }}>
@@ -59,7 +55,7 @@ const GoalSharedUI = ({name, icon , onClick}) => {
 
           <TouchableOpacity style={{ width: 85, height: 85, padding: 3, margin: 2.5, borderWidth: 1.5, borderColor: '#888', borderRadius: 5, justifyContent: 'center', alignItems: 'center' }}>
           <View style={styles.container}>
-      <Icon name="shopping-bag" size={23} color="orange" />
+      <Icon name="shopping-bag" size={23} color= 'rgba(136, 224, 28, 1)' />
   </View>
             <View style={{ marginTop: 1 }}>
               <Text style={{ color: '#333', fontSize: 14, textAlign: 'center' }}>Buy item 2</Text>
@@ -73,7 +69,7 @@ const GoalSharedUI = ({name, icon , onClick}) => {
         <View style={{ flexDirection: 'row' }}>
           <TouchableOpacity style={{ width: 85, height: 85, padding: 3, margin: 2.5, borderWidth: 1.5, borderColor: '#888', borderRadius: 5, justifyContent: 'center', alignItems: 'center' }}>
           <View style={styles.container}>
-      <Icon name="shopping-bag" size={23} color="#33FF57" />
+      <Icon name="shopping-bag" size={23} color="rgba(136, 224, 28, 1)" />
   </View>
             <View style={{ marginTop: 1 }}>
               <Text style={{ color: '#333', fontSize: 14, textAlign: 'center' }}>Buy item 3</Text>
@@ -85,7 +81,7 @@ const GoalSharedUI = ({name, icon , onClick}) => {
 
           <TouchableOpacity style={{ width: 85, height: 85, padding: 3, margin: 2.5, borderWidth: 1.5, borderColor: '#888', borderRadius: 5, justifyContent: 'center', alignItems: 'center' }}>
           <View style={styles.container}>
-      <Icon name="shopping-bag" size={25} color='#3357FF' />
+      <Icon name="shopping-bag" size={25} color='rgba(175, 204, 133, 1)' />
   </View>
             <View style={{ marginTop: 1 }}>
               <Text style={{ color: '#333', fontSize: 14, textAlign: 'center' }}>Buy item 4</Text>

@@ -80,14 +80,14 @@ export default function BudgetHome({navigation}) {
   // here
 
   const sliceColor = [
-    'rgba(255, 87, 51, 1)',
-    'rgba(255, 87, 51, 0.5)',
-    'rgba(255, 165, 0, 1)',
-    'rgba(255, 165, 0, 0.5)',
+    'rgba(80, 116, 36, 1)',
+    'rgba(80, 116, 36, 0.5)',
+    'rgba(136, 224, 28, 1)',
+    'rgba(136, 224, 28, 0.5)',
     'rgba(51, 255, 87, 1)',
     'rgba(51, 255, 87, 0.5)',
-    'rgba(51, 87, 255, 1)',
-    'rgba(51, 87, 255, 0.5)',
+    'rgba(175, 204, 133, 1)',
+    'rgba(175, 204, 133, 0.5)'
   ];
 
   const totalAmount = data.reduce((acc, item) => acc + item.monthlyBudget, 0);
@@ -120,10 +120,10 @@ export default function BudgetHome({navigation}) {
 
   const getColor = index => {
     const colors = [
-      'rgba(255, 87, 51, 1)',
-      'rgba(255, 165, 0, 1)',
-      'rgba(51, 255, 87, 1)',
-      'rgba(51, 122, 222, 1)',
+      'rgba(80, 116, 36, 1)',
+      'rgba(136, 224, 28, 1)',
+      'rgba(136, 224, 28, 1)',
+      'rgba(175, 204, 133, 1)',
     ];
     return colors[index % colors.length];
   };

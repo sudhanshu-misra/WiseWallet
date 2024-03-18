@@ -14,6 +14,7 @@ import GoalForm from './GoalForm/GoalForm';
 import StatusModal from '../../components/Modal/StatusModal';
 import PieChart from 'react-native-pie-chart';
 
+
 const temp_data = [
   {
     GoalName: 'Goal',
@@ -76,14 +77,15 @@ export default function GoalHome({navigation}) {
   const widthAndHeight = 170;
   const series = [90, 100, 100, 100, 100, 100, 100, 100];
   const sliceColor = [
-    'rgba(255, 87, 51, 1)',
-    'rgba(255, 87, 51, 0.5)',
-    'rgba(255, 165, 0, 1)',
-    'rgba(255, 165, 0, 0.5)',
+    'rgba(80, 116, 36, 1)',
+    'rgba(80, 116, 36, 0.5)',
+    'rgba(136, 224, 28, 1)',
+    'rgba(136, 224, 28, 0.5)',
     'rgba(51, 255, 87, 1)',
     'rgba(51, 255, 87, 0.5)',
-    'rgba(51, 87, 255, 1)',
-    'rgba(51, 87, 255, 0.5)',
+    'rgba(175, 204, 133, 1)',
+    'rgba(175, 204, 133, 0.5)'
+ 
   ];
 
   const totalAmount = data.reduce((acc, item) => acc + item.Amount, 0);
@@ -117,10 +119,10 @@ export default function GoalHome({navigation}) {
 
   const getColor = index => {
     const colors = [
-      'rgba(255, 87, 51, 1)',
-      'rgba(255, 165, 0, 1)',
+      'rgba(80, 116, 36, 1)',
+      'rgba(136, 224, 28, 1)',
       'rgba(51, 255, 87, 1)',
-      'rgba(51, 122, 222, 1)',
+      'rgba(175, 204, 133, 1)',
     ];
     return colors[index % colors.length];
   };
@@ -147,23 +149,41 @@ export default function GoalHome({navigation}) {
   }, []);
 
   return (
-    <View>
+    <View style={styles.container}>
       <CustomHeader navigation={navigation} />
       <ScrollView>
-        <DashboardSharedUI
-          name="Goals"
-          icon="piggy-bank"
-          onClick={goalHandler}></DashboardSharedUI>
+        <View style={styles.chartContainer}>
+          <PieChart
+            widthAndHeight={widthAndHeight}
+            series={graphSeries ? graphSeries : series}
+            sliceColor={sliceColor}
+            coverRadius={0.45}
+            coverFill={'#FFF'}
+            doughnut={true}
+          />
+          <View style={styles.centerTextContainer}>
+            <Text style={styles.centerText}>Goal</Text>
+            <Text style={styles.totalAmountText}>Rs {totalAmount}</Text>
+          </View>
+        </View>
+        <View style={styles.flatListContainer}>
+          <FlatList
+            data={data}
+            renderItem={renderItem}
+            keyExtractor={item => item.key}
+            style={styles.flatList}
+          />
+          {data.length > 2 && (
+            <TouchableOpacity onPress={toggleItems} style={styles.viewAllButton}>
+              <Text style={styles.viewAllText}>{showAllItems ? 'View Less' : 'View All'}</Text>
+            </TouchableOpacity>
+          )}
+        </View>
+        <GoalSharedUI name="Goal" icon="track-changes" onClick={goalHandler} />
       </ScrollView>
-
-      <Modal
-        modalState={isModalVisible}
-        hideModal={() => SetModalVisible(false)}>
-        <GoalForm
-          hideModal={() => SetModalVisible(false)}
-          onSubmit={onSubmit}></GoalForm>
+      <Modal modalState={isModalVisible} hideModal={() => SetModalVisible(false)}>
+        <GoalForm hideModal={() => SetModalVisible(false)} onSubmit={onSubmit} />
       </Modal>
-
       {temp_data && (
         <StatusModal
           modalType="success"
@@ -172,6 +192,7 @@ export default function GoalHome({navigation}) {
           formData={temp_data[0]}></StatusModal>
       )}
     </View>
+   
   );
 }
 
