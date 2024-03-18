@@ -22,6 +22,9 @@ const App = () => {
     };
     checkAuth();
   }, []);
+
+   console.log(isAuthenticated);
+
   return (
     <NavigationContainer>
       <SafeAreaProvider>
@@ -29,8 +32,8 @@ const App = () => {
           screenOptions={{
             headerShown: false,
           }}
-          initialRouteName="Splash">
-          <Stack.Screen name="Splash" component={Splash} />
+          initialRouteName="Tabs">
+          {/* <Stack.Screen name="Splash" component={Splash} /> */}
           {isAuthenticated
             ? Screens['AUTHENTICATED'].map(Screen => (
                 <Stack.Screen
@@ -40,7 +43,7 @@ const App = () => {
                   options={Screen.options}
                 />
               ))
-            : Screens['UNAUTHENTICATED'].map(Screen => (
+            : Screens['AUTHENTICATED'].map(Screen => (
                 <Stack.Screen
                   key={Screen.name}
                   name={Screen.name}

@@ -8,9 +8,6 @@ import SuccessModal from '../../components/Modal/SuccessModal';
 import { LineChart } from 'react-native-gifted-charts';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { MenuProvider, Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu';
-import { color } from 'react-native-reanimated';
-
-const screenWidth = Dimensions.get('window').width;
 
 const temp_data = [
   {
@@ -20,9 +17,6 @@ const temp_data = [
     icon: 'Restaurant',
   },
 ];
-
-const data = [{value: 50}, {value: 80}, {value: 90}, {value: 70}];
-
 
 const IncomeNames = ['Monthly Paycheck', 'Mileage Compensation', 'Dining Refund', 'Pantry Support'];
 
@@ -245,12 +239,15 @@ export default function DashboardHome({ navigation }) {
             }}
           />
         </View>
+
         <Text style={{ textAlign: 'center', fontSize: 20, marginTop: 5, marginBottom: 10 }}>INCOME</Text>
         <View style={{ flexDirection: 'column', justifyContent: 'space-between', paddingHorizontal: 7 }}>
   
   
   <View style={{ flex: 1, height: 70, padding: 6, margin: 8, borderWidth: 1.5, borderColor: '#6B7280' }}>
-  <Text style={styles.itemText}>{IncomeNames[0]}({IncomeCategory[0]}): Rs {IncomeData[0].value} </Text>
+    <View style={{ flex: 1 }}>
+
+  <Text style={styles.itemText}>{IncomeNames[0]} ({IncomeCategory[0]})</Text>
               <Text style={styles.dateText}>{IncomeData[0].date}</Text>
               <Menu style={styles.threeButton}>
                 <MenuTrigger>
@@ -265,17 +262,14 @@ export default function DashboardHome({ navigation }) {
                   </MenuOption>
                 </MenuOptions>
               </Menu>
-
-
-
-
   </View>
- 
+  <Text style={{ textAlign: 'right', marginBottom: 8 }}>Rs {IncomeData[0].value}</Text>
+  </View>
 
 
   <View style={{ flex: 1, height: 70, padding: 6, margin: 8, borderWidth: 1.5, borderColor: '#6B7280' }}>
-
-  <Text style={styles.itemText}>{IncomeNames[1]}({IncomeCategory[1]}): Rs {IncomeData[1].value}</Text>
+  <View style={{ flex: 1 }}>
+  <Text style={styles.itemText}>{IncomeNames[1]} ({IncomeCategory[1]})</Text>
               <Text style={styles.dateText}>{IncomeData[1].date}</Text>
               <Menu style={styles.threeButton}>
                 <MenuTrigger>
@@ -291,7 +285,8 @@ export default function DashboardHome({ navigation }) {
                 </MenuOptions>
               </Menu>
 
-
+              </View>
+              <Text style={{ textAlign: 'right', marginBottom: 8 }}>Rs {IncomeData[1].value}</Text>
   </View>
 
 
@@ -303,7 +298,8 @@ export default function DashboardHome({ navigation }) {
        
  
   <View style={{ flex: 1, height: 70, padding: 6, margin: 8, borderWidth: 1.5, borderColor: '#6B7280' }}>
-  <Text style={styles.itemText}>{ExpenseNames[0]}({ExpenseCategory[0]}): Rs {ExpenseData[0].value} </Text>
+  <View style={{ flex: 1 }}>
+  <Text style={styles.itemText}>{ExpenseNames[0]} ({ExpenseCategory[0]})</Text>
               <Text style={styles.dateText}>{IncomeData[0].date}</Text>
               <Menu style={styles.threeButton}>
                 <MenuTrigger>
@@ -319,13 +315,14 @@ export default function DashboardHome({ navigation }) {
                 </MenuOptions>
               </Menu>
 
-
-
+              </View>
+              <Text style={{ textAlign: 'right', marginBottom: 8 }}>Rs {ExpenseData[0].value}</Text>
   </View>
   
   <View style={{ flex: 1, height: 70, padding: 6, margin: 8, borderWidth: 1.5, borderColor: '#6B7280' }}>
+  <View style={{ flex: 1 }}>
 
-  <Text style={styles.itemText}>{ExpenseNames[1]}({ExpenseCategory[1]}): Rs {ExpenseData[1].value}</Text>
+  <Text style={styles.itemText}>{ExpenseNames[1]} ({ExpenseCategory[1]})</Text>
               <Text style={styles.dateText}>{IncomeData[1].date}</Text>
               <Menu style={styles.threeButton}>
                 <MenuTrigger>
@@ -340,9 +337,8 @@ export default function DashboardHome({ navigation }) {
                   </MenuOption>
                 </MenuOptions>
               </Menu>
-
-
-
+              </View>
+              <Text style={{ textAlign: 'right', marginBottom: 8 }}>Rs {ExpenseData[1].value}</Text>
   </View>
 
   <TouchableOpacity onPress={() => navigation.navigate('ExpenseHome')} style={{ backgroundColor: 'white', padding: 4, borderRadius: 5 }}>

@@ -1,73 +1,86 @@
-import React from 'react';
-import { View, ScrollView, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, ScrollView, Text, TouchableOpacity, StyleSheet, TextInput } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { MenuProvider, Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu';
 
 export default function Filter({ navigation }) {
-  // Example static date, you can replace this with dynamic dates as needed
-  const exampleDate = "2024-03-05";
+  const [selectedOptions, setSelectedOptions] = useState([]);
+
+  const handleOptionToggle = (option) => {
+    if (selectedOptions.includes(option)) {
+      setSelectedOptions(selectedOptions.filter(item => item !== option));
+    } else {
+      setSelectedOptions([...selectedOptions, option]);
+    }
+  };
+
+  const handleClear = () => {
+    setSelectedOptions([]);
+  };
 
   return (
-    <MenuProvider>
+    <ScrollView contentContainerStyle={styles.scrollViewContent}>
       <View style={styles.container}>
         <View style={styles.header}>
           <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-            <MaterialIcons name="arrow-back" size={24} color="black" />
+          
           </TouchableOpacity>
 
-          <Text style={styles.headerTitle}>Filter</Text>
+          <Text style={styles.headerTitle}>FILTER</Text>
 
-          <TouchableOpacity onPress={() => console.log('Filter button pressed')}>
-            <MaterialIcons name="filter-list" size={24} color="black" />
+          <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+            <MaterialIcons name="close" size={24} color="black" />
           </TouchableOpacity>
         </View>
-        <ScrollView contentContainerStyle={styles.scrollViewContent}>
 
-          
-          {/* Rectangular Containers with Icons, Texts, and Dates */}
-          <View style={{ flexDirection: 'column', justifyContent: 'space-between', paddingHorizontal: 7 }}>
-            {[...Array(8)].map((_, index) => (
-              <View key={index} style={styles.itemContainer}>
-                
-                <View>
-               
-                  <Text style={styles.itemText}>Item {index + 1}</Text>
-                  
-                  <Text style={styles.dateText}>{exampleDate}</Text>
-                  
-                </View>
-               
-                <View style={styles.randomNumberContainer}>
-                  
-                  <Text style={styles.rsText}>Rs </Text>
-                  
-                  <Text style={styles.randomNumber}>{Math.floor(Math.random() * 1000)}</Text>
-                  <Menu>
-                  <MenuTrigger>
-                    <MaterialIcons name="more-vert" size={20} color="black" marginTop={-18} marginRight={2}/>
-                  </MenuTrigger>
-                  <MenuOptions>
-                    <MenuOption onSelect={() => console.log('Edit selected')}>
-                      <Text>Edit</Text>
-                    </MenuOption>
-                    <MenuOption onSelect={() => console.log('Delete selected')}>
-                      <Text>Delete</Text>
-                    </MenuOption>
-                  </MenuOptions>
-                </Menu>
-                </View>
-              </View>
-            ))}
-          </View>
-        </ScrollView>
+        <Text style={styles.sectionTitle}>Filter by date:</Text>
+        <View style={styles.selectionContainer}>
+          <TouchableOpacity
+            style={[styles.selectionBox, selectedOptions.includes('current') && styles.selected]}
+            onPress={() => handleOptionToggle('current')}>
+            <Text>Current Transaction</Text>
+            {selectedOptions.includes('current') && <MaterialIcons name="check" size={20} color="white" />}
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.selectionBox, selectedOptions.includes('week') && styles.selected]}
+            onPress={() => handleOptionToggle('week')}>
+            <Text>By Week</Text>
+            {selectedOptions.includes('week') && <MaterialIcons name="check" size={20} color="white" />}
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.selectionBox, selectedOptions.includes('month') && styles.selected]}
+            onPress={() => handleOptionToggle('month')}>
+            <Text>By Month</Text>
+            {selectedOptions.includes('month') && <MaterialIcons name="check" size={20} color="white" />}
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.selectionBox, selectedOptions.includes('year') && styles.selected]}
+            onPress={() => handleOptionToggle('year')}>
+            <Text>By Year</Text>
+            {selectedOptions.includes('year') && <MaterialIcons name="check" size={20} color="white" />}
+          </TouchableOpacity>
+        </View>
+
+        <Text style={styles.sectionTitle}>Filter by keyword:</Text>
+        <Text>Use words for the discretion.</Text>
+        <TextInput style={styles.textBox} placeholder="Cost" />
+
+        <TouchableOpacity style={styles.applyButton}>
+          <Text style={styles.applyButtonText}>Apply</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.clearButton} onPress={handleClear}>
+          <Text style={styles.clearText}>Clear</Text>
+        </TouchableOpacity>
       </View>
-    </MenuProvider>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    color: 'white',
   },
   header: {
     flexDirection: 'row',
@@ -83,43 +96,65 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   scrollViewContent: {
-    padding: 20,
-  },
-  itemContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    height: 70,
-    padding: 6,
-    margin: 8,
-    borderWidth: 1.5,
-    borderColor: '#6B7280',
-  },
-  itemText: {
-    fontSize: 16,
-    color: '#333',
-  },
-  dateText: {
-    fontSize: 14,
-    color: '#666',
-  },
-  randomNumberContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  rsText: {
-    fontSize: 19,
-    color: '#333',
-    marginBottom: -27,
-    marginLeft: 21
-  },
-  randomNumber: {
-    fontSize: 18,
-    color: '#333',
-    marginRight: -19,
-    marginBottom: -27 
+    padding: 10,
   },
   backButton: {
-  
+    padding: 5,
   },
+  sectionTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginTop: 10,
+    marginBottom: 5,
+  },
+  selectionContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginBottom: 10,
+  },
+  selectionBox: {
+    backgroundColor: '#ccc',
+    padding: 10,
+    margin: 5,
+    borderRadius: 5,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  selected: {
+    backgroundColor: '#96ac7c',
+  },
+  textBox: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 10,
+    marginTop: 5,
+  },
+  applyButton: {
+    backgroundColor: '#507424',
+    padding: 15,
+    borderRadius: 5,
+    alignItems: 'center',
+    marginBottom: 10,
+    borderRadius: 11,
+   
+  },
+  applyButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
+  clearButton: {
+    borderWidth: 1,
+    borderColor: '#507424',
+    padding: 15,
+    borderRadius: 5,
+    alignItems: 'center',
+    borderRadius: 11,
+  },
+  clearText: {
+    fontWeight: 'bold',
+    fontSize: 15,
+    color: '#507424',
+  }
 });
