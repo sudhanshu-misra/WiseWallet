@@ -3,10 +3,7 @@ import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {COLORS} from '../../constants/theme';
 import BudgetIcons from './BudgetIcons';
-// import { VictoryPie } from 'victory-native';
-// import {Svg} from 'react-native-svg';
-// import Pie from 'react-native-pie';
-// import {PieChart} from 'react-native-gifted-charts';
+
  
 
 const data = [
@@ -47,7 +44,7 @@ const BudgetSharedUI = ({name, icon , onClick}) => {
         <View style={{ flexDirection: 'row' }}>
           <TouchableOpacity style={{ width: 85, height: 85, padding: 3, margin: 2.5, borderWidth: 1.5, borderColor: '#888', borderRadius: 5, justifyContent: 'center', alignItems: 'center' }}>
           <View style={styles.container}>
-      <Icon name="medkit" size={23} color="red" />
+      <Icon name="medkit" size={23} color='rgba(80, 116, 36, 1)' />
     
     </View>
             <View style={{ marginTop: 1 }}>
@@ -60,7 +57,7 @@ const BudgetSharedUI = ({name, icon , onClick}) => {
 
           <TouchableOpacity style={{ width: 85, height: 85, padding: 3, margin: 2.5, borderWidth: 1.5, borderColor: '#888', borderRadius: 5, justifyContent: 'center', alignItems: 'center' }}>
           <View style={styles.container}>
-      <Icon name="car" size={23} color="orange" />
+      <Icon name="car" size={23} color= 'rgba(136, 224, 28, 1)' />
   </View>
             <View style={{ marginTop: 1 }}>
               <Text style={{ color: '#333', fontSize: 14, textAlign: 'center' }}>Transport</Text>
@@ -74,7 +71,7 @@ const BudgetSharedUI = ({name, icon , onClick}) => {
         <View style={{ flexDirection: 'row' }}>
           <TouchableOpacity style={{ width: 85, height: 85, padding: 3, margin: 2.5, borderWidth: 1.5, borderColor: '#888', borderRadius: 5, justifyContent: 'center', alignItems: 'center' }}>
           <View style={styles.container}>
-      <Icon name="cutlery" size={23} color="#33FF57" />
+      <Icon name="cutlery" size={23} color= 'rgba(136, 224, 28, 1)' />
   </View>
             <View style={{ marginTop: 1 }}>
               <Text style={{ color: '#333', fontSize: 14, textAlign: 'center' }}>Restaurant</Text>
@@ -86,7 +83,7 @@ const BudgetSharedUI = ({name, icon , onClick}) => {
 
           <TouchableOpacity style={{ width: 85, height: 85, padding: 3, margin: 2.5, borderWidth: 1.5, borderColor: '#888', borderRadius: 5, justifyContent: 'center', alignItems: 'center' }}>
           <View style={styles.container}>
-      <Icon name="shopping-cart" size={25} color='blue' />
+      <Icon name="shopping-cart" size={25} color='rgba(175, 204, 133, 1)' />
   </View>
             <View style={{ marginTop: 1 }}>
               <Text style={{ color: '#333', fontSize: 14, textAlign: 'center' }}>Grocery</Text>

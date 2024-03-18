@@ -4,13 +4,47 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { MenuProvider, Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu';
 
 export default function IncomeHome({ navigation }) {
-  // Example static date, you can replace this with dynamic dates as needed
-  const exampleDate = "2024-03-05";
 
-
-
-  const IncomeNames = ['Monthly Paycheck', 'Mileage Compensation', 'Dining Refund', 'Pantry Support'];
-
+  const IncomeNames = [
+    'Monthly Paycheck',
+    'Mileage Compensation',
+    'Dining Refund',
+    'Pantry Support',
+    'Biweekly Stipend',
+    'Travel Allowance',
+    'Lunch Reimbursement',
+    'Kitchen Supplies Grant',
+    'Weekly Wage',
+    'Gas Reimbursement',
+    'Restaurant Voucher',
+    'Groceries Aid',
+    'Semester Stipend',
+    'Car Mileage Benefit',
+    'Meal Credit',
+    'Food Pantry Assistance',
+    'Salary Bonus',
+    'Transit Subsidy',
+    'Dinner Voucher',
+    'Kitchen Stockings',
+    'Fortnightly Payment',
+    'Vehicle Compensation',
+    'Lunch Expenses',
+    'Home Pantry Support',
+    'Pay Per Month',
+    'Mileage Compensation',
+    'Dining Hall Credit',
+    'Food Storage Assistance',
+    'Payroll Bonus',
+    'Fuel Allowance',
+    'Meal Reimbursement',
+    'Pantry Supplies Grant',
+    'Biweekly Pay',
+    'Monthly Salary',
+    'Travel Reimbursement',
+    'Breakfast Voucher',
+    'Household Supplies Grant'
+  ]
+  
   const IncomeCategory = ['Salary', 'Transport', 'Restaurant', 'Grocery'];
 
   const IncomeData = [
@@ -83,7 +117,7 @@ export default function IncomeHome({ navigation }) {
 
           <Text style={styles.headerTitle}>INCOME</Text>
 
-          <TouchableOpacity onPress={() => console.log('Filter button pressed')}>
+          <TouchableOpacity onPress={() => navigation.navigate('Filter')}>
             <MaterialIcons name="filter-list" size={24} color="black" />
           </TouchableOpacity>
         </View>
@@ -91,12 +125,12 @@ export default function IncomeHome({ navigation }) {
           <View style={{ flexDirection: 'column', justifyContent: 'space-between', paddingHorizontal: -1 }}>
             {IncomeData.map((item, index) => (
               <View key={index} style={styles.itemContainer}>
-                <View>
-                  <Text style={styles.itemText}>{IncomeNames[index]} ({IncomeCategory[index]}): Rs {item.value}</Text>
+            <View>
+                  <Text style={styles.itemText}>{IncomeNames[index]} ({IncomeCategory[index % IncomeCategory.length]})</Text>
                   <Text style={styles.dateText}>{item.date}</Text>
                 </View>
-                <View style={styles.randomNumberContainer}>
-                  <Menu>
+               <View style={{ flex: 1 }}>
+                <Menu style={styles.threeButton}>
                     <MenuTrigger>
                       <MaterialIcons name="more-vert" size={20} color="black" />
                     </MenuTrigger>
@@ -110,6 +144,7 @@ export default function IncomeHome({ navigation }) {
                     </MenuOptions>
                   </Menu>
                 </View>
+                <Text style={{marginTop: 20 }}>Rs {item.value}</Text>
               </View>
             ))}
           </View>
@@ -153,16 +188,15 @@ const styles = StyleSheet.create({
     borderColor: '#6B7280',
   },
   itemText: {
-    fontSize: 16,
+    fontSize: 15,
     color: '#333',
+    marginTop: -5,
+    fontWeight: 'bold',
   },
   dateText: {
     fontSize: 14,
     color: '#666',
-  },
-  randomNumberContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    marginTop: 7,
   },
   rsText: {
     fontSize: 19,
@@ -170,13 +204,13 @@ const styles = StyleSheet.create({
     marginBottom: -27,
     marginLeft: 21
   },
-  randomNumber: {
-    fontSize: 18,
-    color: '#333',
-    marginRight: -19,
-    marginBottom: -27 
-  },
   backButton: {
   
   },
+  threeButton:{
+    marginLeft: 'auto',
+    marginRight: -48,
+    marginTop: -25,
+    marginBottom: -20
+  }
 });
