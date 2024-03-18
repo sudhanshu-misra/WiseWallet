@@ -12,6 +12,7 @@ import GoalHome from '../screens/Goal/Goal';
 import DashboardHome from '../screens/Dashboard/Dashboard';
 import WalletHome from '../screens/Wallet/Wallet';
 import Profile from '../screens/Profile/Profile';
+import EditProfile from '../screens/Profile/EditProfile';
 
 //GOAL
 
@@ -47,6 +48,7 @@ const Screens = {
     {name: 'GoalHome', component: GoalHome},
     {name: 'WalletHome', component: WalletHome},
     {name: 'Profile', component: Profile},
+    {name: 'EditProfile', component:EditProfile}
     {name: 'IncomeHome', component: IncomeHome},
     {name: 'ExpenseHome', component: ExpenseHome},
     {name: 'Cash', component: Cash},

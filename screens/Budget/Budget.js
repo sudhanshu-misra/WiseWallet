@@ -1,24 +1,58 @@
-
 import React, {useState, useEffect} from 'react';
-import { View, ScrollView, StyleSheet, FlatList, Text, TouchableOpacity } from 'react-native';
+import {
+  View,
+  ScrollView,
+  StyleSheet,
+  FlatList,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
 import CustomHeader from '../../components/Header';
 import BudgetSharedUI from '../../components/BudgetUI/BudgetSharedUI';
 import Modal from '../../components/Modal/Modal';
-import SuccessModal from '../../components/Modal/SuccessModal';
+import StatusModal from '../../components/Modal/StatusModal';
 import BudgetForm from './BudgetForm/BudgetForm';
 import PieChart from 'react-native-pie-chart';
 
 const temp_data = [
   {
-    BudgetName:"budget"
-  }
+    BudgetName: 'budget',
+  },
 ];
 
 const data = [
-  { key: 'Medication', monthsSpending: 220, startDate: '01/01/2024',endDate: '12/31/2024', Amount: 6000, monthlyBudget: 1000  },
-  { key: 'Transport', monthsSpending: 500, startDate: '01/01/2024',endDate: '12/31/2024', Amount: 8000, monthlyBudget: 2000  },
-  { key: 'Restaurant', monthsSpending:  450, startDate: '01/01/2024',endDate: '12/31/2024', Amount: 8500, monthlyBudget: 1500},
-  { key: 'Grocery', monthsSpending: 230, startDate: '01/01/2024',endDate: '12/31/2024', Amount: 9200, monthlyBudget: 1200},
+  {
+    key: 'Medication',
+    monthsSpending: 220,
+    startDate: '01/01/2024',
+    endDate: '12/31/2024',
+    Amount: 6000,
+    monthlyBudget: 1000,
+  },
+  {
+    key: 'Transport',
+    monthsSpending: 500,
+    startDate: '01/01/2024',
+    endDate: '12/31/2024',
+    Amount: 8000,
+    monthlyBudget: 2000,
+  },
+  {
+    key: 'Restaurant',
+    monthsSpending: 450,
+    startDate: '01/01/2024',
+    endDate: '12/31/2024',
+    Amount: 8500,
+    monthlyBudget: 1500,
+  },
+  {
+    key: 'Grocery',
+    monthsSpending: 230,
+    startDate: '01/01/2024',
+    endDate: '12/31/2024',
+    Amount: 9200,
+    monthlyBudget: 1200,
+  },
 ];
 
 export default function BudgetHome({navigation}) {
@@ -32,20 +66,17 @@ export default function BudgetHome({navigation}) {
 
   const onSubmit = () => {
     SetModalVisible(false);
-    //data extraction here 
-    // if(data) received then set success visible  else show error modal with message 
-    if(temp_data){
-       SetSuccessVisible(true);
-    }
-    else{
+    //data extraction here
+    // if(data) received then set success visible  else show error modal with message
+    if (temp_data) {
+      SetSuccessVisible(true);
+    } else {
       //error modal
     }
-
-   
   };
 
   const widthAndHeight = 170;
-  const series = [90,100, 100, 100, 100, 100, 100, 100];
+  const series = [90, 100, 100, 100, 100, 100, 100, 100];
   // here
 
   const sliceColor = [
@@ -56,38 +87,38 @@ export default function BudgetHome({navigation}) {
     'rgba(51, 255, 87, 1)',
     'rgba(51, 255, 87, 0.5)',
     'rgba(51, 87, 255, 1)',
-    'rgba(51, 87, 255, 0.5)'
+    'rgba(51, 87, 255, 0.5)',
   ];
 
-
-
   const totalAmount = data.reduce((acc, item) => acc + item.monthlyBudget, 0);
-  
-  const renderItem = ({ item, index }) => {
+
+  const renderItem = ({item, index}) => {
     if (!showAllItems && index > 1) {
       return null; // Hide items 3 and 4 if showAllItems is false
     }
 
-
-
     return (
-      <View style={[styles.item,  { borderColor: getColor(index), border:"2px solid" }]}>
+      <View
+        style={[
+          styles.item,
+          {borderColor: getColor(index), border: '2px solid'},
+        ]}>
         <View style={styles.itemLeft}>
-        <Text style={styles.itemTitle}>{item.key}</Text>
-        <Text style={styles.dateText}>Start Date: {item.startDate}</Text>
-        <Text style={styles.dateText}>End Date: {item.endDate}</Text>
+          <Text style={styles.itemTitle}>{item.key}</Text>
+          <Text style={styles.dateText}>Start Date: {item.startDate}</Text>
+          <Text style={styles.dateText}>End Date: {item.endDate}</Text>
+        </View>
+        <View style={styles.itemRight}>
+          <Text style={styles.monthSpending}>Month's Spending:</Text>
+          <Text style={styles.monthSpendingRs}>Rs {item.monthsSpending}</Text>
+          <Text style={styles.monthlyBudget}>Monthly Budget:</Text>
+          <Text style={styles.monthlyBudgetRs}>Rs {item.monthlyBudget}</Text>
+        </View>
       </View>
-      <View style={styles.itemRight}>
-        <Text style={styles.monthSpending}>Month's Spending:</Text>
-        <Text style={styles.monthSpendingRs}>Rs {item.monthsSpending}</Text>
-        <Text style={styles.monthlyBudget}>Monthly Budget:</Text>
-        <Text style={styles.monthlyBudgetRs}>Rs {item.monthlyBudget}</Text>
-      </View>
-    </View>
-  );
-};
+    );
+  };
 
-  const getColor = (index) => {
+  const getColor = index => {
     const colors = [
       'rgba(255, 87, 51, 1)',
       'rgba(255, 165, 0, 1)',
@@ -101,13 +132,19 @@ export default function BudgetHome({navigation}) {
     setShowAllItems(!showAllItems);
   };
 
-  const [graphSeries, setGraphSeries] = useState([90, 90, 100, 100, 100,100, 100, 100]);
+  const [graphSeries, setGraphSeries] = useState([
+    90, 90, 100, 100, 100, 100, 100, 100,
+  ]);
 
   useEffect(() => {
     const series2 = [];
     data.forEach(item => {
-      const monthsSpendingPercentage = Math.ceil((item.monthsSpending / item.monthlyBudget) * 100);
-      const rsLeftPercentage = Math.floor(((item.monthlyBudget-item.monthsSpending) / item.monthlyBudget) * 100);
+      const monthsSpendingPercentage = Math.ceil(
+        (item.monthsSpending / item.monthlyBudget) * 100,
+      );
+      const rsLeftPercentage = Math.floor(
+        ((item.monthlyBudget - item.monthsSpending) / item.monthlyBudget) * 100,
+      );
       series2.push(monthsSpendingPercentage, rsLeftPercentage);
     });
     console.log(series2);
@@ -118,7 +155,7 @@ export default function BudgetHome({navigation}) {
     <ScrollView>
       <View style={styles.container}>
         <CustomHeader navigation={navigation} />
-          
+
         <View style={styles.chartContainer}>
           <PieChart
             widthAndHeight={widthAndHeight}
@@ -141,24 +178,37 @@ export default function BudgetHome({navigation}) {
             style={styles.flatList}
           />
           {data.length > 2 && (
-            <TouchableOpacity onPress={toggleItems} style={styles.viewAllButton}>
-              <Text style={styles.viewAllText}>{showAllItems ? 'View Less' : 'View All'}</Text>
+            <TouchableOpacity
+              onPress={toggleItems}
+              style={styles.viewAllButton}>
+              <Text style={styles.viewAllText}>
+                {showAllItems ? 'View Less' : 'View All'}
+              </Text>
             </TouchableOpacity>
           )}
         </View>
-        <BudgetSharedUI name="Budget" icon="track-changes" onClick={budgetHandler} />
-     
-      <Modal modalState={isModalVisible} hideModal={() => SetModalVisible(false)}>
-        <BudgetForm hideModal={() => SetModalVisible(false)} onSubmit={onSubmit} />
-      </Modal>
-      {temp_data && (
-        <SuccessModal
-          modalState={successVisible}
-          hideModal={() => SetSuccessVisible(false)}
-          formData={temp_data[0]}
+        <BudgetSharedUI
+          name="Budget"
+          icon="track-changes"
+          onClick={budgetHandler}
         />
-      )}
-    </View>
+
+        <Modal
+          modalState={isModalVisible}
+          hideModal={() => SetModalVisible(false)}>
+          <BudgetForm
+            hideModal={() => SetModalVisible(false)}
+            onSubmit={onSubmit}
+          />
+        </Modal>
+        {temp_data && (
+          <StatusModal
+            modalType="success"
+            modalState={successVisible}
+            hideModal={() => SetSuccessVisible(false)}
+            formData={temp_data[0]}></StatusModal>
+        )}
+      </View>
     </ScrollView>
   );
 }
@@ -245,13 +295,12 @@ const styles = StyleSheet.create({
   },
   monthlyBudget: {
     fontSize: 14,
-    marginRight:-3,
+    marginRight: -3,
   },
   monthSpendingRs: {
     marginRight: -3,
-
   },
   monthlyBudgetRs: {
     marginRight: -3,
-  }
+  },
 });
