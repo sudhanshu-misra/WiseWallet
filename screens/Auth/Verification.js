@@ -44,6 +44,8 @@ const Verification = props => {
       props.navigation.navigate('DrawerNav');
     } catch (err) {
       console.log('here3', err);
+      setModalState(true);
+      setModalMessage(err.response.data.message);
     }
   };
 

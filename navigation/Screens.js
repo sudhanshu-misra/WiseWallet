@@ -28,6 +28,10 @@ import ExpenseHome from '../screens/Dashboard/FullScreen/Expense';
 //FILTER
 import Filter from '../screens/Filter';
 
+//MARKET
+import MarketBottomTab from './MarketBottomTab';
+import MarketHome from '../screens/Market/MarketHome';
+
 const Screens = {
   UNAUTHENTICATED: [
     {name: 'Onboarding', component: Onboarding},
@@ -42,6 +46,8 @@ const Screens = {
     {name: 'Login', component: Login},
     {name: 'Verification', component: Verification},
     {name: 'DrawerNav', component: DrawerNav},
+    {name: 'MarketBottomTab', component: MarketBottomTab},
+    {name: 'MarketHome', component: MarketHome},
     {name: 'Tabs', component: BottomTab},
     {name: 'BudgetHome', component: BudgetHome},
     {name: 'DashboardHome', component: DashboardHome},

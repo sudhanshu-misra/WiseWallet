@@ -17,6 +17,7 @@ import host from '../constants/config';
 const DrawerList = [
   //   {icon: 'home-outline', label: 'Home', navigateTo: 'Tabs'},
   {icon: 'user-circle-o', label: 'Profile', navigateTo: 'Profile'},
+  {icon: 'shopping-bag', label: 'Marketplace', navigateTo: 'MarketBottomTab'},
 ];
 
 let color = COLORS.black;
