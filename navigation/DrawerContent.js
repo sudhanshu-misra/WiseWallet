@@ -12,7 +12,7 @@ import {COLORS} from '../constants/theme';
 import userIcon from '../assets/user.png';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import host from '../constants/config';
+import host from '../constants/host';
 
 const DrawerList = [
   //   {icon: 'home-outline', label: 'Home', navigateTo: 'Tabs'},
@@ -80,7 +80,7 @@ const DrawerContent = props => {
   useEffect(() => {
     getProfile();
   }, []);
-
+        
   return (
     <View style={{flex: 1}}>
       <DrawerContentScrollView {...props}>
@@ -90,7 +90,7 @@ const DrawerContent = props => {
             <View className="p-2">
               <View className="flex flex-row mt-15">
                 <Avatar.Image
-                  source={userIcon}
+                  source={ profileData.profileImage? {uri:profileData.profileImage}:userIcon}
                   size={50}
                   style={{marginTop: 5}}
                 />

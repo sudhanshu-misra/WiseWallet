@@ -8,18 +8,19 @@ import React from 'react';
 
 
 const UserProfile = ({user}) => {
+  console.log(user)
   return (
     <View className="flex mt-16">
       <Text style={styles.label}>Username :</Text>
       <TextInput
         style={styles.textInput}
-        value={user.username}
+        value={user?.name}
         editable={false}
       />
       <Text style={styles.label}>Email :</Text>
-      <TextInput style={styles.textInput} value={user.email} editable={false} />
+      <TextInput style={styles.textInput} value={user?.email} editable={false} />
       <Text style={styles.label}>Phone Number :</Text>
-      <TextInput style={styles.textInput} value={user.mobileNumber} editable={false} />
+      <TextInput style={styles.textInput} value={user?.mobileNo} editable={false} />
     </View>
   );
 };

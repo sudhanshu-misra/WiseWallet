@@ -8,6 +8,11 @@ import IconPicker from '../../../components/Form/Icon/IconPicker';
 import DateField from '../../../components/Form/DateField';
 import {accountIcon, expenseIcon} from '../../../components/Form/Icon/IconData';
 
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import host from "../../../constants/host.js"
+import axios from 'axios';
+
 export const ExpenseForm = ({closeModal}) => {
   const [iconError, setIconError] = useState('');
   const [accountError, setAccountError] = useState('');
@@ -36,17 +41,41 @@ export const ExpenseForm = ({closeModal}) => {
     account = role;
   };
 
-  const formSubmitHandler = values => {
+  const formSubmitHandler = async(values) => {
     if (icon != '') {
       if (account != '') {
         const data = {
-          TransactionName: values.transactionName,
-          TransactionDate: date,
+          name: values.transactionName,
+          date: date,
           category: icon,
           amount: parseFloat(values.amount),
           account: account,
+          type:"Expense"
         };
 
+          //send data to backend 
+           
+          const token = await AsyncStorage.getItem('token');
+          try {
+            let config = {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            };
+          
+         const response=  await axios.post(
+              `${host.apiUrl}/api/transaction/create-transaction`,
+                data,
+              config
+            )
+           
+            //response is done //
+           //   console.log("cre",response.data)
+          }
+          catch(err){
+            console.log(err);
+          }
+      
         closeModal();
         console.log(data);
       } else {

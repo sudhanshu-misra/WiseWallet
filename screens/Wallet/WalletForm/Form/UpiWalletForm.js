@@ -7,6 +7,9 @@ import {globalStyles} from '../../../../constants/globalStyles';
 import IconPicker from '../../../../components/Form/Icon/IconPicker';
 import {walletIcon} from '../../../../components/Form/Icon/IconData';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import host from "../../../../constants/host.js"
+import axios from 'axios';
 
 export const UpiWalletForm = ({closeModal}) => {
   const [iconError, setIconError] = useState('');
@@ -24,12 +27,35 @@ export const UpiWalletForm = ({closeModal}) => {
     icon = role;
   };
 
-  const formSubmitHandler = values => {
+  const formSubmitHandler = async(values) => {
     if (icon != '') {
       const data = {
-        walletName: icon,
-        walletAmount: parseFloat(values.amount),
+        walletCategory: icon,
+        amount: parseFloat(values.amount),
+        type:"upi"
       };
+          //send data to backend 
+           
+          const token = await AsyncStorage.getItem('token');
+          try {
+            let config = {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            };
+          
+         const response=  await axios.post(
+              `${host.apiUrl}/api/wallet/create-wallet`,
+                data,
+              config
+            )
+          //  console.log("this",response.data);
+            //response is done //
+    
+          }
+          catch(err){
+            console.log(err);
+          }
 
       closeModal();
       console.log(data);

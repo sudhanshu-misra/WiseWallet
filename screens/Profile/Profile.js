@@ -1,32 +1,59 @@
 import {View, Image, StyleSheet, TouchableOpacity} from 'react-native';
-import React from 'react';
+import React,{useState,useEffect} from 'react';
 import HeadBack from '../../components/BackHeader';
 import {COLORS} from '../../constants/theme';
 import UserProfile from './UserProfile';
 import ButtonComp from '../../components/ButtonComp';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import host from "../../constants/host.js"
+import axios from 'axios';
 
-const user = {
-  userImg:
-    'https://wallpapers-clan.com/wp-content/uploads/2023/05/cool-anime-pfp-02.jpg',
-  username: 'ashish',
-  email: 'asd@gmail.com',
-  mobileNumber: '1011213131',
-};
+
 
 const Profile = ({navigation}) => {
   
+  const [profileData, setProfileData] = useState( );
+
   const handleSubmit = () => {
-        navigation.navigate('EditProfile');
+        navigation.navigate('EditProfile',{user:profileData});
   };
+           
+   useEffect(()=>{
+          getProfile();
+   },[])
+
+  const getProfile = async () => {
+    const token = await AsyncStorage.getItem('token');
+    try {
+      let config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const response = await axios.get(
+        `${host.apiUrl}/api/user/profile`,
+        config,
+      );
+      console.log(response.data);
+      if (response.data.user) {
+        console.log('user found');
+        setProfileData(response.data.user);
+      } else {
+        console.log('user not found');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <View className="h-full">
       <View className="h-40" style={{backgroundColor: COLORS.primary}}>
         <HeadBack navigation={navigation} profile={true} title="Profile" />
         <View className="flex items-center">
-          {user.userImg ? (
+          {profileData?.profileImage? (
             <Image
-              source={{uri: user.userImg}}
+              source={{uri: profileData?.profileImage}}
               style={styles.image}
               resizeMode="contain"
             />
@@ -39,7 +66,7 @@ const Profile = ({navigation}) => {
         </View>
       </View>
       <View className="h-max m-8">
-        <UserProfile user={user}></UserProfile>
+        <UserProfile user={profileData}></UserProfile>
       </View>
       <View className=" m-8 mt-10">
         <TouchableOpacity onPress={handleSubmit}>
