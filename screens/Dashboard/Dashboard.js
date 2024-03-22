@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import {
   View,
   ScrollView,
@@ -22,6 +22,10 @@ import {
   MenuTrigger,
 } from 'react-native-popup-menu';
 import {color} from 'react-native-reanimated';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import host from '../../constants/host.js';
+import axios from 'axios';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -169,20 +173,58 @@ const ExpenseData = [
 
 export default function DashboardHome({navigation}) {
   const [isModalVisible, SetModalVisible] = useState(false);
-  const [successVisible, SetSuccessVisible] = useState(false);
+  const [statusVisible, SetstatusVisible] = useState({
+    visibility: false,
+    modaltype: 'failed',
+  });
+  // this is the data fetched from the backend
+  const [transactionData, settransactionData] = useState({});
 
   const transactionHandler = () => {
     SetModalVisible(true);
   };
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     SetModalVisible(false);
     // Data extraction here
-    // if(data) received then set success visible else show error modal with message
-    if (temp_data) {
-      SetSuccessVisible(true);
+    //  SetstatusVisible({visibility: true, modaltype: 'loader'});
+    const data = await getTransaction();
+
+    settransactionData(data.transactions);
+
+    //  console.log(data.transactions);
+
+    //staus modal should not be here as it will always receives the data and show success status
+    if (data) {
+      //success modal
+      SetstatusVisible({visibility: true, modaltype: 'success'});
     } else {
-      // Error modal
+      //failure modal here
+      SetstatusVisible({visibility: true, modaltype: 'failed'});
+    }
+  };
+
+  useEffect(async () => {
+    const data = await getTransaction();
+   // console.log(data);
+    settransactionData(data.transactions);
+  }, []);
+
+  const getTransaction = async () => {
+    const token = await AsyncStorage.getItem('token');
+    try {
+      let config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const response = await axios.get(
+        `${host.apiUrl}/api/transaction/get-transactions`,
+        config,
+      );
+      return response.data;
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -492,12 +534,22 @@ export default function DashboardHome({navigation}) {
               onSubmit={onSubmit}></TransactionForm>
           </Modal>
 
-          {temp_data && (
+          {transactionData && (
             <StatusModal
-              modalType="success"
-              modalState={successVisible}
-              hideModal={() => SetSuccessVisible(false)}
-              formData={temp_data[0]}></StatusModal>
+              modalType={statusVisible.modaltype}
+              modalState={statusVisible.visibility}
+              hideModal={() =>
+                SetstatusVisible(prev => {
+                  return {visibility: false, modaltype: prev.modaltype};
+                })
+              }
+              message={
+                (statusVisible.modaltype === 'failed' &&
+                  'Failed to add budget ....') ||
+                (statusVisible.modaltype === 'success' &&
+                  'Budget added successfully')
+              }
+              formData={transactionData}></StatusModal>
           )}
         </View>
       </ScrollView>

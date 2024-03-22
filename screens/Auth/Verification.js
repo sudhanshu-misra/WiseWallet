@@ -5,7 +5,7 @@ import OTPInput from '../../components/OTPInput';
 import ButtonComp from '../../components/ButtonComp';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import host from '../../constants/config';
+import host from '../../constants/host';
 import ErrorModal from '../../components/Modal/ErrorModal';
 
 const Verification = props => {

@@ -6,6 +6,10 @@ import {Button} from 'react-native-paper';
 import {globalStyles} from '../../../../constants/globalStyles';
 import DateField from '../../../../components/Form/DateField';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import host from "../../../../constants/host.js"
+import axios from 'axios';
+
 let regex = /^[0-9]{16}$/;
 
 export const CardForm = ({closeModal}) => {
@@ -37,16 +41,39 @@ export const CardForm = ({closeModal}) => {
     expirydate = selectedDate;
   };
   
-  const formSubmitHandler = values => {
+  const formSubmitHandler = async(values) => {
         const data = {
           bankName: values.bankName,
           expiryDate: expirydate,
-          cardAmount: parseFloat(values.amount),
-          cardNumber:values.cardNumber
+          amount: parseFloat(values.amount),
+          cardNumber:values.cardNumber,
+          type: "card"
         };
-
+          //send data to backend 
+           
+          const token = await AsyncStorage.getItem('token');
+          try {
+            let config = {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            };
+          
+         const response=  await axios.post(
+              `${host.apiUrl}/api/wallet/create-wallet`,
+                data,
+              config
+            )
+          // console.log("this",response.data);
+            //response is done //
+    
+          }
+          catch(err){
+            console.log(err);
+          }
+      
         closeModal();
-        console.log(data);
+        
   };
 
   return (

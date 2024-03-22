@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   ScrollView,
@@ -19,6 +19,9 @@ import {
   MenuTrigger,
 } from 'react-native-popup-menu';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import host from '../../constants/host.js';
+import axios from 'axios';
 
 const exampleDate = '2024-03-05';
 // CASH
@@ -38,28 +41,59 @@ const upiDetails = {
   balance: 3000,
 };
 
-const temp_data = [
-  {
-    WalletName: 'wallet',
-  },
-];
-
 export default function WalletHome({navigation}) {
   const [isModalVisible, SetModalVisible] = useState(false);
-  const [successVisible, SetSuccessVisible] = useState(false);
+  const [statusVisible, SetstatusVisible] = useState({
+    visibility: false,
+    modaltype: 'failed',
+  });
+  // this is the data fetched from the backend
+  const [walletData, setwalletData] = useState({});
 
   const walletHandler = () => {
     SetModalVisible(true);
   };
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     SetModalVisible(false);
     //data extraction here
-    // if(data) received then set success visible  else show error modal with message
-    if (temp_data) {
-      SetSuccessVisible(true);
+    const data = await getWallet();
+
+    setwalletData(data.wallets);
+
+    //  console.log(" fetched wallet data : ",data.wallets);
+
+    //staus modal should not be here as it will always receives the data and show success status
+    if (data) {
+      //success modal
+      SetstatusVisible({visibility: true, modaltype: 'success'});
     } else {
-      //error modal
+      //failure modal here
+      SetstatusVisible({visibility: true, modaltype: 'failed'});
+    }
+  };
+
+  useEffect(async () => {
+    const data = await getWallet();
+       //  console.log(data);
+    setwalletData(data.wallets);
+  }, []);
+
+  const getWallet = async () => {
+    const token = await AsyncStorage.getItem('token');
+    try {
+      let config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const response = await axios.get(
+        `${host.apiUrl}/api/wallet/get-wallets`,
+        config,
+      );
+      return response.data;
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -82,12 +116,22 @@ export default function WalletHome({navigation}) {
               onSubmit={onSubmit}></WalletForm>
           </Modal>
 
-          {temp_data && (
+          {walletData && (
             <StatusModal
-              modalType="success"
-              modalState={successVisible}
-              hideModal={() => SetSuccessVisible(false)}
-              formData={temp_data[0]}></StatusModal>
+              modalType={statusVisible.modaltype}
+              modalState={statusVisible.visibility}
+              hideModal={() =>
+                SetstatusVisible(prev => {
+                  return {visibility: false, modaltype: prev.modaltype};
+                })
+              }
+              message={
+                (statusVisible.modaltype === 'failed' &&
+                  'Failed to add wallet ....') ||
+                (statusVisible.modaltype === 'success' &&
+                  'Wallet added successfully')
+              }
+              formData={walletData}></StatusModal>
           )}
 
           <Text

@@ -13,12 +13,9 @@ import Modal from '../../components/Modal/Modal';
 import StatusModal from '../../components/Modal/StatusModal';
 import BudgetForm from './BudgetForm/BudgetForm';
 import PieChart from 'react-native-pie-chart';
-
-const temp_data = [
-  {
-    BudgetName: 'budget',
-  },
-];
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import host from '../../constants/host.js';
+import axios from 'axios';
 
 const data = [
   {
@@ -57,21 +54,59 @@ const data = [
 
 export default function BudgetHome({navigation}) {
   const [isModalVisible, SetModalVisible] = useState(false);
-  const [successVisible, SetSuccessVisible] = useState(false);
+  const [statusVisible, SetstatusVisible] = useState({
+    visibility: false,
+    modaltype: 'failed',
+  });
   const [showAllItems, setShowAllItems] = useState(false);
+
+  // this is the data fetched from the backend
+  const [budgetData, setbudgetData] = useState({});
 
   const budgetHandler = () => {
     SetModalVisible(true);
   };
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     SetModalVisible(false);
-    //data extraction here
-    // if(data) received then set success visible  else show error modal with message
-    if (temp_data) {
-      SetSuccessVisible(true);
+    //  SetstatusVisible({visibility: true, modaltype: 'loader'});
+    const data = await getBudget();
+
+    setbudgetData(data.budgets);
+
+    //  console.log(data.budgets);
+
+    //staus modal should not be here as it will always receives the data and show success status
+    if (data) {
+      //success modal
+      SetstatusVisible({visibility: true, modaltype: 'success'});
     } else {
-      //error modal
+      //failure modal here
+      SetstatusVisible({visibility: true, modaltype: 'failed'});
+    }
+  };
+
+  useEffect(async () => {
+    const data = await getBudget();
+   // console.log(data);
+    setbudgetData(data.budgets);
+  }, []);
+
+  const getBudget = async () => {
+    const token = await AsyncStorage.getItem('token');
+    try {
+      let config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const response = await axios.get(
+        `${host.apiUrl}/api/budget/get-budgets`,
+        config,
+      );
+      return response.data;
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -87,7 +122,7 @@ export default function BudgetHome({navigation}) {
     'rgba(51, 255, 87, 1)',
     'rgba(51, 255, 87, 0.5)',
     'rgba(175, 204, 133, 1)',
-    'rgba(175, 204, 133, 0.5)'
+    'rgba(175, 204, 133, 0.5)',
   ];
 
   const totalAmount = data.reduce((acc, item) => acc + item.monthlyBudget, 0);
@@ -201,12 +236,22 @@ export default function BudgetHome({navigation}) {
             onSubmit={onSubmit}
           />
         </Modal>
-        {temp_data && (
+        {budgetData && (
           <StatusModal
-            modalType="success"
-            modalState={successVisible}
-            hideModal={() => SetSuccessVisible(false)}
-            formData={temp_data[0]}></StatusModal>
+            modalType={statusVisible.modaltype}
+            modalState={statusVisible.visibility}
+            hideModal={() =>
+              SetstatusVisible(prev => {
+                return {visibility: false, modaltype: prev.modaltype};
+              })
+            }
+            message={
+              (statusVisible.modaltype === 'failed' &&
+                'Failed to add budget ....') ||
+              (statusVisible.modaltype === 'success' &&
+                'Budget added successfully')
+            }
+            formData={budgetData}></StatusModal>
         )}
       </View>
     </ScrollView>

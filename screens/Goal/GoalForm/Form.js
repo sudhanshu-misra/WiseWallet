@@ -8,13 +8,16 @@ import IconPicker from '../../../components/Form/Icon/IconPicker';
 import DateField from '../../../components/Form/DateField';
 import {goalIcon,accountIcon} from '../../../components/Form/Icon/IconData';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import host from "../../../constants/host.js"
+import axios from 'axios';
+
 let endDate = '';
 let startDate = '';
-let icon = '';
 let goal = '';
 
 export const Form = ({closeModal}) => {
-  const [iconError, setIconError] = useState('');
+  
   const [dateError, setdateError] = useState('');
   const [goalError, setGoalError] = useState('');
 
@@ -27,9 +30,7 @@ export const Form = ({closeModal}) => {
     return errors;
   };
 
-  const iconData = role => {
-    icon = role;
-  };
+
   const goalData = goalName => {
     goal = goalName;
   };
@@ -42,26 +43,49 @@ export const Form = ({closeModal}) => {
     endDate = selectedDate;
   };
 
-  const formSubmitHandler = values => {
+  const formSubmitHandler = async(values) => {
 
-    if (icon != '') {
+   
 
       if (goal != '') {
 
         if (startDate < endDate) {
           const data = {
-            GoalName: goal,
+            goalName: goal,
             amount: parseFloat(values.amount),
             startDate: startDate,
-            EndDate: endDate,
-            Account: icon,
+            endDate: endDate,
           };
 
+
+            //send data to backend 
+           
+            const token = await AsyncStorage.getItem('token');
+            try {
+              let config = {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              };
+            
+           const response=  await axios.post(
+                `${host.apiUrl}/api/goal/create-goal`,
+                  data,
+                config
+              )
+            
+              //response is done //
+      
+            }
+            catch(err){
+              console.log(err);
+            }
+
           closeModal();
-          console.log(data);
+         
           endDate = '';
           startDate = '';
-          icon = '';
+      
           goal = '';
         } else {
           setdateError('The end date cannot be earlier than the start date');
@@ -69,9 +93,7 @@ export const Form = ({closeModal}) => {
       } else {
         setGoalError('Enter goal Name');
       }
-    } else {
-      setIconError('select an account');
-    }
+    
   };
 
   return (
@@ -118,12 +140,12 @@ export const Form = ({closeModal}) => {
             dateLabel={'End Date'}
             error={dateError}></DateField>
 
-          <IconPicker
+          {/* <IconPicker
             getIcon={iconData}
             iconError={iconError}
             iconData={accountIcon}
             title={'Account'}
-            label={'Select account'}></IconPicker>
+            label={'Select account'}></IconPicker> */}
 
           {/* open close button (Repeat for every month) */}
 

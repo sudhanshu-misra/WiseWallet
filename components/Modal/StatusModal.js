@@ -17,25 +17,25 @@ export default function StatusModal({
   message,
   modalType
 }) {
-  let custom_message = '';
-  if ('TransactionName' in formData) {
-    custom_message = 'Your expense has been successfully added to transactions';
-  } else if ('IncomeName' in formData) {
-    custom_message = 'Your income has been successfully added to earnings';
-  } else if ('BudgetName' in formData) {
-    custom_message = 'Your budget has been successfully added to budgets';
-  } else if ('GoalName' in formData) {
-    custom_message = 'Your goal has been successfully added to goal';
-  } else if ('WalletName' in formData) {
-    custom_message =
-      'Your wallet details has been successfully added to the wise wallet';
-  } else if ('CashAmount' in formData) {
-    custom_message =
-      'Your cash details has been successfully added to the wise wallet';
-  } else if ('CardAmount' in formData) {
-    custom_message =
-      'Your card details has been successfully added to the wise wallet';
-  }
+  // let custom_message = '';
+  // if ('TransactionName' in formData) {
+  //   custom_message = 'Your expense has been successfully added to transactions';
+  // } else if ('IncomeName' in formData) {
+  //   custom_message = 'Your income has been successfully added to earnings';
+  // } else if ('BudgetName' in formData) {
+  //   custom_message = 'Your budget has been successfully added to budgets';
+  // } else if ('GoalName' in formData) {
+  //   custom_message = 'Your goal has been successfully added to goal';
+  // } else if ('WalletName' in formData) {
+  //   custom_message =
+  //     'Your wallet details has been successfully added to the wise wallet';
+  // } else if ('CashAmount' in formData) {
+  //   custom_message =
+  //     'Your cash details has been successfully added to the wise wallet';
+  // } else if ('CardAmount' in formData) {
+  //   custom_message =
+  //     'Your card details has been successfully added to the wise wallet';
+  // }
 
   return (
     <Modal
@@ -83,13 +83,13 @@ export default function StatusModal({
             </Text>
           </View>
           <Text className="mt-5 text-center font-bold text-xl px-10">
-            {custom_message ? custom_message : message}
+            { message}
           </Text>
-          {custom_message && (
+          {/* {custom_message && (
             <View className="border-2 rounded-md mx-4 h-max my-5 p-5">
               <Text>Category,date,amount data</Text>
             </View>
-          )}
+          )} */}
         { modalType!=="loader" && <TouchableOpacity onPress={hideModal}>
             <Button
               style={{
