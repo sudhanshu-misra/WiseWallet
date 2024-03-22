@@ -14,12 +14,9 @@ import GoalForm from './GoalForm/GoalForm';
 import StatusModal from '../../components/Modal/StatusModal';
 import PieChart from 'react-native-pie-chart';
 
-
-const temp_data = [
-  {
-    GoalName: 'Goal',
-  },
-];
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import host from '../../constants/host.js';
+import axios from 'axios';
 
 const data = [
   {
@@ -58,19 +55,56 @@ const data = [
 
 export default function GoalHome({navigation}) {
   const [isModalVisible, SetModalVisible] = useState(false);
-  const [successVisible, SetSuccessVisible] = useState(false);
+  const [statusVisible, SetstatusVisible] = useState({
+    visibility: false,
+    modaltype: 'failed',
+  });
   const [showAllItems, setShowAllItems] = useState(false);
+
+  // this is the data fetched from the backend
+  const [goalData, setgoalData] = useState({});
+
+  //get data from backend
+
+  const getGoal = async () => {
+    const token = await AsyncStorage.getItem('token');
+    try {
+      let config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const response = await axios.get(
+        `${host.apiUrl}/api/goal/get-goals`,
+        config,
+      );
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(async () => {
+    const data = await getGoal();
+    setgoalData(data.goals);
+  }, []);
 
   const goalHandler = () => {
     SetModalVisible(true);
   };
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     SetModalVisible(false);
-    if (temp_data) {
-      SetSuccessVisible(true);
+    const data = await getGoal();
+    setgoalData(data.goals);
+    //console.log(data.goals)
+    //staus modal should not be here as it will always receives the data and show success status
+    if (data) {
+      //success modal
+      SetstatusVisible({visibility: true, modaltype: 'success'});
     } else {
-      //error modal
+      //failure modal here
+      SetstatusVisible({visibility: true, modaltype: 'failed'});
     }
   };
 
@@ -84,8 +118,7 @@ export default function GoalHome({navigation}) {
     'rgba(51, 255, 87, 1)',
     'rgba(51, 255, 87, 0.5)',
     'rgba(175, 204, 133, 1)',
-    'rgba(175, 204, 133, 0.5)'
- 
+    'rgba(175, 204, 133, 0.5)',
   ];
 
   const totalAmount = data.reduce((acc, item) => acc + item.Amount, 0);
@@ -174,25 +207,42 @@ export default function GoalHome({navigation}) {
             style={styles.flatList}
           />
           {data.length > 2 && (
-            <TouchableOpacity onPress={toggleItems} style={styles.viewAllButton}>
-              <Text style={styles.viewAllText}>{showAllItems ? 'View Less' : 'View All'}</Text>
+            <TouchableOpacity
+              onPress={toggleItems}
+              style={styles.viewAllButton}>
+              <Text style={styles.viewAllText}>
+                {showAllItems ? 'View Less' : 'View All'}
+              </Text>
             </TouchableOpacity>
           )}
         </View>
         <GoalSharedUI name="Goal" icon="track-changes" onClick={goalHandler} />
       </ScrollView>
-      <Modal modalState={isModalVisible} hideModal={() => SetModalVisible(false)}>
-        <GoalForm hideModal={() => SetModalVisible(false)} onSubmit={onSubmit} />
+      <Modal
+        modalState={isModalVisible}
+        hideModal={() => SetModalVisible(false)}>
+        <GoalForm
+          hideModal={() => SetModalVisible(false)}
+          onSubmit={onSubmit}
+        />
       </Modal>
-      {temp_data && (
+      {goalData && (
         <StatusModal
-          modalType="success"
-          modalState={successVisible}
-          hideModal={() => SetSuccessVisible(false)}
-          formData={temp_data[0]}></StatusModal>
+          modalType={statusVisible.modaltype}
+          modalState={statusVisible.visibility}
+          hideModal={() =>
+            SetstatusVisible(prev => {
+              return {visibility: false, modaltype: prev.modaltype};
+            })
+          }
+          message={
+            (statusVisible.modaltype === 'failed' &&
+              'Failed to add goal ....') ||
+            (statusVisible.modaltype === 'success' && 'Goal added successfully')
+          }
+          formData={goalData}></StatusModal>
       )}
     </View>
-   
   );
 }
 

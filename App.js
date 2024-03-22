@@ -7,7 +7,7 @@ import 'react-native-gesture-handler';
 import Splash from './screens/Splash';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import host from './constants/config';
+import host from './constants/host.js';
 
 const Stack = createNativeStackNavigator();
 

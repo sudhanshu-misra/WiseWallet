@@ -15,17 +15,15 @@ import {COLORS} from '../../constants/theme';
 import StatusModal from '../../components/Modal/StatusModal';
 import UserIcon from 'react-native-vector-icons/FontAwesome';
 import {launchImageLibrary} from 'react-native-image-picker';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import host from "../../constants/host.js"
+import axios from 'axios';
 
-const user = {
-  userImg:
-    'https://wallpapers-clan.com/wp-content/uploads/2023/05/cool-anime-pfp-02.jpg',
-  username: 'ashish',
-  email: 'asd@gmail.com',
-  mobileNumber: '1011213131',
-};
+const EditProfile = (props) => {
+  const user =props.route.params.user;
+  console.log(user);
 
-const EditProfile = ({navigation}) => {
-  const [imgUrl, setImgUrl] = useState(user.userImg);
+  const [imgUrl, setImgUrl] = useState(user?.profileImage);
   const [statusVisible, SetstatusVisible] = useState({
     visibility: false,
     modaltype: 'failed',
@@ -111,36 +109,54 @@ const EditProfile = ({navigation}) => {
     return imagedata.url;
   };
 
-  const handleEdit = values => {
+  const handleEdit = async (values) => {
     //handling edited value
     const profileEdit = {
-      userImg: imgUrl,
+      profileImage: imgUrl,
       name: values.name,
       email: values.email,
-      mobileNumber: values.phone,
+      mobileNo: values.phone,
     };
     console.log(profileEdit);
 
     //send edited values to backend
-
-    // if response is ok then
-    //if success show success modal navigate to profile page
-    SetstatusVisible({visibility: true, modaltype: 'success'});
-
-    //if failure show failure model remain in editing page
+      const token = await AsyncStorage.getItem('token');
+      try {
+        let config = {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+      
+     const response=  await axios.put(
+          `${host.apiUrl}/api/user/update-profile`,
+            profileEdit,
+          config
+        )
+    
+        if(response.data.updatedUser){
+          SetstatusVisible({visibility: true, modaltype: 'success'});
+        }
+      }
+      catch(err){
+        console.log(err);
+        SetstatusVisible({visibility: true, modaltype: 'failed'});
+      }
+  
+  
   };
 
   const handleSuccess = () => {
     SetstatusVisible(prev => {
       return {visibility: false, modaltype: prev.modaltype};
     });
-    navigation.goBack();
+    props.navigation.navigate("Profile");
   };
 
   return (
     <View className="h-full">
       <View className="h-40" style={{backgroundColor: COLORS.primary}}>
-        <HeadBack navigation={navigation} profile={true} title="Edit Profile" />
+        <HeadBack navigation={props.navigation} profile={true} title="Edit Profile" />
         <View className="flex items-center ">
           <TouchableOpacity onPress={editImageHandler}>
             {imgUrl ? (
@@ -166,8 +182,8 @@ const EditProfile = ({navigation}) => {
         <Formik
           initialValues={{
             email: user.email,
-            phone: user.mobileNumber,
-            name: user.username,
+            phone: user.mobileNo,
+            name: user.name,
           }}
           validationSchema={validationSchema}
           onSubmit={handleEdit}>

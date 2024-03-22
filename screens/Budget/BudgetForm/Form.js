@@ -6,15 +6,20 @@ import {Button} from 'react-native-paper';
 import {globalStyles} from '../../../constants/globalStyles';
 import IconPicker from '../../../components/Form/Icon/IconPicker';
 import DateField from '../../../components/Form/DateField';
-import {expenseIcon,accountIcon} from '../../../components/Form/Icon/IconData';
+import {expenseIcon} from '../../../components/Form/Icon/IconData';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import host from "../../../constants/host.js"
+import axios from 'axios';
+
+
 
 let endDate = '';
 let startDate = '';
-let icon = '';
+
 let budget = '';
 
 export const Form = ({closeModal}) => {
-  const [iconError, setIconError] = useState('');
   const [dateError, setdateError] = useState('');
   const [budgetError, setBudgetError] = useState('');
 
@@ -27,9 +32,7 @@ export const Form = ({closeModal}) => {
     return errors;
   };
 
-  const iconData = role => {
-    icon = role;
-  };
+ 
   const budgetData = budgetName => {
     budget = budgetName;
   };
@@ -42,26 +45,44 @@ export const Form = ({closeModal}) => {
     endDate = selectedDate;
   };
 
-  const formSubmitHandler = values => {
-
-    if (icon != '') {
+  const formSubmitHandler = async(values) => {
 
       if (budget != '') {
 
         if (startDate < endDate) {
           const data = {
-            BudgetName: budget,
+            budgetName: budget,
             amount: parseFloat(values.amount),
             startDate: startDate,
-            EndDate: endDate,
-            Account: icon,
+            endDate: endDate,
           };
 
+          //send data to backend 
+           
+      const token = await AsyncStorage.getItem('token');
+      try {
+        let config = {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+      
+     const response=  await axios.post(
+          `${host.apiUrl}/api/budget/create-budget`,
+            data,
+          config
+        )
+       
+        //response is done //
+
+      }
+      catch(err){
+        console.log(err);
+      }
+  
           closeModal();
-          console.log(data);
           endDate = '';
           startDate = '';
-          icon = '';
           budget = '';
         } else {
           setdateError('The end date cannot be earlier than the start date');
@@ -69,9 +90,7 @@ export const Form = ({closeModal}) => {
       } else {
         setBudgetError('Enter Budget Name');
       }
-    } else {
-      setIconError('select an account');
-    }
+    
   };
 
   return (
@@ -118,12 +137,12 @@ export const Form = ({closeModal}) => {
             dateLabel={'End Date'}
             error={dateError}></DateField>
 
-          <IconPicker
+          {/* <IconPicker
             getIcon={iconData}
             iconError={iconError}
             iconData={accountIcon}
             title={'Account'}
-            label={'Select account'}></IconPicker>
+            label={'Select account'}></IconPicker> */}
 
           {/* open close button (Repeat for every month) */}
 

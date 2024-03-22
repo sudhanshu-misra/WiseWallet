@@ -4,7 +4,7 @@ import HeadBack from '../../components/BackHeader';
 import ButtonComp from '../../components/ButtonComp';
 import {Formik} from 'formik';
 import * as yup from 'yup';
-import host from '../../constants/config';
+import host from '../../constants/host';
 import axios from 'axios';
 import ErrorModal from '../../components/Modal/ErrorModal';
 
