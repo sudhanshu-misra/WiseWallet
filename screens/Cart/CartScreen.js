@@ -2,15 +2,15 @@ import {View, Text, ScrollView} from 'react-native';
 import React from 'react';
 import CustomHeader from '../../components/Header';
 
-const MarketHome = ({navigation}) => {
+const CartScreen = ({navigation}) => {
   return (
     <ScrollView>
       <View>
         <CustomHeader navigation={navigation} />
-        <Text>MarketHome</Text>
+        <Text>CartScreen</Text>
       </View>
     </ScrollView>
   );
 };
 
-export default MarketHome;
+export default CartScreen;

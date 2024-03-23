@@ -8,12 +8,14 @@ import Splash from './screens/Splash';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import host from './constants/host.js';
+import GlobalContextProvider from './helpers/GlobalContextProvider.js';
 
 const Stack = createNativeStackNavigator();
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [isMarket, setIsMarket] = useState(false);
 
   const checkAuth = async () => {
     const token = await AsyncStorage.getItem('token');
@@ -48,55 +50,52 @@ const App = () => {
     }
   };
   useEffect(() => {
-    // console.log('set loading to true');
-    // setIsLoading(true);
     checkAuth();
-    // console.log('set loading to false');
-    // setIsLoading(false);
   }, []);
-  console.log('isAuthenticated', isAuthenticated);
 
   if (isLoading) {
     return <Splash />;
   } else {
     return (
-      <NavigationContainer>
-        <SafeAreaProvider>
-          <Stack.Navigator
-            screenOptions={{
-              headerShown: false,
-            }}
-            // initialRouteName="Splash"
-            initialRouteName={isAuthenticated ? 'DrawerNav' : 'Onboarding'}>
-            {/* <Stack.Screen name="Splash" component={Splash} /> */}
-            {/* {isAuthenticated
-              ? Screens['AUTHENTICATED'].map(Screen => (
-                  <Stack.Screen
-                    key={Screen.name}
-                    name={Screen.name}
-                    component={Screen.component}
-                    options={Screen.options}
-                  />
-                ))
-              : Screens['UNAUTHENTICATED'].map(Screen => (
-                  <Stack.Screen
-                    key={Screen.name}
-                    name={Screen.name}
-                    component={Screen.component}
-                    options={Screen.options}
-                  />
-                ))} */}
-            {Screens['AUTHENTICATED'].map(Screen => (
-              <Stack.Screen
-                key={Screen.name}
-                name={Screen.name}
-                component={Screen.component}
-                options={Screen.options}
-              />
-            ))}
-          </Stack.Navigator>
-        </SafeAreaProvider>
-      </NavigationContainer>
+      <GlobalContextProvider
+        value={{isMarket, setIsMarket, isAuthenticated, setIsAuthenticated}}>
+        <NavigationContainer>
+          <SafeAreaProvider>
+            <Stack.Navigator
+              screenOptions={{
+                headerShown: false,
+              }}
+              initialRouteName={isAuthenticated ? 'DrawerNav' : 'Onboarding'}>
+              {isAuthenticated
+                ? isMarket
+                  ? Screens['MARKET'].map(Screen => (
+                      <Stack.Screen
+                        key={Screen.name}
+                        name={Screen.name}
+                        component={Screen.component}
+                        options={Screen.options}
+                      />
+                    ))
+                  : Screens['WALLET'].map(Screen => (
+                      <Stack.Screen
+                        key={Screen.name}
+                        name={Screen.name}
+                        component={Screen.component}
+                        options={Screen.options}
+                      />
+                    ))
+                : Screens['UNAUTHENTICATED'].map(Screen => (
+                    <Stack.Screen
+                      key={Screen.name}
+                      name={Screen.name}
+                      component={Screen.component}
+                      options={Screen.options}
+                    />
+                  ))}
+            </Stack.Navigator>
+          </SafeAreaProvider>
+        </NavigationContainer>
+      </GlobalContextProvider>
     );
   }
 };

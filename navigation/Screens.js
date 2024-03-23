@@ -38,16 +38,9 @@ const Screens = {
     {name: 'Signup', component: Signup},
     {name: 'Login', component: Login},
     {name: 'Verification', component: Verification},
-    // {name: 'DrawerNav', component: DrawerNav},
   ],
-  AUTHENTICATED: [
-    {name: 'Onboarding', component: Onboarding},
-    {name: 'Signup', component: Signup},
-    {name: 'Login', component: Login},
-    {name: 'Verification', component: Verification},
+  WALLET: [
     {name: 'DrawerNav', component: DrawerNav},
-    {name: 'MarketBottomTab', component: MarketBottomTab},
-    {name: 'MarketHome', component: MarketHome},
     {name: 'Tabs', component: BottomTab},
     {name: 'BudgetHome', component: BudgetHome},
     {name: 'DashboardHome', component: DashboardHome},
@@ -61,7 +54,13 @@ const Screens = {
     {name: 'Card', component: Card},
     {name: 'Upi', component: Upi},
     {name: 'Filter', component: Filter},
-    // {name: 'Onboarding', component: Onboarding},
+  ],
+  MARKET: [
+    {name: 'DrawerNav', component: DrawerNav},
+    {name: 'MarketHome', component: MarketHome},
+    {name: 'MarketBottomTab', component: MarketBottomTab},
+    {name: 'Profile', component: Profile},
+    {name: 'EditProfile', component: EditProfile},
   ],
 };
 

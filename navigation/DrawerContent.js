@@ -1,11 +1,11 @@
 import {View, Text, TouchableOpacity} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import {
   DrawerContentScrollView,
   DrawerItem,
   DrawerItemList,
 } from '@react-navigation/drawer';
-import {Avatar, Title} from 'react-native-paper';
+import {Avatar, Drawer, Title} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {COLORS} from '../constants/theme';
@@ -13,24 +13,39 @@ import userIcon from '../assets/user.png';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import host from '../constants/host';
+import GlobalContext from '../helpers/GlobalContext';
 
 const DrawerList = [
-  //   {icon: 'home-outline', label: 'Home', navigateTo: 'Tabs'},
   {icon: 'user-circle-o', label: 'Profile', navigateTo: 'Profile'},
+  {icon: 'money', label: 'Wallet', navigateTo: 'BottomTab'},
   {icon: 'shopping-bag', label: 'Marketplace', navigateTo: 'MarketBottomTab'},
+];
+const MarketList = [
+  {icon: 'user-circle-o', label: 'Profile', navigateTo: 'Profile'},
+  {icon: 'money', label: 'Wallet', navigateTo: 'BottomTab'},
 ];
 
 let color = COLORS.black;
 let size = 30;
 
-const DrawerLayout = ({icon, label, navigateTo}) => {
+const DrawerLayout = ({icon, label, navigateTo, setIsMarket, isMarket}) => {
   const navigation = useNavigation();
+
   return (
     <DrawerItem
       icon={({color, size}) => <Icon name={icon} color={color} size={size} />}
       label={label}
       onPress={() => {
-        navigation.navigate(navigateTo);
+        console.log('isMarket', isMarket);
+        if (label === 'Marketplace' && isMarket === false) {
+          setIsMarket(true);
+          navigation.navigate(navigateTo);
+        } else if (label === 'Wallet' && isMarket === true) {
+          setIsMarket(false);
+          navigation.navigate(navigateTo);
+        } else if (label == 'Profile') {
+          navigation.navigate(navigateTo);
+        }
       }}
     />
   );
@@ -44,6 +59,22 @@ const DrawerItems = props => {
         icon={el.icon}
         label={el.label}
         navigateTo={el.navigateTo}
+        setIsMarket={props.setIsMarket}
+        isMarket={props.isMarket}
+      />
+    );
+  });
+};
+
+const MarketItems = props => {
+  return MarketList.map((el, i) => {
+    return (
+      <DrawerLayout
+        key={i}
+        icon={el.icon}
+        label={el.label}
+        navigateTo={el.navigateTo}
+        setIsMarket={props.setIsMarket}
       />
     );
   });
@@ -52,10 +83,13 @@ const DrawerItems = props => {
 const DrawerContent = props => {
   const navigation = useNavigation();
 
+  const {isMarket, setIsMarket, setIsAuthenticated} = useContext(GlobalContext);
+
   const [profileData, setProfileData] = useState({});
 
   const getProfile = async () => {
     const token = await AsyncStorage.getItem('token');
+
     try {
       let config = {
         headers: {
@@ -81,7 +115,7 @@ const DrawerContent = props => {
   useEffect(() => {
     getProfile();
   }, []);
-        
+
   return (
     <View style={{flex: 1}}>
       <DrawerContentScrollView {...props}>
@@ -91,7 +125,11 @@ const DrawerContent = props => {
             <View className="p-2">
               <View className="flex flex-row mt-15">
                 <Avatar.Image
-                  source={ profileData.profileImage? {uri:profileData.profileImage}:userIcon}
+                  source={
+                    profileData.profileImage
+                      ? {uri: profileData.profileImage}
+                      : userIcon
+                  }
                   size={50}
                   style={{marginTop: 5}}
                 />
@@ -103,7 +141,12 @@ const DrawerContent = props => {
             </View>
           </TouchableOpacity>
           <View>
-            <DrawerItems />
+            <DrawerItems setIsMarket={setIsMarket} isMarket={isMarket} />
+            {/* {isMarket ? (
+              <MarketItems setIsMarket={setIsMarket} />
+            ) : (
+              <WalletItems setIsMarket={setIsMarket} />
+            )} */}
           </View>
         </View>
       </DrawerContentScrollView>
@@ -114,6 +157,7 @@ const DrawerContent = props => {
           )}
           onPress={() => {
             AsyncStorage.removeItem('token');
+            setIsAuthenticated(false);
             navigation.navigate('Onboarding');
           }}
           label="Sign Out"
