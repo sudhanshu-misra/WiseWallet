@@ -4,7 +4,7 @@ import CustomHeader from '../../components/Header';
 
 const OrderScreen = ({navigation}) => {
   return (
-    <ScrollView>
+    <ScrollView backgroundColor="white">
       <View>
         <CustomHeader navigation={navigation} />
         <Text>OrderScreen</Text>
