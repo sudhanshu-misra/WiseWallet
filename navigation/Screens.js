@@ -30,6 +30,10 @@ import ExpenseHome from '../screens/Dashboard/FullScreen/Expense';
 //FILTER
 import Filter from '../screens/Filter';
 
+//MARKET
+import MarketBottomTab from './MarketBottomTab';
+import MarketHome from '../screens/Market/MarketHome';
+
 
 //Notification
 import Notification from '../screens/notification/Notification';
@@ -40,13 +44,8 @@ const Screens = {
     {name: 'Signup', component: Signup},
     {name: 'Login', component: Login},
     {name: 'Verification', component: Verification},
-    // {name: 'DrawerNav', component: DrawerNav},
   ],
-  AUTHENTICATED: [
-    {name: 'Onboarding', component: Onboarding},
-    {name: 'Signup', component: Signup},
-    {name: 'Login', component: Login},
-    {name: 'Verification', component: Verification},
+  WALLET: [
     {name: 'DrawerNav', component: DrawerNav},
     {name: 'Tabs', component: BottomTab},
     {name: 'BudgetHome', component: BudgetHome},
@@ -61,7 +60,14 @@ const Screens = {
     {name: 'Card', component: Card},
     {name: 'Upi', component: Upi},
     {name: 'Filter', component: Filter},
-    // {name: 'Onboarding', component: Onboarding},
+    {name:"Notification",component:Notification}
+  ],
+  MARKET: [
+    {name: 'DrawerNav', component: DrawerNav},
+    {name: 'MarketHome', component: MarketHome},
+    {name: 'MarketBottomTab', component: MarketBottomTab},
+    {name: 'Profile', component: Profile},
+    {name: 'EditProfile', component: EditProfile},
 
     {name:"Notification",component:Notification}
   ],
