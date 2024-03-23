@@ -1,13 +1,17 @@
 import {View, Text, TextInput, TouchableOpacity} from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import HeadBack from '../../components/BackHeader';
 import ButtonComp from '../../components/ButtonComp';
 import {Formik} from 'formik';
 import * as yup from 'yup';
-import host from '../../constants/config';
+import host from '../../constants/host';
 import axios from 'axios';
+import ErrorModal from '../../components/Modal/ErrorModal';
 
 const Login = ({navigation}) => {
+  const [modalState, setModalState] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
+
   const validationSchema = yup.object().shape({
     email: yup
       .string()
@@ -30,13 +34,19 @@ const Login = ({navigation}) => {
       });
     } catch (err) {
       console.log('here2', err.response.data);
+      setModalState(true);
+      setModalMessage(err.response.data.message);
     }
   };
 
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
       <HeadBack title="Login" navigation={navigation} />
-
+      <ErrorModal
+        modalState={modalState}
+        hideModal={() => setModalState(false)}
+        modalMessage={modalMessage}
+      />
       <View className="m-4 mt-[4vh] ">
         <Formik
           initialValues={{email: ''}}

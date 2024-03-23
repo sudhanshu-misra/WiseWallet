@@ -5,6 +5,10 @@ import InputData from '../../../../components/Form/InputData';
 import {Button} from 'react-native-paper';
 import {globalStyles} from '../../../../constants/globalStyles';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import host from "../../../../constants/host.js"
+import axios from 'axios';
+
 export const CashForm = ({closeModal}) => {
 
   const validate = values => {
@@ -17,13 +21,36 @@ export const CashForm = ({closeModal}) => {
   };
   
 
-  const formSubmitHandler = values => {
+  const formSubmitHandler = async(values) => {
         const data = {
-          cashAmount: parseFloat(values.amount)
+          amount: parseFloat(values.amount),
+          type:"cash"
         };
-
+          //send data to backend 
+           
+          const token = await AsyncStorage.getItem('token');
+          try {
+            let config = {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            };
+          
+         const response=  await axios.post(
+              `${host.apiUrl}/api/wallet/create-wallet`,
+                data,
+              config
+            )
+           //console.log("this",response.data);
+            //response is done //
+    
+          }
+          catch(err){
+            console.log(err);
+          }
+        
         closeModal();
-        console.log(data);
+       
   };
 
   return (

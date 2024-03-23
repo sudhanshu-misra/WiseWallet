@@ -28,12 +28,9 @@ import ExpenseHome from '../screens/Dashboard/FullScreen/Expense';
 //FILTER
 import Filter from '../screens/Filter';
 
-//MARKETPLACE
-import Marketplace from '../screens/Marketplace/Marketplace';
-import Buy from '../screens/Marketplace/Buy';
-import Sell from '../screens/Marketplace/Sell';
-import MyCart from '../screens/Marketplace/MyCart';
-import Orders from '../screens/Marketplace/Orders';
+//MARKET
+import MarketBottomTab from './MarketBottomTab';
+import MarketHome from '../screens/Market/MarketHome';
 
 const Screens = {
   UNAUTHENTICATED: [
@@ -41,13 +38,8 @@ const Screens = {
     {name: 'Signup', component: Signup},
     {name: 'Login', component: Login},
     {name: 'Verification', component: Verification},
-    // {name: 'DrawerNav', component: DrawerNav},
   ],
-  AUTHENTICATED: [
-    {name: 'Onboarding', component: Onboarding},
-    {name: 'Signup', component: Signup},
-    {name: 'Login', component: Login},
-    {name: 'Verification', component: Verification},
+  WALLET: [
     {name: 'DrawerNav', component: DrawerNav},
     {name: 'Tabs', component: BottomTab},
     {name: 'BudgetHome', component: BudgetHome},
@@ -62,12 +54,13 @@ const Screens = {
     {name: 'Card', component: Card},
     {name: 'Upi', component: Upi},
     {name: 'Filter', component: Filter},
-    {name: 'Marketplace', component: Marketplace},
-    {name: 'Buy', component: Buy},
-    {name: 'Sell', component: Sell},
-    {name: 'MyCart', component: MyCart},
-    {name: 'Orders', component: Orders},
-    // {name: 'Onboarding', component: Onboarding},
+  ],
+  MARKET: [
+    {name: 'DrawerNav', component: DrawerNav},
+    {name: 'MarketHome', component: MarketHome},
+    {name: 'MarketBottomTab', component: MarketBottomTab},
+    {name: 'Profile', component: Profile},
+    {name: 'EditProfile', component: EditProfile},
   ],
 };
 

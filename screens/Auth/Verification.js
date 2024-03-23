@@ -1,17 +1,19 @@
 import {View, Text, TouchableOpacity} from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import HeadBack from '../../components/BackHeader';
 import OTPInput from '../../components/OTPInput';
 import ButtonComp from '../../components/ButtonComp';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import host from '../../constants/config';
+import host from '../../constants/host';
 import ErrorModal from '../../components/Modal/ErrorModal';
+import GlobalContext from '../../helpers/GlobalContext';
 
 const Verification = props => {
   const [code, setCode] = useState('');
   const [modalState, setModalState] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
+  const {setIsAuthenticated} = useContext(GlobalContext);
 
   const email = props.route.params.email;
   const signUpData = props.route.params.signUpData;
@@ -41,9 +43,12 @@ const Verification = props => {
       const token = res?.data?.token;
       console.log(token);
       await AsyncStorage.setItem('token', token);
+      setIsAuthenticated(true);
       props.navigation.navigate('DrawerNav');
     } catch (err) {
       console.log('here3', err);
+      setModalState(true);
+      setModalMessage(err.response.data.message);
     }
   };
 
@@ -71,6 +76,7 @@ const Verification = props => {
       console.log('here', res.data);
       const token = res.data.token;
       await AsyncStorage.setItem('token', token);
+      setIsAuthenticated(true);
       props.navigation.navigate('DrawerNav');
     } catch (error) {
       console.log('here4', error);
