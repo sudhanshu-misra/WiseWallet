@@ -31,6 +31,7 @@
     "react-native-image-picker": "^7.1.2",
     "react-native-linear-gradient": "^2.8.3",
     "react-native-paper": "^5.12.3",
+    "react-native-picker": "^4.3.7",
     "react-native-pie": "^1.1.2",
     "react-native-pie-chart": "^3.0.2",
     "react-native-popup-menu": "^0.16.1",
