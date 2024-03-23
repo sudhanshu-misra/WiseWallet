@@ -5,7 +5,7 @@ import {COLORS} from '../../constants/theme';
 import DashBoardIcons from './DashBoardIcons';
 import GoalPiggyIcon from './GoalPiggyIcon ';
 
-const DashBoardSharedUI = ({name, icon , onClick}) => {
+const DashBoardSharedUI = ({name, icon , onClick , data}) => {
  let displayedIcon =   <DashBoardIcons icon={icon}></DashBoardIcons>
  if(name==="Goals"){
   displayedIcon =   <GoalPiggyIcon  icon={icon}></GoalPiggyIcon>
@@ -25,12 +25,13 @@ const DashBoardSharedUI = ({name, icon , onClick}) => {
           Add new{' '}
         </Text>
       </View>
-      <View className="w-max h-auto p-4 m-5 border-[2.5px] rounded-[20px] border-slate-400 flex justify-center items-center">
+     {(!data || data?.length<0) && <View className="w-max h-auto p-4 m-5 border-[2.5px] rounded-[20px] border-slate-400 flex justify-center items-center">
        {displayedIcon}
         <Text className="text-lg text-center px-10 text-slate-400">
           Your {name} details will be displayed here
         </Text>
       </View>
+     }
     </View>
   );
 };

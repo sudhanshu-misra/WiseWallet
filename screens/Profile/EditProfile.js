@@ -35,15 +35,20 @@ const EditProfile = (props) => {
       .min(3, 'Too Short!')
       .max(50, 'Too Long!')
       .required('Name is required'),
-    email: yup
-      .string()
-      .email('Invalid email format')
-      .required('Email is required'),
+    // email: yup
+    //   .string()
+    //   .email('Invalid email format')
+    //   .required('Email is required'),
     phone: yup
       .string()
       .matches(/^\d+$/, 'Phone number must be digits only')
       .length(10, 'Mobile number must be 10 digits')
       .required('phone number is required'),
+      address: yup
+       .string()
+       .min(4, 'Too Short!')
+       .max(70, 'Too Long!')
+       .required('Address is required'),
   });
 
   const editImageHandler = async () => {
@@ -114,8 +119,9 @@ const EditProfile = (props) => {
     const profileEdit = {
       profileImage: imgUrl,
       name: values.name,
-      email: values.email,
+      email: user.email,
       mobileNo: values.phone,
+      address:values.address
     };
     console.log(profileEdit);
 
@@ -181,9 +187,10 @@ const EditProfile = (props) => {
       <View className="h-max m-8">
         <Formik
           initialValues={{
-            email: user.email,
+          //  email: user.email,
             phone: user.mobileNo,
             name: user.name,
+            address:user.address
           }}
           validationSchema={validationSchema}
           onSubmit={handleEdit}>
@@ -208,7 +215,7 @@ const EditProfile = (props) => {
                   <Text className="text-red-500  mx-2">{errors.name}</Text>
                 )}
               </View>
-              <View className="mb-4">
+              {/* <View className="mb-4">
                 <Text style={styles.label}>Email :</Text>
                 <TextInput
                   style={styles.textInput}
@@ -216,11 +223,12 @@ const EditProfile = (props) => {
                   onBlur={handleBlur('email')}
                   value={values.email}
                   keyboardType="email-address"
+                  editable={false}
                 />
                 {errors.email && touched.email && (
                   <Text className="text-red-500 mt-1 mx-2">{errors.email}</Text>
                 )}
-              </View>
+              </View> */}
               <View className="mb-4">
                 <Text style={styles.label}>Phone Number :</Text>
                 <TextInput
@@ -232,6 +240,18 @@ const EditProfile = (props) => {
                 />
                 {errors.phone && touched.phone && (
                   <Text className="text-red-500 mt-1 mx-2">{errors.phone}</Text>
+                )}
+              </View>
+              <View className="mb-4">
+                <Text style={styles.label}>Address :</Text>
+                <TextInput
+                  style={styles.textInput}
+                  onChangeText={handleChange('address')}
+                  onBlur={handleBlur('address')}
+                  value={values.address}
+                />
+                {errors.address && touched.address && (
+                  <Text className="text-red-500 mt-1 mx-2">{errors.address}</Text>
                 )}
               </View>
               <View className="mt-16">
