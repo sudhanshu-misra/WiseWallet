@@ -28,6 +28,13 @@ import ExpenseHome from '../screens/Dashboard/FullScreen/Expense';
 //FILTER
 import Filter from '../screens/Filter';
 
+//MARKETPLACE
+import Marketplace from '../screens/Marketplace/Marketplace';
+import Buy from '../screens/Marketplace/Buy';
+import Sell from '../screens/Marketplace/Sell';
+import MyCart from '../screens/Marketplace/MyCart';
+import Orders from '../screens/Marketplace/Orders';
+
 const Screens = {
   UNAUTHENTICATED: [
     {name: 'Onboarding', component: Onboarding},
@@ -55,6 +62,11 @@ const Screens = {
     {name: 'Card', component: Card},
     {name: 'Upi', component: Upi},
     {name: 'Filter', component: Filter},
+    {name: 'Marketplace', component: Marketplace},
+    {name: 'Buy', component: Buy},
+    {name: 'Sell', component: Sell},
+    {name: 'MyCart', component: MyCart},
+    {name: 'Orders', component: Orders},
     // {name: 'Onboarding', component: Onboarding},
   ],
 };
