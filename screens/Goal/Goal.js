@@ -84,9 +84,12 @@ export default function GoalHome({navigation}) {
     }
   };
 
-  useEffect(async () => {
+  useEffect( () => {
+    const getdata=async()=>{
     const data = await getGoal();
     setgoalData(data.goals);
+    }
+    getdata();
   }, []);
 
   const goalHandler = () => {

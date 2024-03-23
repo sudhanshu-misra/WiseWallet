@@ -86,10 +86,13 @@ export default function BudgetHome({navigation}) {
     }
   };
 
-  useEffect(async () => {
-    const data = await getBudget();
-   // console.log(data);
-    setbudgetData(data.budgets);
+  useEffect(() => {
+ const getdata=  async()=>{
+      const data = await getBudget();
+    //   console.log(data);
+       setbudgetData(data.budgets);
+    }
+   getdata();
   }, []);
 
   const getBudget = async () => {

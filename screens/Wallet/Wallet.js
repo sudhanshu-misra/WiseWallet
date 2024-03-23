@@ -73,10 +73,13 @@ export default function WalletHome({navigation}) {
     }
   };
 
-  useEffect(async () => {
+  useEffect(() => {
+    const getdata=async()=>{
     const data = await getWallet();
        //  console.log(data);
     setwalletData(data.wallets);
+    }
+    getdata();
   }, []);
 
   const getWallet = async () => {

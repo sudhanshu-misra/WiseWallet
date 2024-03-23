@@ -11,6 +11,8 @@ import BudgetHome from '../screens/Budget/Budget';
 import GoalHome from '../screens/Goal/Goal';
 import DashboardHome from '../screens/Dashboard/Dashboard';
 import WalletHome from '../screens/Wallet/Wallet';
+
+//User Profile
 import Profile from '../screens/Profile/Profile';
 import EditProfile from '../screens/Profile/EditProfile';
 
@@ -27,6 +29,10 @@ import ExpenseHome from '../screens/Dashboard/FullScreen/Expense';
 
 //FILTER
 import Filter from '../screens/Filter';
+
+
+//Notification
+import Notification from '../screens/notification/Notification';
 
 const Screens = {
   UNAUTHENTICATED: [
@@ -56,6 +62,8 @@ const Screens = {
     {name: 'Upi', component: Upi},
     {name: 'Filter', component: Filter},
     // {name: 'Onboarding', component: Onboarding},
+
+    {name:"Notification",component:Notification}
   ],
 };
 
