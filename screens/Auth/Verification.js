@@ -70,6 +70,7 @@ const Verification = props => {
           mobileNo: signUpData.mobileNumber,
           email: signUpData.email,
           otp: code,
+          address:signUpData.address
         },
         config,
       );

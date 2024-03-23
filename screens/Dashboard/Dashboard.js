@@ -204,10 +204,14 @@ export default function DashboardHome({navigation}) {
     }
   };
 
-  useEffect(async () => {
-    const data = await getTransaction();
-   // console.log(data);
-    settransactionData(data.transactions);
+  useEffect( () => {
+    const getdata=async()=>{
+      const data = await getTransaction();
+      // console.log(data);
+       settransactionData(data.transactions);
+    }
+    getdata();
+   
   }, []);
 
   const getTransaction = async () => {
