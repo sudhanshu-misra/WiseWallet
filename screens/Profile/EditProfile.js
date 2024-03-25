@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useContext} from 'react';
 import {
   View,
   Text,
@@ -18,8 +18,12 @@ import {launchImageLibrary} from 'react-native-image-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import host from "../../constants/host.js"
 import axios from 'axios';
+import GlobalContext from '../../helpers/GlobalContext.js';
+
 
 const EditProfile = (props) => {
+  const {setProfileData}=useContext(GlobalContext);
+
   const user =props.route.params.user;
   console.log(user);
 
@@ -141,6 +145,7 @@ const EditProfile = (props) => {
         )
     
         if(response.data.updatedUser){
+          setProfileData(response.data.updatedUser);
           SetstatusVisible({visibility: true, modaltype: 'success'});
         }
       }
