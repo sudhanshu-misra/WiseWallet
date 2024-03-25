@@ -23,8 +23,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import host from '../../constants/host.js';
 import axios from 'axios';
 
-
-
 export default function WalletHome({navigation}) {
   const [isModalVisible, SetModalVisible] = useState(false);
   const [statusVisible, SetstatusVisible] = useState({
@@ -45,7 +43,7 @@ export default function WalletHome({navigation}) {
 
     setwalletData(data.wallets);
 
-   //  console.log(" fetched wallet data : ",data.wallets);
+    //  console.log(" fetched wallet data : ",data.wallets);
 
     //staus modal should not be here as it will always receives the data and show success status
     if (data) {
@@ -58,11 +56,7 @@ export default function WalletHome({navigation}) {
   };
 
   useEffect(() => {
-    const data = getWallet();
-    //  console.log(data);
-    setwalletData(data.wallets);
-    }
-    getdata();
+    getWallet();
   }, []);
 
   const getWallet = async () => {
@@ -77,50 +71,48 @@ export default function WalletHome({navigation}) {
         `${host.apiUrl}/api/wallet/get-wallets`,
         config,
       );
-      return response.data;
+      setwalletData(response.data.wallets);
     } catch (error) {
       console.log(error);
     }
   };
 
+  //console.log(walletData);
 
+  let card = [];
+  let paytm = [];
+  let paytm_amount = 0;
+  let gpay = [];
+  let gpay_amount = 0;
+  let phonepe = [];
+  let phonepe_amount = 0;
+  let cash_amount = 0;
 
-      //console.log(walletData);
+  if (walletData.length > 0) {
+    //Cash
+    cash_amount = walletData
+      ?.filter(item => item.type === 'cash')
+      .reduce((acc, item) => acc + item.amount, 0);
 
-let card=[];
-let paytm =[];
-let paytm_amount=0 
-let gpay=[]
-let gpay_amount=0
-let phonepe=[]
-let phonepe_amount=0
-let cash_amount=0;
+    //Upi
+    let upi = walletData?.filter(item => item.type === 'upi');
 
-         if(walletData.length>0){
-                  //Cash
-      cash_amount= walletData?.filter((item)=>item.type==="cash")
-      .reduce((acc,item)=>acc+item.amount,0);
+    phonepe = upi?.filter(item => item.walletCategory === 'Phonepe');
+    phonepe_amount = phonepe.reduce((acc, item) => acc + item.amount, 0);
 
-//Upi
-let upi=walletData?.filter((item)=>item.type==="upi");
+    gpay = upi?.filter(item => item.walletCategory === 'Gpay');
+    gpay_amount = gpay.reduce((acc, item) => acc + item.amount, 0);
 
- phonepe=upi?.filter((item)=>item.walletCategory==="Phonepe");
- phonepe_amount=phonepe.reduce((acc,item)=>acc+item.amount,0);
+    paytm = upi?.filter(item => item.walletCategory === 'Paytm');
+    paytm_amount = paytm.reduce((acc, item) => acc + item.amount, 0);
 
- gpay=upi?.filter((item)=>item.walletCategory==="Gpay");
- gpay_amount=gpay.reduce((acc,item)=>acc+item.amount,0);
-
- paytm=upi?.filter((item)=>item.walletCategory==="Paytm");
- paytm_amount=paytm.reduce((acc,item)=>acc+item.amount,0);
-
-//  Card
- card=walletData?.filter((item)=>item.type==="card");
-         }
-    
+    //  Card
+    card = walletData?.filter(item => item.type === 'card');
+  }
 
   return (
     <MenuProvider>
-      <ScrollView >
+      <ScrollView>
         <View>
           <CustomHeader navigation={navigation} />
 
@@ -128,49 +120,50 @@ let upi=walletData?.filter((item)=>item.type==="upi");
             name="Payment Methods"
             icon="credit-card"
             onClick={walletHandler}
-            data={walletData}
-            ></DashboardSharedUI>
+            data={walletData}></DashboardSharedUI>
 
-      <View className=" mt-5 h-full  px-10 flex ">
-          {/* wallet data here */}
-        {/* Cash */}
-         <View className="h-max border-2 rounded-xl p-5 mt-4 bg-white">
-               <Text className="text-lg text-black">Cash</Text>
-               <Text className="text-lg">Amount : Rs.{cash_amount}</Text>
-         </View>
-          {/*UPI */}
-           <View className="h-max border-2 rounded-xl p-5 mt-4  bg-white">
-               <Text className="text-lg text-black">Upi</Text>
-               <View className="mt-1"> 
-               <View className="border-2 rounded-xl px-3 py-1 mt-[8px] ">
-               <Text className="text-lg text-black">Gpay</Text>
-               <Text className="text-lg">Amount : Rs.{gpay_amount}</Text>
-               </View>
-               <View className="border-2 rounded-xl px-3 py-1 mt-[8px]">
-               <Text className="text-lg text-black">Phonepe</Text>
-               <Text className="text-lg">Amount : Rs.{phonepe_amount}</Text>
-               </View>
-               <View className="border-2 rounded-xl px-3 py-1 mt-[8px]">
-               <Text className="text-lg text-black">Paytm</Text>
-               <Text className="text-lg">Amount : Rs.{paytm_amount}</Text>
-               </View>
-             </View>
-           </View>
-         {/*Card  */}
-         {
-          card.map((item)=>{
-           return(<View key={item._id} className="h-max border-2 rounded-xl p-5 mt-4  bg-white">
-               <Text className="text-lg text-black">Card</Text>
-               <Text className="text-lg">Bank name :{item.bankName}</Text> 
-               <Text className="text-lg">Card number :{item.cardNumber}</Text> 
-               <Text className="text-lg">Amount : Rs.{item.amount}</Text> 
-               <Text className="text-lg">Expiry : 04/26</Text> 
-         </View>)
-          })
-         }
-        
-
-      </View>
+          <View className=" mt-5 h-full  px-10 flex ">
+            {/* wallet data here */}
+            {/* Cash */}
+            <View className="h-max border-2 rounded-xl p-5 mt-4 bg-white">
+              <Text className="text-lg text-black">Cash</Text>
+              <Text className="text-lg">Amount : Rs.{cash_amount}</Text>
+            </View>
+            {/*UPI */}
+            <View className="h-max border-2 rounded-xl p-5 mt-4  bg-white">
+              <Text className="text-lg text-black">Upi</Text>
+              <View className="mt-1">
+                <View className="border-2 rounded-xl px-3 py-1 mt-[8px] ">
+                  <Text className="text-lg text-black">Gpay</Text>
+                  <Text className="text-lg">Amount : Rs.{gpay_amount}</Text>
+                </View>
+                <View className="border-2 rounded-xl px-3 py-1 mt-[8px]">
+                  <Text className="text-lg text-black">Phonepe</Text>
+                  <Text className="text-lg">Amount : Rs.{phonepe_amount}</Text>
+                </View>
+                <View className="border-2 rounded-xl px-3 py-1 mt-[8px]">
+                  <Text className="text-lg text-black">Paytm</Text>
+                  <Text className="text-lg">Amount : Rs.{paytm_amount}</Text>
+                </View>
+              </View>
+            </View>
+            {/*Card  */}
+            {card.map(item => {
+              return (
+                <View
+                  key={item._id}
+                  className="h-max border-2 rounded-xl p-5 mt-4  bg-white">
+                  <Text className="text-lg text-black">Card</Text>
+                  <Text className="text-lg">Bank name :{item.bankName}</Text>
+                  <Text className="text-lg">
+                    Card number :{item.cardNumber}
+                  </Text>
+                  <Text className="text-lg">Amount : Rs.{item.amount}</Text>
+                  <Text className="text-lg">Expiry : 04/26</Text>
+                </View>
+              );
+            })}
+          </View>
 
           <Modal
             modalState={isModalVisible}
@@ -197,10 +190,7 @@ let upi=walletData?.filter((item)=>item.type==="upi");
               }
               formData={walletData}></StatusModal>
           )}
-
-      </View>
-
-
+        </View>
       </ScrollView>
     </MenuProvider>
   );
@@ -221,13 +211,8 @@ const styles = StyleSheet.create({
   },
 });
 
-
-
-
-
-
-
-          {/* <Text
+{
+  /* <Text
             style={{
               textAlign: 'center',
               fontWeight: 'bold',
@@ -309,9 +294,11 @@ const styles = StyleSheet.create({
             Balance:{' '}
             <Text style={{color: 'green'}}>Rs {cardDetails.balance}</Text>
           </Text>
-        </View> */}
+        </View> */
+}
 
-        {/*  
+{
+  /*  
 <View style={{ flexDirection: 'column', justifyContent: 'space-between', paddingHorizontal: 7 }}>
             <View style={{ flex: 1, height: 70, padding: 22, margin: 8, borderWidth: 1.5, borderColor: '#6B7280', flexDirection: 'row', alignItems: 'center' }}>
               <Text style={styles.itemText}>Item</Text>
@@ -354,8 +341,10 @@ const styles = StyleSheet.create({
   <TouchableOpacity onPress={() => navigation.navigate('Card')} style={{ backgroundColor: 'white', padding: 3, borderRadius: 5 }}>
             <Text style={{ color: 'blue', fontWeight: 'bold', textAlign: 'center'}}>View All</Text>
           </TouchableOpacity>
-</View> */}
-{/* 
+</View> */
+}
+{
+  /* 
         <Text
           style={{
             textAlign: 'center',
@@ -387,8 +376,10 @@ const styles = StyleSheet.create({
             marginBottom: 10,
           }}>
           Balance: Rs {upiDetails.balance}
-        </Text> */}
-        {/*  
+        </Text> */
+}
+{
+  /*  
 <View style={{ flexDirection: 'column', justifyContent: 'space-between', paddingHorizontal: 7 }}>
             <View style={{ flex: 1, height: 70, padding: 22, margin: 8, borderWidth: 1.5, borderColor: '#6B7280', flexDirection: 'row', alignItems: 'center' }}>
               <Text style={styles.itemText}>Item</Text>
@@ -433,4 +424,5 @@ const styles = StyleSheet.create({
             <Text style={{ color: 'blue', fontWeight: 'bold', textAlign: 'center'}}>View All</Text>
           </TouchableOpacity>
 </View>
-       */}
+       */
+}

@@ -78,17 +78,14 @@ export default function GoalHome({navigation}) {
         `${host.apiUrl}/api/goal/get-goals`,
         config,
       );
-      return response.data;
+      setgoalData(response.data.goals);
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-    const data = getGoal();
-    setgoalData(data.goals);
-    }
-    getdata();
+    getGoal();
   }, []);
 
   const goalHandler = () => {
