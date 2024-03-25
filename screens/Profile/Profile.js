@@ -1,5 +1,5 @@
 import {View, Image, StyleSheet, TouchableOpacity} from 'react-native';
-import React,{useState,useEffect} from 'react';
+import React,{useState,useEffect,useContext} from 'react';
 import HeadBack from '../../components/BackHeader';
 import {COLORS} from '../../constants/theme';
 import UserProfile from './UserProfile';
@@ -8,43 +8,47 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import host from "../../constants/host.js"
 import axios from 'axios';
 
+//context api
+import GlobalContext from '../../helpers/GlobalContext.js';
 
 
 const Profile = ({navigation}) => {
   
-  const [profileData, setProfileData] = useState( );
+//  const [profileData, setProfileData] = useState();
+
+const {profileData}=useContext(GlobalContext);
 
   const handleSubmit = () => {
         navigation.navigate('EditProfile',{user:profileData});
   };
            
-   useEffect(()=>{
-          getProfile();
-   },[])
+  // useEffect(()=>{
+  //         getProfile();
+  //  },[])
 
-  const getProfile = async () => {
-    const token = await AsyncStorage.getItem('token');
-    try {
-      let config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
-      const response = await axios.get(
-        `${host.apiUrl}/api/user/profile`,
-        config,
-      );
-      console.log(response.data);
-      if (response.data.user) {
-        console.log('user found');
-        setProfileData(response.data.user);
-      } else {
-        console.log('user not found');
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  // const getProfile = async () => {
+  //   const token = await AsyncStorage.getItem('token');
+  //   try {
+  //     let config = {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     };
+  //     const response = await axios.get(
+  //       `${host.apiUrl}/api/user/profile`,
+  //       config,
+  //     );
+  //     console.log(response.data);
+  //     if (response.data.user) {
+  //       console.log('user found');
+  //       setProfileData(response.data.user);
+  //     } else {
+  //       console.log('user not found');
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
 
   return (
     <View className="h-full">

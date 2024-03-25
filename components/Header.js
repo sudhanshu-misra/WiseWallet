@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
+import {View, Text, TouchableOpacity , Pressable} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {COLORS} from '../constants/theme';
 // import {Header, IconButton, Drawer} from 'react-native-paper';
@@ -26,7 +26,9 @@ export default function CustomHeader({navigation}) {
         <Text className="text-black text-lg">{formattedDate}</Text>
       </View>
       <View>
+       <Pressable onPress={()=>navigation.navigate("Notification")}>
         <Icon name="notifications-none" size={30} color={COLORS.black} />
+        </Pressable>
       </View>
     </View>
   );

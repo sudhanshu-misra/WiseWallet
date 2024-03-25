@@ -1,32 +1,35 @@
 //Form Categories
 
 export const expenseIcon = [
-  {data: 'Transport'},
-  {data: 'Food'},
-  {data: 'Clothing'},
-  {data: 'Entertainment'},
-  {data: 'Others'},
+  'Transport',
+  'Food',
+  'Clothing',
+  'Entertainment',
+  'Others',
 ];
 
-export const incomeIcon = [
-  {data: 'Transport'},
-  {data: 'Food'},
-  {data: 'Clothing'},
-  {data: 'Entertainment'},
-  {data: 'Others'},
-];
+export const incomeIcon = ['Salary', 'Transport', 'Restaurant', 'Grocery'];
 
-export const accountIcon = [
-  {data: 'account1'},
-  {data: 'account2'},
-  {data: 'account3'},
-];
+export const accountIcon = ['Cash', 'Upi', 'Card'];
 
-export const goalIcon = [
-  {data: 'buy Item1'},
-  {data: 'buy Item2'},
-  {data: 'buy Item3'},
-  {data: 'buy Item4'},
-];
+export const goalIcon = ['buy Item1', 'buy Item2', 'buy Item3', 'buy Item4'];
 
-export const walletIcon = [{data: 'Gpay'}, {data: 'Phonepe'}, {data: 'Paytm'}];
+export const walletIcon = ['Gpay', 'Phonepe', 'Paytm'];
+
+export const productCategory = [
+  'Textbooks',
+  'Electronics',
+  'Furniture',
+  'Clothing',
+  'Appliances',
+  'Sports Equipment',
+  'Stationery',
+  'Musical Instruments',
+  'Kitchenware',
+  'Books',
+  'Art Supplies',
+  'Room Decor',
+  'Fitness & Wellness',
+  'Tickets & Events',
+  'Miscellaneous',
+];

@@ -87,6 +87,8 @@ export default function GoalHome({navigation}) {
   useEffect(() => {
     const data = getGoal();
     setgoalData(data.goals);
+    }
+    getdata();
   }, []);
 
   const goalHandler = () => {
