@@ -15,6 +15,8 @@ const MarketHome = ({ navigation }) => {
 
 const {cartData, setcartData} = useContext(GlobalContext);
 
+const {orderData, setorderData} = useContext(GlobalContext);
+
   useEffect(() => {
     // Simulated sample data
     const sampleProducts = [
@@ -49,8 +51,18 @@ const {cartData, setcartData} = useContext(GlobalContext);
   };
 
   const handleBuyNow = (product) => {
-    navigation.navigate('Buy', { product });  
-  }
+    const itemExists = cartData.some((item) => item.id === product.id);
+    if (!itemExists) 
+    console.log('Product has been placed for order.', product);{
+      setorderData([...orderData, product]);
+      setNotificationMessage(`${product.name} added to your cart.`);
+      setShowNotification(true);
+
+      setTimeout(() => {
+        setShowNotification(false);
+      }, 2000);
+    }
+  };
   
   const renderProductItem = ({ item, index }) => (
     <View style={styles.productContainer}>

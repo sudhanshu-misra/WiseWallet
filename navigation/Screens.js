@@ -13,6 +13,8 @@ import DashboardHome from '../screens/Dashboard/Dashboard';
 import WalletHome from '../screens/Wallet/Wallet';
 
 //User Profile
+
+//User Profile
 import Profile from '../screens/Profile/Profile';
 import EditProfile from '../screens/Profile/EditProfile';
 
@@ -33,6 +35,7 @@ import Filter from '../screens/Filter';
 //MARKET
 import MarketBottomTab from './MarketBottomTab';
 import MarketHome from '../screens/Market/MarketHome';
+import Payment from '../screens/Market/Payment.js';
 
 
 //Notification
@@ -68,6 +71,7 @@ const Screens = {
     {name: 'MarketBottomTab', component: MarketBottomTab},
     {name: 'Profile', component: Profile},
     {name: 'EditProfile', component: EditProfile},
+    {name: 'Payment', component: Payment},
 
     {name:"Notification",component:Notification}
   ],

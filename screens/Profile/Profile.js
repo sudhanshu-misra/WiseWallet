@@ -1,4 +1,4 @@
-import {View, Image, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Image, StyleSheet, TouchableOpacity,ScrollView} from 'react-native';
 import React,{useState,useEffect,useContext} from 'react';
 import HeadBack from '../../components/BackHeader';
 import {COLORS} from '../../constants/theme';
@@ -51,7 +51,7 @@ const {profileData}=useContext(GlobalContext);
   // }
 
   return (
-    <View className="h-full">
+    <ScrollView className="h-full">
       <View className="h-40" style={{backgroundColor: COLORS.primary}}>
         <HeadBack navigation={navigation} profile={true} title="Profile" />
         <View className="flex items-center">
@@ -77,7 +77,7 @@ const {profileData}=useContext(GlobalContext);
           <ButtonComp title={'Edit Profile'} />
         </TouchableOpacity>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
