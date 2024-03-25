@@ -24,6 +24,11 @@ const Signup = props => {
       .matches(/^\d+$/, 'Mobile number must be digits only')
       .length(10, 'Mobile number must be 10 digits')
       .required('mobile number is required'),
+      address: yup
+      .string()
+      .min(4, 'Too Short!')
+      .max(60, 'Too Long!')
+      .required('Address is required'),
   });
 
   const [modalState, setModalState] = useState(false);
@@ -35,6 +40,7 @@ const Signup = props => {
       name: values.name,
       email: values.email,
       mobileNumber: values.mobileNumber,
+      address:values.address
     };
     console.log(signUpData);
 
@@ -75,7 +81,7 @@ const Signup = props => {
       <HeadBack title="Sign Up" navigation={props.navigation} />
       <View className="m-4 mt-[4vh] ">
         <Formik
-          initialValues={{email: '', mobileNumber: '', name: ''}}
+          initialValues={{email: '', mobileNumber: '', name: '',address:''}}
           validationSchema={validationSchema}
           onSubmit={handleSignUp}>
           {({
@@ -131,6 +137,26 @@ const Signup = props => {
                 {errors.mobileNumber && touched.mobileNumber && (
                   <Text className="text-red-500 mt-1 mx-2">
                     {errors.mobileNumber}
+                  </Text>
+                )}
+              </View>
+
+              <View>
+                <TextInput
+                  placeholder="Address"
+                  onChangeText={handleChange('address')}
+                  onBlur={handleBlur('address')}
+                  value={values.address}
+                  
+                  className={`border-[1px] border-gray-300 p-3 rounded-xl ${
+                    errors.address &&
+                    touched.address &&
+                    `border-red-500`
+                  }`}
+                />
+                {errors.address && touched.address && (
+                  <Text className="text-red-500 mt-1 mx-2">
+                    {errors.address}
                   </Text>
                 )}
               </View>

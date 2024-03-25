@@ -21,6 +21,8 @@ const UserProfile = ({user}) => {
       <TextInput style={styles.textInput} value={user?.email} editable={false} />
       <Text style={styles.label}>Phone Number :</Text>
       <TextInput style={styles.textInput} value={user?.mobileNo} editable={false} />
+      <Text style={styles.label}>Address :</Text>
+      <TextInput style={styles.textInput} value={user?.address} editable={false} />
     </View>
   );
 };

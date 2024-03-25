@@ -72,8 +72,8 @@ export const IncomeForm = ({closeModal}) => {
              config
            )
           
-           //response is done //
-          //   console.log("cre",response.data)
+          //  response is done //
+            console.log("cre",response.data)
          }
          catch(err){
            console.log(err);

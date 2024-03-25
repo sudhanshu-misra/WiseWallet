@@ -85,36 +85,37 @@ const DrawerContent = props => {
 
   const {isMarket, setIsMarket, setIsAuthenticated} = useContext(GlobalContext);
 
-  const [profileData, setProfileData] = useState({});
+//  const [profileData, setProfileData] = useState({});
+const {profileData,setProfileData} = useContext(GlobalContext);
 
-  const getProfile = async () => {
-    const token = await AsyncStorage.getItem('token');
+  // const getProfile = async () => {
+  //   const token = await AsyncStorage.getItem('token');
 
-    try {
-      let config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
-      const response = await axios.get(
-        `${host.apiUrl}/api/user/profile`,
-        config,
-      );
-      console.log(response.data);
-      if (response.data.user) {
-        console.log('user found');
-        setProfileData(response.data.user);
-      } else {
-        console.log('user not found');
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  //   try {
+  //     let config = {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     };
+  //     const response = await axios.get(
+  //       `${host.apiUrl}/api/user/profile`,
+  //       config,
+  //     );
+  //     console.log(response.data);
+  //     if (response.data.user) {
+  //       console.log('user found');
+  //       setProfileData(response.data.user);
+  //     } else {
+  //       console.log('user not found');
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
-  useEffect(() => {
-    getProfile();
-  }, []);
+  // useEffect(() => {
+  //   getProfile();
+  // }, []);
 
   return (
     <View style={{flex: 1}}>
@@ -126,7 +127,7 @@ const DrawerContent = props => {
               <View className="flex flex-row mt-15">
                 <Avatar.Image
                   source={
-                    profileData.profileImage
+                    profileData?.profileImage
                       ? {uri: profileData.profileImage}
                       : userIcon
                   }

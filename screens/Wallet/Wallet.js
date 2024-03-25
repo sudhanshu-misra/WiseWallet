@@ -23,24 +23,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import host from '../../constants/host.js';
 import axios from 'axios';
 
-const exampleDate = '2024-03-05';
-// CASH
-const balance = 320;
-
-// CARD
-const cardDetails = {
-  bankname: 'State Bank of India',
-  cardnumber: '1234 5678 9012 3456',
-  expirydate: '12/25',
-  balance: 5000,
-};
-
-//UPI-WALLET
-const upiDetails = {
-  app: 'Gpay',
-  balance: 3000,
-};
-
 export default function WalletHome({navigation}) {
   const [isModalVisible, SetModalVisible] = useState(false);
   const [statusVisible, SetstatusVisible] = useState({
@@ -73,10 +55,8 @@ export default function WalletHome({navigation}) {
     }
   };
 
-  useEffect(async () => {
-    const data = await getWallet();
-       //  console.log(data);
-    setwalletData(data.wallets);
+  useEffect(() => {
+    getWallet();
   }, []);
 
   const getWallet = async () => {
@@ -91,22 +71,99 @@ export default function WalletHome({navigation}) {
         `${host.apiUrl}/api/wallet/get-wallets`,
         config,
       );
-      return response.data;
+      setwalletData(response.data.wallets);
     } catch (error) {
       console.log(error);
     }
   };
 
+  //console.log(walletData);
+
+  let card = [];
+  let paytm = [];
+  let paytm_amount = 0;
+  let gpay = [];
+  let gpay_amount = 0;
+  let phonepe = [];
+  let phonepe_amount = 0;
+  let cash_amount = 0;
+
+  if (walletData.length > 0) {
+    //Cash
+    cash_amount = walletData
+      ?.filter(item => item.type === 'cash')
+      .reduce((acc, item) => acc + item.amount, 0);
+
+    //Upi
+    let upi = walletData?.filter(item => item.type === 'upi');
+
+    phonepe = upi?.filter(item => item.walletCategory === 'Phonepe');
+    phonepe_amount = phonepe.reduce((acc, item) => acc + item.amount, 0);
+
+    gpay = upi?.filter(item => item.walletCategory === 'Gpay');
+    gpay_amount = gpay.reduce((acc, item) => acc + item.amount, 0);
+
+    paytm = upi?.filter(item => item.walletCategory === 'Paytm');
+    paytm_amount = paytm.reduce((acc, item) => acc + item.amount, 0);
+
+    //  Card
+    card = walletData?.filter(item => item.type === 'card');
+  }
+
   return (
     <MenuProvider>
-      <ScrollView style={{backgroundColor: 'white'}}>
+      <ScrollView>
         <View>
           <CustomHeader navigation={navigation} />
 
           <DashboardSharedUI
             name="Payment Methods"
             icon="credit-card"
-            onClick={walletHandler}></DashboardSharedUI>
+            onClick={walletHandler}
+            data={walletData}></DashboardSharedUI>
+
+          <View className=" mt-5 h-full  px-10 flex ">
+            {/* wallet data here */}
+            {/* Cash */}
+            <View className="h-max border-2 rounded-xl p-5 mt-4 bg-white">
+              <Text className="text-lg text-black">Cash</Text>
+              <Text className="text-lg">Amount : Rs.{cash_amount}</Text>
+            </View>
+            {/*UPI */}
+            <View className="h-max border-2 rounded-xl p-5 mt-4  bg-white">
+              <Text className="text-lg text-black">Upi</Text>
+              <View className="mt-1">
+                <View className="border-2 rounded-xl px-3 py-1 mt-[8px] ">
+                  <Text className="text-lg text-black">Gpay</Text>
+                  <Text className="text-lg">Amount : Rs.{gpay_amount}</Text>
+                </View>
+                <View className="border-2 rounded-xl px-3 py-1 mt-[8px]">
+                  <Text className="text-lg text-black">Phonepe</Text>
+                  <Text className="text-lg">Amount : Rs.{phonepe_amount}</Text>
+                </View>
+                <View className="border-2 rounded-xl px-3 py-1 mt-[8px]">
+                  <Text className="text-lg text-black">Paytm</Text>
+                  <Text className="text-lg">Amount : Rs.{paytm_amount}</Text>
+                </View>
+              </View>
+            </View>
+            {/*Card  */}
+            {card.map(item => {
+              return (
+                <View
+                  key={item._id}
+                  className="h-max border-2 rounded-xl p-5 mt-4  bg-white">
+                  <Text className="text-lg text-black">Card</Text>
+                  <Text className="text-lg">Bank name :{item.bankName}</Text>
+                  <Text className="text-lg">
+                    Card number :{item.cardNumber}
+                  </Text>
+                  <Text className="text-lg">Amount : Rs.{item.amount}</Text>
+                  <Text className="text-lg">Expiry : 04/26</Text>
+                </View>
+              );
+            })}
+          </View>
 
           <Modal
             modalState={isModalVisible}
@@ -133,8 +190,29 @@ export default function WalletHome({navigation}) {
               }
               formData={walletData}></StatusModal>
           )}
+        </View>
+      </ScrollView>
+    </MenuProvider>
+  );
+}
 
-          <Text
+const styles = StyleSheet.create({
+  dateText: {
+    fontSize: 14,
+    color: '#666',
+    marginTop: 7,
+    marginLeft: -35,
+  },
+  itemText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#333',
+    marginTop: -15,
+  },
+});
+
+{
+  /* <Text
             style={{
               textAlign: 'center',
               fontWeight: 'bold',
@@ -156,49 +234,7 @@ export default function WalletHome({navigation}) {
             Balance: Rs {balance}
           </Text>
 
-          {/* <View style={{ flexDirection: 'column', justifyContent: 'space-between', paddingHorizontal: 7 }}>
-            <View style={{ flex: 1, height: 70, padding: 22, margin: 8, borderWidth: 1.5, borderColor: '#6B7280', flexDirection: 'row', alignItems: 'center' }}>
-              <Text style={styles.itemText}>Item</Text>
-              <Text style={styles.dateText}>{exampleDate}</Text>
-              <Menu style={{ marginLeft: 'auto' }}>
-                <MenuTrigger>
-                  <MaterialIcons name="more-vert" size={20} color="black" />
-                </MenuTrigger>
-                <MenuOptions>
-                  <MenuOption onSelect={() => console.log('Option 1')}>
-                    <Text>Edit</Text>
-                  </MenuOption>
-                  <MenuOption onSelect={() => console.log('Option 2')}>
-                    <Text>Delete</Text>
-                  </MenuOption>
-                </MenuOptions>
-              </Menu>
-            </View>
-          </View> */}
-          {/* 
-          <View style={{ flexDirection: 'column', justifyContent: 'space-between', paddingHorizontal: 7 }}>
-            <View style={{ flex: 1, height: 70, padding: 22, margin: 8, borderWidth: 1.5, borderColor: '#6B7280', flexDirection: 'row', alignItems: 'center' }}>
-              <Text style={styles.itemText}>Item</Text>
-              <Text style={styles.dateText}>{exampleDate}</Text>
-              <Menu style={{ marginLeft: 'auto' }}>
-                <MenuTrigger>
-                  <MaterialIcons name="more-vert" size={20} color="black" />
-                </MenuTrigger>
-                <MenuOptions>
-                  <MenuOption onSelect={() => console.log('Option 1')}>
-                    <Text>Edit</Text>
-                  </MenuOption>
-                  <MenuOption onSelect={() => console.log('Option 2')}>
-                    <Text>Delete</Text>
-                  </MenuOption>
-                </MenuOptions>
-              </Menu>
-            </View>
-          </View> */}
 
-          {/* <TouchableOpacity onPress={() => navigation.navigate('Cash')} style={{ backgroundColor: 'white', padding: 3, borderRadius: 5 }}>
-            <Text style={{ color: 'blue', fontWeight: 'bold', textAlign: 'center' }}>View All</Text>
-          </TouchableOpacity> */}
         </View>
         <Text
           style={{
@@ -258,9 +294,11 @@ export default function WalletHome({navigation}) {
             Balance:{' '}
             <Text style={{color: 'green'}}>Rs {cardDetails.balance}</Text>
           </Text>
-        </View>
+        </View> */
+}
 
-        {/*  
+{
+  /*  
 <View style={{ flexDirection: 'column', justifyContent: 'space-between', paddingHorizontal: 7 }}>
             <View style={{ flex: 1, height: 70, padding: 22, margin: 8, borderWidth: 1.5, borderColor: '#6B7280', flexDirection: 'row', alignItems: 'center' }}>
               <Text style={styles.itemText}>Item</Text>
@@ -303,8 +341,10 @@ export default function WalletHome({navigation}) {
   <TouchableOpacity onPress={() => navigation.navigate('Card')} style={{ backgroundColor: 'white', padding: 3, borderRadius: 5 }}>
             <Text style={{ color: 'blue', fontWeight: 'bold', textAlign: 'center'}}>View All</Text>
           </TouchableOpacity>
-</View> */}
-
+</View> */
+}
+{
+  /* 
         <Text
           style={{
             textAlign: 'center',
@@ -336,8 +376,10 @@ export default function WalletHome({navigation}) {
             marginBottom: 10,
           }}>
           Balance: Rs {upiDetails.balance}
-        </Text>
-        {/*  
+        </Text> */
+}
+{
+  /*  
 <View style={{ flexDirection: 'column', justifyContent: 'space-between', paddingHorizontal: 7 }}>
             <View style={{ flex: 1, height: 70, padding: 22, margin: 8, borderWidth: 1.5, borderColor: '#6B7280', flexDirection: 'row', alignItems: 'center' }}>
               <Text style={styles.itemText}>Item</Text>
@@ -382,23 +424,5 @@ export default function WalletHome({navigation}) {
             <Text style={{ color: 'blue', fontWeight: 'bold', textAlign: 'center'}}>View All</Text>
           </TouchableOpacity>
 </View>
-       */}
-      </ScrollView>
-    </MenuProvider>
-  );
+       */
 }
-
-const styles = StyleSheet.create({
-  dateText: {
-    fontSize: 14,
-    color: '#666',
-    marginTop: 7,
-    marginLeft: -35,
-  },
-  itemText: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#333',
-    marginTop: -15,
-  },
-});

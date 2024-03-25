@@ -30,7 +30,7 @@ const IconPicker = ({getIcon,iconError,iconData,title,label}) => {
       onValueChange={iconPickHandler}
     >
       <Picker.Item label={label} value="" />
-      {iconData.map((icon,index)=> <Picker.Item key={index} label={icon.data} value={icon.data}  />)}
+      {iconData.map((icon,index)=> <Picker.Item key={index} label={icon} value={icon}  />)}
     </Picker>
     </View>
     {  iconError!='' && role=='' && <Text className="text-red-700 ml-5">{iconError}</Text> } 

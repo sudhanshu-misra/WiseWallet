@@ -10,6 +10,8 @@ import {
 import CustomHeader from '../../components/Header';
 import BudgetSharedUI from '../../components/BudgetUI/BudgetSharedUI';
 import Modal from '../../components/Modal/Modal';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import {COLORS} from '../../constants/theme.js';
 import StatusModal from '../../components/Modal/StatusModal';
 import BudgetForm from './BudgetForm/BudgetForm';
 import PieChart from 'react-native-pie-chart';
@@ -61,7 +63,7 @@ export default function BudgetHome({navigation}) {
   const [showAllItems, setShowAllItems] = useState(false);
 
   // this is the data fetched from the backend
-  const [budgetData, setbudgetData] = useState({});
+  const [budgetData, setBudgetData] = useState();
 
   const budgetHandler = () => {
     SetModalVisible(true);
@@ -86,13 +88,7 @@ export default function BudgetHome({navigation}) {
     }
   };
 
-  useEffect(async () => {
-    const data = await getBudget();
-   // console.log(data);
-    setbudgetData(data.budgets);
-  }, []);
-
-  const getBudget = async () => {
+  const getBudgetData = async () => {
     const token = await AsyncStorage.getItem('token');
     try {
       let config = {
@@ -104,14 +100,16 @@ export default function BudgetHome({navigation}) {
         `${host.apiUrl}/api/budget/get-budgets`,
         config,
       );
-      return response.data;
+      console.log(response.data);
+      setBudgetData(response.data.budgets);
+      // getGraphData();
     } catch (error) {
       console.log(error);
     }
   };
 
   const widthAndHeight = 170;
-  const series = [90, 100, 100, 100, 100, 100, 100, 100];
+  const series = [1, 99, 1, 99, 1, 99, 1, 99, 1, 99];
   // here
 
   const sliceColor = [
@@ -121,6 +119,8 @@ export default function BudgetHome({navigation}) {
     'rgba(136, 224, 28, 0.5)',
     'rgba(51, 255, 87, 1)',
     'rgba(51, 255, 87, 0.5)',
+    'rgba(175, 204, 133, 1)',
+    'rgba(175, 204, 133, 0.5)',
     'rgba(175, 204, 133, 1)',
     'rgba(175, 204, 133, 0.5)',
   ];
@@ -168,65 +168,94 @@ export default function BudgetHome({navigation}) {
   };
 
   const [graphSeries, setGraphSeries] = useState([
-    90, 90, 100, 100, 100, 100, 100, 100,
+    1, 99, 1, 99, 1, 99, 1, 99, 1, 99,
   ]);
 
-  useEffect(() => {
+  getGraphData = async () => {
     const series2 = [];
-    data.forEach(item => {
+    console.log(budgetData);
+    budgetData?.forEach(item => {
       const monthsSpendingPercentage = Math.ceil(
-        (item.monthsSpending / item.monthlyBudget) * 100,
+        (item.moneySpent / item.amount) * 100,
       );
       const rsLeftPercentage = Math.floor(
-        ((item.monthlyBudget - item.monthsSpending) / item.monthlyBudget) * 100,
+        ((item.amount - item.moneySpent) / item.amount) * 100,
       );
       series2.push(monthsSpendingPercentage, rsLeftPercentage);
     });
     console.log(series2);
     setGraphSeries(series2);
+  };
+
+  useEffect(() => {
+    getBudgetData();
   }, []);
+
+  // useEffect(() => {
+  // }, []);
 
   return (
     <ScrollView>
       <View style={styles.container}>
         <CustomHeader navigation={navigation} />
-
-        <View style={styles.chartContainer}>
-          <PieChart
-            widthAndHeight={widthAndHeight}
-            series={graphSeries ? graphSeries : series}
-            sliceColor={sliceColor}
-            coverRadius={0.45}
-            coverFill={'#FFF'}
-            doughnut={true}
+        {!budgetData ? (
+          <BudgetSharedUI
+            name="Budget"
+            icon="track-changes"
+            onClick={budgetHandler}
           />
-          <View style={styles.centerTextContainer}>
-            <Text style={styles.centerText}>Budget</Text>
-            <Text style={styles.totalAmountText}>Rs {totalAmount}</Text>
-          </View>
-        </View>
-        <View style={styles.flatListContainer}>
-          <FlatList
-            data={data}
-            renderItem={renderItem}
-            keyExtractor={item => item.key}
-            style={styles.flatList}
-          />
-          {data.length > 2 && (
-            <TouchableOpacity
-              onPress={toggleItems}
-              style={styles.viewAllButton}>
-              <Text style={styles.viewAllText}>
-                {showAllItems ? 'View Less' : 'View All'}
+        ) : (
+          <View>
+            <View style={styles.chartContainer}>
+              <PieChart
+                widthAndHeight={widthAndHeight}
+                series={graphSeries ? graphSeries : series}
+                sliceColor={sliceColor}
+                coverRadius={0.45}
+                coverFill={'#FFF'}
+                doughnut={true}
+              />
+              <View style={styles.centerTextContainer}>
+                <Text style={styles.centerText}>Budget</Text>
+                <Text style={styles.totalAmountText}>Rs {totalAmount}</Text>
+              </View>
+            </View>
+            <View className="mx-7 flex flex-row justify-between">
+              <Text className="text-xl text-black">Budget</Text>
+              <Text
+                className="text-lg"
+                style={{color: `${COLORS.neutral}`}}
+                onPress={() => budgetHandler()}>
+                <Icon name="plus" size={16}>
+                  {' '}
+                </Icon>{' '}
+                Add new{' '}
               </Text>
-            </TouchableOpacity>
-          )}
-        </View>
-        <BudgetSharedUI
+            </View>
+            <View style={styles.flatListContainer}>
+              <FlatList
+                data={data}
+                renderItem={renderItem}
+                keyExtractor={item => item.key}
+                style={styles.flatList}
+              />
+              {data.length > 2 && (
+                <TouchableOpacity
+                  onPress={toggleItems}
+                  style={styles.viewAllButton}>
+                  <Text style={styles.viewAllText}>
+                    {showAllItems ? 'View Less' : 'View All'}
+                  </Text>
+                </TouchableOpacity>
+              )}
+            </View>
+          </View>
+        )}
+        {/* <BudgetSharedUI
           name="Budget"
           icon="track-changes"
           onClick={budgetHandler}
-        />
+        /> */}
 
         <Modal
           modalState={isModalVisible}
