@@ -127,7 +127,7 @@ const {profileData,setProfileData} = useContext(GlobalContext);
               <View className="flex flex-row mt-15">
                 <Avatar.Image
                   source={
-                    profileData.profileImage
+                    profileData?.profileImage
                       ? {uri: profileData.profileImage}
                       : userIcon
                   }
