@@ -17,6 +17,7 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isMarket, setIsMarket] = useState(false);
   const [cartData, setcartData] = useState([]);
+  const [orderData, setorderData] = useState([]);
 
   const checkAuth = async () => {
     const token = await AsyncStorage.getItem('token');
@@ -59,7 +60,7 @@ const App = () => {
   } else {
     return (
       <GlobalContextProvider
-        value={{isMarket, setIsMarket, cartData, setcartData, isAuthenticated, setIsAuthenticated}}>
+        value={{isMarket, setIsMarket, cartData, setcartData, orderData, setorderData, isAuthenticated, setIsAuthenticated}}>
         <NavigationContainer>
           <SafeAreaProvider>
             <Stack.Navigator

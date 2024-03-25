@@ -31,6 +31,7 @@ import Filter from '../screens/Filter';
 //MARKET
 import MarketBottomTab from './MarketBottomTab';
 import MarketHome from '../screens/Market/MarketHome';
+import Payment from '../screens/Market/Payment.js';
 
 const Screens = {
   UNAUTHENTICATED: [
@@ -61,6 +62,7 @@ const Screens = {
     {name: 'MarketBottomTab', component: MarketBottomTab},
     {name: 'Profile', component: Profile},
     {name: 'EditProfile', component: EditProfile},
+    {name: 'Payment', component: Payment},
   ],
 };
 
