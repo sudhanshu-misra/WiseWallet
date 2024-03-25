@@ -108,14 +108,14 @@ const cloudinaryUpload = async photo => {
   const formSubmitHandler = (values, actions) => {
   
     if (category != '') {
-
+        if(imgUrl !=''){
       const data = {
-        productImage: imgUrl,
-        name: values.name,
-        id: values.id,
+         productImage: imgUrl,
+         name: values.name,
+         studentId: values.id,
          productName: values.product,
          category:category,
-          price: parseFloat(values.price)
+         price: parseFloat(values.price)
       };
        console.log(data);
       
@@ -130,6 +130,10 @@ const cloudinaryUpload = async photo => {
 
            setImgUrl('');
       actions.resetForm();
+    }
+    else{
+      console.log("error upload image ")
+    }
     } else {
       setCategoryError('choose a category');
     }
