@@ -28,6 +28,10 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import {launchImageLibrary} from 'react-native-image-picker';
 
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import host from "../../constants/host.js"
+import axios from 'axios';
+
 const SellScreen = ({navigation}) => {
   const [categoryError, setCategoryError] = useState('');
   const [category,setCategory]=useState('');
@@ -105,7 +109,7 @@ const cloudinaryUpload = async photo => {
   };
 
   // on submittion
-  const formSubmitHandler = (values, actions) => {
+  const formSubmitHandler = async(values, actions) => {
   
     if (category != '') {
         if(imgUrl !=''){
@@ -117,11 +121,33 @@ const cloudinaryUpload = async photo => {
          category:category,
          price: parseFloat(values.price)
       };
-       console.log(data);
+      // console.log(data);
       
       
        //axios send req
-
+         //send data to backend 
+           
+         const token = await AsyncStorage.getItem('token');
+         try {
+           let config = {
+             headers: {
+               Authorization: `Bearer ${token}`,
+             },
+           };
+         
+        const response=  await axios.post(
+             `${host.apiUrl}/api/product/create-product`,
+               data,
+             config
+           )
+         // console.log(response);
+           //response is done //
+         
+         }
+         catch(err){
+           console.log(err);
+         }
+     
              
 
 
