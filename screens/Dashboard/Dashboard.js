@@ -1,4 +1,4 @@
-import React, {useState,useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   ScrollView,
@@ -14,6 +14,7 @@ import TransactionForm from './DashForm/TransactionForm';
 import StatusModal from '../../components/Modal/StatusModal';
 import {LineChart} from 'react-native-gifted-charts';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import {
   MenuProvider,
   Menu,
@@ -21,42 +22,10 @@ import {
   MenuOption,
   MenuTrigger,
 } from 'react-native-popup-menu';
-import {color} from 'react-native-reanimated';
-
+import {COLORS} from '../../constants/theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import host from '../../constants/host.js';
 import axios from 'axios';
-
-const screenWidth = Dimensions.get('window').width;
-
-const temp_data = [
-  {
-    TransactionName: 'asd',
-    TransactionDate: '2024-02-21',
-    amount: 123,
-    icon: 'Restaurant',
-  },
-];
-
-const data = [{value: 50}, {value: 80}, {value: 90}, {value: 70}];
-
-const IncomeNames = [
-  'Monthly Paycheck',
-  'Mileage Compensation',
-  'Dining Refund',
-  'Pantry Support',
-];
-
-const IncomeCategory = ['Salary', 'Transport', 'Restaurant', 'Grocery'];
-
-const ExpenseNames = [
-  'Health Supplements',
-  'Public Transit Fees',
-  'Business Meals',
-  'Household Supplies',
-];
-
-const ExpenseCategory = ['Medication', 'Transport', 'Restaurant', 'Grocery'];
 
 // Assuming ptData is your chart data for the LineChart component
 const IncomeData = [
@@ -177,8 +146,12 @@ export default function DashboardHome({navigation}) {
     visibility: false,
     modaltype: 'failed',
   });
+  const [switchGraph, setSwitchGraph] = useState(true);
+
   // this is the data fetched from the backend
-  const [transactionData, settransactionData] = useState({});
+  const [transactionData, setTransactionData] = useState([]);
+  const [incomeTransactions, setIncomeTransactions] = useState([]);
+  const [expenseTransactions, setExpenseTransactions] = useState([]);
 
   const transactionHandler = () => {
     SetModalVisible(true);
@@ -188,33 +161,21 @@ export default function DashboardHome({navigation}) {
     SetModalVisible(false);
     // Data extraction here
     //  SetstatusVisible({visibility: true, modaltype: 'loader'});
-    const data = await getTransaction();
-
-    settransactionData(data.transactions);
-
+    console.log('getting transactions');
+    getTransactions();
+    // settransactionData(data.transactions);
     //  console.log(data.transactions);
-
     //staus modal should not be here as it will always receives the data and show success status
-    if (data) {
-      //success modal
-      SetstatusVisible({visibility: true, modaltype: 'success'});
-    } else {
-      //failure modal here
-      SetstatusVisible({visibility: true, modaltype: 'failed'});
-    }
+    // if (data) {
+    //success modal
+    // SetstatusVisible({visibility: true, modaltype: 'success'});
+    // } else {
+    //failure modal here
+    // SetstatusVisible({visibility: true, modaltype: 'failed'});
+    // }
   };
 
-  useEffect( () => {
-    const getdata=async()=>{
-      const data = await getTransaction();
-      // console.log(data);
-       settransactionData(data.transactions);
-    }
-    getdata();
-   
-  }, []);
-
-  const getTransaction = async () => {
+  const getTransactions = async () => {
     const token = await AsyncStorage.getItem('token');
     try {
       let config = {
@@ -226,20 +187,47 @@ export default function DashboardHome({navigation}) {
         `${host.apiUrl}/api/transaction/get-transactions`,
         config,
       );
-      return response.data;
+      console.log('Transactions Data', response.data.transactions);
+      const transactions = response.data.transactions;
+      console.log('setting transaction data');
+      setTransactionData(transactions);
+      console.log('Transactions Data 2', transactions);
+      console.log('setting income transactions');
+      setIncomeTransactions(
+        transactions.filter(transaction => transaction.type == 'Income'),
+      );
+      console.log('setting expense transactions');
+      setExpenseTransactions(
+        transactions.filter(transaction => transaction.type == 'Expense'),
+      );
     } catch (error) {
       console.log(error);
     }
   };
 
-  const [switchGraph, setSwitchGraph] = useState(true);
+  useEffect(() => {
+    getTransactions();
+  }, []);
 
   return (
     <MenuProvider>
       <ScrollView style={{backgroundColor: 'white'}}>
         <View>
           <CustomHeader navigation={navigation} />
-
+          {/* TRANSACTION ADD HEADER */}
+          <View className="my-5 mx-7 flex flex-row justify-between">
+            <Text className="text-xl text-black">Transactions</Text>
+            <Text
+              className="text-lg"
+              style={{color: `${COLORS.neutral}`}}
+              onPress={() => transactionHandler()}>
+              <Icon name="plus" size={17}>
+                {' '}
+              </Icon>{' '}
+              Add new{' '}
+            </Text>
+          </View>
+          {/* GRAPH */}
           <View
             style={{
               paddingVertical: 32,
@@ -359,176 +347,154 @@ export default function DashboardHome({navigation}) {
               }}
             />
           </View>
-          <Text
-            style={{
-              textAlign: 'center',
-              fontSize: 20,
-              marginTop: 5,
-              marginBottom: 10,
-            }}>
-            INCOME
-          </Text>
+          {/* BANNER */}
+          {transactionData?.length == 0 && (
+            <DashboardSharedUI
+              name="Transactions"
+              icon="sync"
+              onClick={transactionHandler}></DashboardSharedUI>
+          )}
           <View
             style={{
               flexDirection: 'column',
               justifyContent: 'space-between',
               paddingHorizontal: 7,
             }}>
-            <View
-              style={{
-                flex: 1,
-                height: 70,
-                padding: 6,
-                margin: 8,
-                borderWidth: 1.5,
-                borderColor: '#6B7280',
-              }}>
-              <Text style={styles.itemText}>
-                {IncomeNames[0]}({IncomeCategory[0]}): Rs {IncomeData[0].value}{' '}
-              </Text>
-              <Text style={styles.dateText}>{IncomeData[0].date}</Text>
-              <Menu style={styles.threeButton}>
-                <MenuTrigger>
-                  <MaterialIcons name="more-vert" size={20} color="black" />
-                </MenuTrigger>
-                <MenuOptions>
-                  <MenuOption onSelect={() => console.log('Option 1')}>
-                    <Text>Edit</Text>
-                  </MenuOption>
-                  <MenuOption onSelect={() => console.log('Option 2')}>
-                    <Text>Delete</Text>
-                  </MenuOption>
-                </MenuOptions>
-              </Menu>
-            </View>
+            {incomeTransactions.length > 0 && (
+              <View>
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    fontSize: 20,
+                    marginTop: 5,
+                    marginBottom: 10,
+                  }}>
+                  INCOME
+                </Text>
+                {incomeTransactions.slice(0, 2).map((transaction, index) => (
+                  <View
+                    key={index}
+                    style={{
+                      flex: 1,
+                      height: 70,
+                      padding: 6,
+                      margin: 8,
+                      borderWidth: 1.5,
+                      borderColor: '#6B7280',
+                    }}>
+                    <Text style={styles.itemText}>
+                      {transaction.name} ({transaction.category}) : Rs{' '}
+                      {transaction.amount}
+                    </Text>
+                    <Text style={styles.dateText}>
+                      {transaction.date.slice(0, 10)}
+                    </Text>
+                    <Menu style={styles.threeButton}>
+                      <MenuTrigger>
+                        <MaterialIcons
+                          name="more-vert"
+                          size={20}
+                          color="black"
+                        />
+                      </MenuTrigger>
+                      <MenuOptions>
+                        <MenuOption onSelect={() => console.log('Option 1')}>
+                          <Text>Edit</Text>
+                        </MenuOption>
+                        <MenuOption onSelect={() => console.log('Option 2')}>
+                          <Text>Delete</Text>
+                        </MenuOption>
+                      </MenuOptions>
+                    </Menu>
+                  </View>
+                ))}
+              </View>
+            )}
+            {incomeTransactions.length > 2 && (
+              <TouchableOpacity
+                onPress={() => navigation.navigate('IncomeHome')}
+                style={{backgroundColor: 'white', padding: 4, borderRadius: 5}}>
+                <Text
+                  style={{
+                    color: 'blue',
+                    fontWeight: 'bold',
+                    textAlign: 'center',
+                  }}>
+                  View All
+                </Text>
+              </TouchableOpacity>
+            )}
 
-            <View
-              style={{
-                flex: 1,
-                height: 70,
-                padding: 6,
-                margin: 8,
-                borderWidth: 1.5,
-                borderColor: '#6B7280',
-              }}>
-              <Text style={styles.itemText}>
-                {IncomeNames[1]}({IncomeCategory[1]}): Rs {IncomeData[1].value}
-              </Text>
-              <Text style={styles.dateText}>{IncomeData[1].date}</Text>
-              <Menu style={styles.threeButton}>
-                <MenuTrigger>
-                  <MaterialIcons name="more-vert" size={20} color="black" />
-                </MenuTrigger>
-                <MenuOptions>
-                  <MenuOption onSelect={() => console.log('Option 1')}>
-                    <Text>Edit</Text>
-                  </MenuOption>
-                  <MenuOption onSelect={() => console.log('Option 2')}>
-                    <Text>Delete</Text>
-                  </MenuOption>
-                </MenuOptions>
-              </Menu>
-            </View>
-
-            <TouchableOpacity
-              onPress={() => navigation.navigate('IncomeHome')}
-              style={{backgroundColor: 'white', padding: 4, borderRadius: 5}}>
-              <Text
-                style={{
-                  color: 'blue',
-                  fontWeight: 'bold',
-                  textAlign: 'center',
-                }}>
-                View All
-              </Text>
-            </TouchableOpacity>
-
-            <Text
-              style={{
-                textAlign: 'center',
-                fontSize: 20,
-                marginTop: 5,
-                marginBottom: 10,
-              }}>
-              EXPENSE
-            </Text>
-
-            <View
-              style={{
-                flex: 1,
-                height: 70,
-                padding: 6,
-                margin: 8,
-                borderWidth: 1.5,
-                borderColor: '#6B7280',
-              }}>
-              <Text style={styles.itemText}>
-                {ExpenseNames[0]}({ExpenseCategory[0]}): Rs{' '}
-                {ExpenseData[0].value}{' '}
-              </Text>
-              <Text style={styles.dateText}>{IncomeData[0].date}</Text>
-              <Menu style={styles.threeButton}>
-                <MenuTrigger>
-                  <MaterialIcons name="more-vert" size={20} color="black" />
-                </MenuTrigger>
-                <MenuOptions>
-                  <MenuOption onSelect={() => console.log('Option 1')}>
-                    <Text>Edit</Text>
-                  </MenuOption>
-                  <MenuOption onSelect={() => console.log('Option 2')}>
-                    <Text>Delete</Text>
-                  </MenuOption>
-                </MenuOptions>
-              </Menu>
-            </View>
-
-            <View
-              style={{
-                flex: 1,
-                height: 70,
-                padding: 6,
-                margin: 8,
-                borderWidth: 1.5,
-                borderColor: '#6B7280',
-              }}>
-              <Text style={styles.itemText}>
-                {ExpenseNames[1]}({ExpenseCategory[1]}): Rs{' '}
-                {ExpenseData[1].value}
-              </Text>
-              <Text style={styles.dateText}>{IncomeData[1].date}</Text>
-              <Menu style={styles.threeButton}>
-                <MenuTrigger>
-                  <MaterialIcons name="more-vert" size={20} color="black" />
-                </MenuTrigger>
-                <MenuOptions>
-                  <MenuOption onSelect={() => console.log('Option 1')}>
-                    <Text>Edit</Text>
-                  </MenuOption>
-                  <MenuOption onSelect={() => console.log('Option 2')}>
-                    <Text>Delete</Text>
-                  </MenuOption>
-                </MenuOptions>
-              </Menu>
-            </View>
-
-            <TouchableOpacity
-              onPress={() => navigation.navigate('ExpenseHome')}
-              style={{backgroundColor: 'white', padding: 4, borderRadius: 5}}>
-              <Text
-                style={{
-                  color: 'blue',
-                  fontWeight: 'bold',
-                  textAlign: 'center',
-                }}>
-                View All
-              </Text>
-            </TouchableOpacity>
+            {expenseTransactions.length > 0 && (
+              <View>
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    fontSize: 20,
+                    marginTop: 5,
+                    marginBottom: 10,
+                  }}>
+                  EXPENSE
+                </Text>
+                {expenseTransactions.slice(0, 2).map((transaction, index) => (
+                  <View
+                    key={index}
+                    style={{
+                      flex: 1,
+                      height: 70,
+                      padding: 6,
+                      margin: 8,
+                      borderWidth: 1.5,
+                      borderColor: '#6B7280',
+                    }}>
+                    <Text style={styles.itemText}>
+                      {transaction.name} ({transaction.category}): Rs{' '}
+                      {transaction.amount}
+                    </Text>
+                    <Text style={styles.dateText}>
+                      {transaction.date.slice(0, 10)}
+                    </Text>
+                    <Menu style={styles.threeButton}>
+                      <MenuTrigger>
+                        <MaterialIcons
+                          name="more-vert"
+                          size={20}
+                          color="black"
+                        />
+                      </MenuTrigger>
+                      <MenuOptions>
+                        <MenuOption onSelect={() => console.log('Option 1')}>
+                          <Text>Edit</Text>
+                        </MenuOption>
+                        <MenuOption onSelect={() => console.log('Option 2')}>
+                          <Text>Delete</Text>
+                        </MenuOption>
+                      </MenuOptions>
+                    </Menu>
+                  </View>
+                ))}
+              </View>
+            )}
+            {expenseTransactions.length > 2 && (
+              <TouchableOpacity
+                onPress={() => navigation.navigate('ExpenseHome')}
+                style={{backgroundColor: 'white', padding: 4, borderRadius: 5}}>
+                <Text
+                  style={{
+                    color: 'blue',
+                    fontWeight: 'bold',
+                    textAlign: 'center',
+                  }}>
+                  View All
+                </Text>
+              </TouchableOpacity>
+            )}
           </View>
 
-          <DashboardSharedUI
+          {/* <DashboardSharedUI
             name="Transactions"
             icon="sync"
-            onClick={transactionHandler}></DashboardSharedUI>
+            onClick={transactionHandler}></DashboardSharedUI> */}
 
           <Modal
             modalState={isModalVisible}

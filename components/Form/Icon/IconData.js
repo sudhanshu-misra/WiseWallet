@@ -1,8 +1,14 @@
 //Form Categories
 
-export const expenseIcon = ['Medication', 'Transport', 'Restaurant', 'Grocery'];
+export const expenseIcon = [
+  'Transport',
+  'Food',
+  'Clothing',
+  'Entertainment',
+  'Others',
+];
 
-export const incomeIcon = ['salary', 'Transport', 'Restaurant', 'Grocery'];
+export const incomeIcon = ['Salary', 'Transport', 'Restaurant', 'Grocery'];
 
 export const accountIcon = ['Cash', 'Upi', 'Card'];
 
