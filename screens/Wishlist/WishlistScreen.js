@@ -62,7 +62,9 @@ const WishlistScreen = ({navigation}) => {
         config,
       );
       console.log(response.data);
-      setWishlistData(wishlistData.filter(item => item.id !== product.id));
+      console.log("whis",wishlistData);
+      console.log("produt",product)
+      setWishlistData(wishlistData.filter(item => item._id !== product._id));
       console.log(fetchOrders, 'space', fetchProducts);
       setFetchOrders(3);
       setFetchProducts(3);
@@ -99,7 +101,7 @@ const WishlistScreen = ({navigation}) => {
   const handleRemove = product => {
     // Filter out the product that needs to be removed
     const updatedCartItems = wishlistData.filter(
-      item => item.id !== product.id,
+      item => item._id !== product._id,
     );
     // Update the cart items state with the filtered array
     setWishlistData(updatedCartItems);
