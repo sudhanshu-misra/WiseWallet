@@ -19,9 +19,11 @@ import {
   MenuTrigger,
 } from 'react-native-popup-menu';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import host from '../../constants/host.js';
 import axios from 'axios';
+import {COLORS} from '../../constants/theme';
 
 export default function WalletHome({navigation}) {
   const [isModalVisible, SetModalVisible] = useState(false);
@@ -113,8 +115,20 @@ export default function WalletHome({navigation}) {
   return (
     <MenuProvider>
       <ScrollView>
-        <View>
+        <View className="bg-white">
           <CustomHeader navigation={navigation} />
+          <View className="mx-7 flex flex-row justify-between">
+            <Text className="text-xl text-black">Payment Methods</Text>
+            <Text
+              className="text-lg"
+              style={{color: `${COLORS.neutral}`}}
+              onPress={() => onClick()}>
+              <Icon name="plus" size={17}>
+                {' '}
+              </Icon>{' '}
+              Add new{' '}
+            </Text>
+          </View>
 
           <DashboardSharedUI
             name="Payment Methods"
@@ -122,26 +136,26 @@ export default function WalletHome({navigation}) {
             onClick={walletHandler}
             data={walletData}></DashboardSharedUI>
 
-          <View className=" mt-5 h-full  px-10 flex ">
+          <View className="my-5 h-full px-10 flex">
             {/* wallet data here */}
             {/* Cash */}
-            <View className="h-max border-2 rounded-xl p-5 mt-4 bg-white">
-              <Text className="text-lg text-black">Cash</Text>
+            <View className="h-max rounded-xl p-5 mt-4 bg-[#ECFFDA]">
+              <Text className="text-lg text-[#277320]">Cash</Text>
               <Text className="text-lg">Amount : Rs.{cash_amount}</Text>
             </View>
             {/*UPI */}
-            <View className="h-max border-2 rounded-xl p-5 mt-4  bg-white">
-              <Text className="text-lg text-black">Upi</Text>
+            <View className="h-max rounded-xl p-5 mt-4  bg-[#ECFFDA]">
+              <Text className="text-lg text-[#277320]">UPI</Text>
               <View className="mt-1">
-                <View className="border-2 rounded-xl px-3 py-1 mt-[8px] ">
+                <View className=" rounded-xl px-3 py-1 mt-[8px] ">
                   <Text className="text-lg text-black">Gpay</Text>
                   <Text className="text-lg">Amount : Rs.{gpay_amount}</Text>
                 </View>
-                <View className="border-2 rounded-xl px-3 py-1 mt-[8px]">
+                <View className="rounded-xl px-3 py-1 mt-[8px]">
                   <Text className="text-lg text-black">Phonepe</Text>
                   <Text className="text-lg">Amount : Rs.{phonepe_amount}</Text>
                 </View>
-                <View className="border-2 rounded-xl px-3 py-1 mt-[8px]">
+                <View className=" rounded-xl px-3 py-1 mt-[8px]">
                   <Text className="text-lg text-black">Paytm</Text>
                   <Text className="text-lg">Amount : Rs.{paytm_amount}</Text>
                 </View>
@@ -152,7 +166,7 @@ export default function WalletHome({navigation}) {
               return (
                 <View
                   key={item._id}
-                  className="h-max border-2 rounded-xl p-5 mt-4  bg-white">
+                  className="h-max rounded-xl p-5 mt-4 bg-white">
                   <Text className="text-lg text-black">Card</Text>
                   <Text className="text-lg">Bank name :{item.bankName}</Text>
                   <Text className="text-lg">
@@ -210,219 +224,3 @@ const styles = StyleSheet.create({
     marginTop: -15,
   },
 });
-
-{
-  /* <Text
-            style={{
-              textAlign: 'center',
-              fontWeight: 'bold',
-              fontSize: 20,
-              marginTop: 5,
-              marginBottom: 10,
-            }}>
-            CASH
-          </Text>
-
-          <Text
-            style={{
-              textAlign: 'left',
-              fontSize: 17,
-              marginLeft: 20,
-              marginTop: 5,
-              marginBottom: 10,
-            }}>
-            Balance: Rs {balance}
-          </Text>
-
-
-        </View>
-        <Text
-          style={{
-            textAlign: 'center',
-            fontWeight: 'bold',
-            fontSize: 20,
-            marginTop: 2,
-            marginBottom: 10,
-          }}>
-          CARD
-        </Text>
-
-        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-          <Text
-            style={{
-              fontSize: 14,
-              textAlign: 'left',
-              marginLeft: 7,
-              marginTop: 0,
-              marginBottom: 0,
-            }}>
-            Bank Name: {cardDetails.bankname}
-          </Text>
-          <Text
-            style={{
-              fontSize: 14,
-              textAlign: 'right',
-              marginTop: 0,
-              marginRight: 4,
-              marginBottom: 10,
-            }}>
-            Expiry Date:{' '}
-            <Text style={{color: 'green'}}>{cardDetails.expirydate} </Text>
-          </Text>
-        </View>
-
-        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-          <Text
-            style={{
-              fontSize: 14,
-              textAlign: 'left',
-              marginLeft: 7,
-              marginTop: 0,
-              marginBottom: 0,
-            }}>
-            Card Number: {cardDetails.cardnumber}
-          </Text>
-
-          <Text
-            style={{
-              fontSize: 14,
-              textAlign: 'right',
-              marginTop: 0,
-              marginRight: 7,
-              marginBottom: 10,
-            }}>
-            Balance:{' '}
-            <Text style={{color: 'green'}}>Rs {cardDetails.balance}</Text>
-          </Text>
-        </View> */
-}
-
-{
-  /*  
-<View style={{ flexDirection: 'column', justifyContent: 'space-between', paddingHorizontal: 7 }}>
-            <View style={{ flex: 1, height: 70, padding: 22, margin: 8, borderWidth: 1.5, borderColor: '#6B7280', flexDirection: 'row', alignItems: 'center' }}>
-              <Text style={styles.itemText}>Item</Text>
-              <Text style={styles.dateText}>{exampleDate}</Text>
-              <Menu style={{ marginLeft: 'auto' }}>
-                <MenuTrigger>
-                  <MaterialIcons name="more-vert" size={20} color="black" />
-                </MenuTrigger>
-                <MenuOptions>
-                  <MenuOption onSelect={() => console.log('Option 1')}>
-                    <Text>Edit</Text>
-                  </MenuOption>
-                  <MenuOption onSelect={() => console.log('Option 2')}>
-                    <Text>Delete</Text>
-                  </MenuOption>
-                </MenuOptions>
-              </Menu>
-            </View>
-          </View>
-
-          <View style={{ flexDirection: 'column', justifyContent: 'space-between', paddingHorizontal: 7 }}>
-            <View style={{ flex: 1, height: 70, padding: 22, margin: 8, borderWidth: 1.5, borderColor: '#6B7280', flexDirection: 'row', alignItems: 'center' }}>
-              <Text style={styles.itemText}>Item</Text>
-              <Text style={styles.dateText}>{exampleDate}</Text>
-              <Menu style={{ marginLeft: 'auto' }}>
-                <MenuTrigger>
-                  <MaterialIcons name="more-vert" size={20} color="black" />
-                </MenuTrigger>
-                <MenuOptions>
-                  <MenuOption onSelect={() => console.log('Option 1')}>
-                    <Text>Edit</Text>
-                  </MenuOption>
-                  <MenuOption onSelect={() => console.log('Option 2')}>
-                    <Text>Delete</Text>
-                  </MenuOption>
-                </MenuOptions>
-              </Menu>
-            </View>
-        
-  <TouchableOpacity onPress={() => navigation.navigate('Card')} style={{ backgroundColor: 'white', padding: 3, borderRadius: 5 }}>
-            <Text style={{ color: 'blue', fontWeight: 'bold', textAlign: 'center'}}>View All</Text>
-          </TouchableOpacity>
-</View> */
-}
-{
-  /* 
-        <Text
-          style={{
-            textAlign: 'center',
-            fontWeight: 'bold',
-            fontSize: 20,
-            marginTop: 10,
-            marginBottom: 10,
-          }}>
-          UPI WALLET
-        </Text>
-
-        <Text
-          style={{
-            textAlign: 'left',
-            fontSize: 17,
-            marginLeft: 20,
-            marginTop: 5,
-            marginBottom: 10,
-          }}>
-          App: {upiDetails.app}
-        </Text>
-
-        <Text
-          style={{
-            textAlign: 'left',
-            fontSize: 17,
-            marginLeft: 20,
-            marginTop: 5,
-            marginBottom: 10,
-          }}>
-          Balance: Rs {upiDetails.balance}
-        </Text> */
-}
-{
-  /*  
-<View style={{ flexDirection: 'column', justifyContent: 'space-between', paddingHorizontal: 7 }}>
-            <View style={{ flex: 1, height: 70, padding: 22, margin: 8, borderWidth: 1.5, borderColor: '#6B7280', flexDirection: 'row', alignItems: 'center' }}>
-              <Text style={styles.itemText}>Item</Text>
-              <Text style={styles.dateText}>{exampleDate}</Text>
-              <Menu style={{ marginLeft: 'auto' }}>
-                <MenuTrigger>
-                  <MaterialIcons name="more-vert" size={20} color="black" />
-                </MenuTrigger>
-                <MenuOptions>
-                  <MenuOption onSelect={() => console.log('Option 1')}>
-                    <Text>Edit</Text>
-                  </MenuOption>
-                  <MenuOption onSelect={() => console.log('Option 2')}>
-                    <Text>Delete</Text>
-                  </MenuOption>
-                </MenuOptions>
-              </Menu>
-            </View>
-          </View>
-
-          <View style={{ flexDirection: 'column', justifyContent: 'space-between', paddingHorizontal: 7 }}>
-            <View style={{ flex: 1, height: 70, padding: 22, margin: 8, borderWidth: 1.5, borderColor: '#6B7280', flexDirection: 'row', alignItems: 'center' }}>
-              <Text style={styles.itemText}>Item</Text>
-              <Text style={styles.dateText}>{exampleDate}</Text>
-              <Menu style={{ marginLeft: 'auto' }}>
-                <MenuTrigger>
-                  <MaterialIcons name="more-vert" size={20} color="black" />
-                </MenuTrigger>
-                <MenuOptions>
-                  <MenuOption onSelect={() => console.log('Option 1')}>
-                    <Text>Edit</Text>
-                  </MenuOption>
-                  <MenuOption onSelect={() => console.log('Option 2')}>
-                    <Text>Delete</Text>
-                  </MenuOption>
-                </MenuOptions>
-              </Menu>
-            </View>
-        
-
-  <TouchableOpacity onPress={() => navigation.navigate('Upi')} style={{ backgroundColor: 'white', padding: 3, borderRadius: 5 }}>
-            <Text style={{ color: 'blue', fontWeight: 'bold', textAlign: 'center'}}>View All</Text>
-          </TouchableOpacity>
-</View>
-       */
-}
