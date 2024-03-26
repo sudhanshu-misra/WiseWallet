@@ -155,7 +155,7 @@ const SellScreen = ({navigation}) => {
   };
 
   return (
-    <View className="h-full w-full">
+    <View className="h-full w-full" backgroundColor= 'white' >
       <CustomHeader navigation={navigation} />
       <ScrollView className="h-max m-8 " showsVerticalScrollIndicator={false}>
         <Text

@@ -117,12 +117,12 @@ export default function MarketBottomTab() {
                 color: focused ? COLORS.white : COLORS.warning,
               }}
               className="text-sm mb-1">
-              Cart
+         Wishlist
             </Text>
           ),
           tabBarIcon: ({focused}) => (
             <Image
-              source={require('../assets/cartMarketTab.png')}
+              source={require('../assets/wishlist.png')}
               resizeMode="contain"
               style={{
                 tintColor: focused ? COLORS.white : COLORS.warning,
