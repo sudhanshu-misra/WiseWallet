@@ -14,18 +14,18 @@ const OrderScreen = ({navigation}) => {
   const [notificationMessage, setNotificationMessage] = useState("");
 
 
-  useEffect(() => {
-    // Simulated sample data
-    const sampleProducts = [
-      { id: 1, name: 'Diary', price: 10, seller: { name: 'Student 1', id: '1000014132@dit.edu.in' }, image: 'http://surl.li/rvebm', category: 'Textbooks' },
-      { id: 2, name: 'Wooden Chair', price: 20, seller: { name: 'Student 2', id: '1000014133@dit.edu.in' }, image: 'http://surl.li/rvetu', category: 'Furniture' },
-      { id: 3, name: 'Shirt', price: 30, seller: { name: 'Student 3', id: '1000014134@dit.edu.in' }, image: 'http://surl.li/rvfbp', category: 'Clothing' },
-      { id: 4, name: 'Electric Iron', price: 40, seller: { name: 'Student 4', id: '1000014135@dit.edu.in' }, image: 'http://surl.li/rvevt', category: 'Appliances' },
-      { id: 5, name: 'C-type Charger', price: 50, seller: { name: 'Student 5', id: '1000014136@dit.edu.in' }, image: 'http://surl.li/rvewx', category: 'Electronics' },
-      { id: 6, name: 'Drafter scale', price: 60, seller: { name: 'Student 6', id: '1000014137@dit.edu.in' }, image: 'http://surl.li/rwaqk', category: 'Stationery' },
-    ];
-    setProducts(sampleProducts);
-  }, []);
+  // useEffect(() => {
+  //   // Simulated sample data
+  //   const sampleProducts = [
+  //     { id: 1, name: 'Diary', price: 10, seller: { name: 'Student 1', id: '1000014132@dit.edu.in' }, image: 'http://surl.li/rvebm', category: 'Textbooks' },
+  //     { id: 2, name: 'Wooden Chair', price: 20, seller: { name: 'Student 2', id: '1000014133@dit.edu.in' }, image: 'http://surl.li/rvetu', category: 'Furniture' },
+  //     { id: 3, name: 'Shirt', price: 30, seller: { name: 'Student 3', id: '1000014134@dit.edu.in' }, image: 'http://surl.li/rvfbp', category: 'Clothing' },
+  //     { id: 4, name: 'Electric Iron', price: 40, seller: { name: 'Student 4', id: '1000014135@dit.edu.in' }, image: 'http://surl.li/rvevt', category: 'Appliances' },
+  //     { id: 5, name: 'C-type Charger', price: 50, seller: { name: 'Student 5', id: '1000014136@dit.edu.in' }, image: 'http://surl.li/rvewx', category: 'Electronics' },
+  //     { id: 6, name: 'Drafter scale', price: 60, seller: { name: 'Student 6', id: '1000014137@dit.edu.in' }, image: 'http://surl.li/rwaqk', category: 'Stationery' },
+  //   ];
+  //   setProducts(sampleProducts);
+  // }, []);
 
 
 const handleProductPress = (product) => {
@@ -72,8 +72,8 @@ console.log(orderData);
         <TouchableOpacity onPress={() => handleProductPress(item)}>
           <View style={styles.imageContainer}>
             {/* Apply opacity style for the image */}
-            <Image source={{ uri: item.image }} style={[styles.productImage, item.name === 'Drafter scale' && styles.fadedImage]} />
-            {item.name === 'Drafter scale' && (
+            <Image source={{ uri: item.productImage }} style={[styles.productImage, item.name === 'Drafter scale' && styles.fadedImage]} />
+            {item.productName === 'Drafter scale' && (
               <View style={styles.notAvailableContainer}>
                 <Text style={styles.notAvailableText}>Not Available</Text>
               </View>
@@ -81,10 +81,10 @@ console.log(orderData);
           </View>
         </TouchableOpacity>
 
-         <Text style={styles.productName}>{item.name}</Text>
+         <Text style={styles.productName}>{item.productName}</Text>
           <Text style={styles.productPrice}>Rs {item.price}</Text>
-          <Text style={styles.sellerInfo}>Seller Name: {item.seller.name}</Text>
-          <Text>({item.seller.id})</Text>
+          {/* <Text style={styles.sellerInfo}>Seller Name: {item.seller.name}</Text> */}
+          {/* <Text>({item})</Text> */}
 
         <TouchableOpacity
           style={styles.addToCartButton}

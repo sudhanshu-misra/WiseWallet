@@ -2,12 +2,14 @@ import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, ScrollView, FlatList, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import CustomHeader from '../../components/Header';
 import GlobalContext from '../../helpers/GlobalContext';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import host from "../../constants/host.js"
+import axios from 'axios';
 
 const MarketHome = ({ navigation }) => {
   const [products, setProducts] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const [cartItems, setCartItems] = useState([]);
+  //const [cartItems, setCartItems] = useState([]);
   const [showNotification, setShowNotification] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState("");
 
@@ -17,31 +19,66 @@ const {cartData, setcartData} = useContext(GlobalContext);
 
 const {orderData, setorderData} = useContext(GlobalContext);
 
-  useEffect(() => {
-    // Simulated sample data
-    const sampleProducts = [
-      { id: 1, name: 'Diary', price: 10, seller: { name: 'Student 1', id: '1000014132@dit.edu.in' }, image: 'http://surl.li/rvebm', category: 'Textbooks' },
-      { id: 2, name: 'Wooden Chair', price: 20, seller: { name: 'Student 2', id: '1000014133@dit.edu.in' }, image: 'http://surl.li/rvetu', category: 'Furniture' },
-      { id: 3, name: 'Shirt', price: 30, seller: { name: 'Student 3', id: '1000014134@dit.edu.in' }, image: 'http://surl.li/rvfbp', category: 'Clothing' },
-      { id: 4, name: 'Electric Iron', price: 40, seller: { name: 'Student 4', id: '1000014135@dit.edu.in' }, image: 'http://surl.li/rvevt', category: 'Appliances' },
-      { id: 5, name: 'C-type Charger', price: 50, seller: { name: 'Student 5', id: '1000014136@dit.edu.in' }, image: 'http://surl.li/rvewx', category: 'Electronics' },
-      { id: 6, name: 'Drafter scale', price: 60, seller: { name: 'Student 6', id: '1000014137@dit.edu.in' }, image: 'http://surl.li/rwaqk', category: 'Stationery' },
-    ];
-    setProducts(sampleProducts);
-  }, []);
+ 
+    
+    // const sampleProducts = [
+    //   { id: 1, name: 'Diary', price: 10, seller: { name: 'Student 1', id: '1000014132@dit.edu.in' }, image: 'http://surl.li/rvebm', category: 'Textbooks' },
+    //   { id: 2, name: 'Wooden Chair', price: 20, seller: { name: 'Student 2', id: '1000014133@dit.edu.in' }, image: 'http://surl.li/rvetu', category: 'Furniture' },
+    //   { id: 3, name: 'Shirt', price: 30, seller: { name: 'Student 3', id: '1000014134@dit.edu.in' }, image: 'http://surl.li/rvfbp', category: 'Clothing' },
+    //   { id: 4, name: 'Electric Iron', price: 40, seller: { name: 'Student 4', id: '1000014135@dit.edu.in' }, image: 'http://surl.li/rvevt', category: 'Appliances' },
+    //   { id: 5, name: 'C-type Charger', price: 50, seller: { name: 'Student 5', id: '1000014136@dit.edu.in' }, image: 'http://surl.li/rvewx', category: 'Electronics' },
+    //   { id: 6, name: 'Drafter scale', price: 60, seller: { name: 'Student 6', id: '1000014137@dit.edu.in' }, image: 'http://surl.li/rwaqk', category: 'Stationery' },
+    // ];
 
+    //fetch data from backend
+
+     useEffect(()=>{
+          getProducts();
+   },[])
+
+  const getProducts = async () => {
+    const token = await AsyncStorage.getItem('token');
+    try {
+      let config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const response = await axios.get(
+        `${host.apiUrl}/api/product/get-products`,
+        config,
+      );
+      console.log(response.data.products);
+
+      if (response.data) {
+        console.log('products received');
+       setProducts(response.data.products);
+      } else {
+        console.log('products not found');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+
+
+  
+  
+//not working
   const handleProductPress = (product) => {
     // Navigate to product details screen or perform any action
     console.log('Product pressed:', product);
   };
 
+  
   const handleAddToCart = (product) => {
-    const itemExists = cartData.some((item) => item.id === product.id);
+    const itemExists = cartData.some((item) => item.id === product._id);
 
     if (!itemExists) 
     console.log('Product added to cart:', product);{
       setcartData([...cartData, product]);
-      setNotificationMessage(`${product.name} added to your cart.`);
+      setNotificationMessage(`${product.productName} added to your cart.`);
       setShowNotification(true);
 
       setTimeout(() => {
@@ -55,7 +92,7 @@ const {orderData, setorderData} = useContext(GlobalContext);
     if (!itemExists) 
     console.log('Product has been placed for order.', product);{
       setorderData([...orderData, product]);
-      setNotificationMessage(`${product.name} added to your cart.`);
+      setNotificationMessage(`${product.productName} added to your cart.`);
       setShowNotification(true);
 
       setTimeout(() => {
@@ -70,17 +107,18 @@ const {orderData, setorderData} = useContext(GlobalContext);
         <TouchableOpacity onPress={() => handleProductPress(item)}>
           <View style={styles.imageContainer}>
             {/* Apply opacity style for the image */}
-            <Image source={{ uri: item.image }} style={[styles.productImage, item.name === 'Drafter scale' && styles.fadedImage]} />
-            {item.name === 'Drafter scale' && (
+            <Image source={{ uri: item.productImage }} style={[styles.productImage, item.category === 'Drafter scale' && styles.fadedImage]} />
+            {item.category === 'Drafter scale' && (
               <View style={styles.notAvailableContainer}>
                 <Text style={styles.notAvailableText}>Not Available</Text>
               </View>
             )}
           </View>
-          <Text style={styles.productName}>{item.name}</Text>
+          <Text style={styles.productName}>{item.productName}</Text>
           <Text style={styles.productPrice}>Rs {item.price}</Text>
-          <Text style={styles.sellerInfo}>Seller Name: {item.seller.name}</Text>
-          <Text>({item.seller.id})</Text>
+          {/* <Text style={styles.sellerInfo}></Text> */}
+          <Text>Description : {item.productDescription}</Text>
+          <Text>Condition : {item.productCondition}</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.addToCartButton}
@@ -151,7 +189,7 @@ const {orderData, setorderData} = useContext(GlobalContext);
           <FlatList
             data={products.filter(product => !selectedCategory || product.category === selectedCategory)}
             renderItem={renderProductItem}
-            keyExtractor={(item) => item.id.toString()}
+            keyExtractor={(item) => item._id}
             contentContainerStyle={styles.productList}
           />
 
