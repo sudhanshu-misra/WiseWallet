@@ -5,26 +5,25 @@ import GlobalContext from '../../helpers/GlobalContext';
 import { useContext, useState, useEffect } from 'react';
 import {COLORS} from '../../constants/theme';
 
-
 const CartScreen = ({navigation}) => {
-  const [products, setProducts] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [cartItems, setCartItems] = useState([]);
-  const [showNotification, setShowNotification] = useState(false);
-  const [notificationMessage, setNotificationMessage] = useState("");
+  // const [products, setProducts] = useState([]);
+  // const [selectedCategory, setSelectedCategory] = useState(null);
+  // const [cartItems, setCartItems] = useState([]);
+  // const [showNotification, setShowNotification] = useState(false);
+  // const [notificationMessage, setNotificationMessage] = useState("");
   
-  useEffect(() => {
-    // Simulated sample data
-    const sampleProducts = [
-      { id: 1, name: 'Diary', price: 10, seller: { name: 'Student 1', id: '1000014132@dit.edu.in' }, image: 'http://surl.li/rvebm', category: 'Textbooks' },
-      { id: 2, name: 'Wooden Chair', price: 20, seller: { name: 'Student 2', id: '1000014133@dit.edu.in' }, image: 'http://surl.li/rvetu', category: 'Furniture' },
-      { id: 3, name: 'Shirt', price: 30, seller: { name: 'Student 3', id: '1000014134@dit.edu.in' }, image: 'http://surl.li/rvfbp', category: 'Clothing' },
-      { id: 4, name: 'Electric Iron', price: 40, seller: { name: 'Student 4', id: '1000014135@dit.edu.in' }, image: 'http://surl.li/rvevt', category: 'Appliances' },
-      { id: 5, name: 'C-type Charger', price: 50, seller: { name: 'Student 5', id: '1000014136@dit.edu.in' }, image: 'http://surl.li/rvewx', category: 'Electronics' },
-      { id: 6, name: 'Drafter scale', price: 60, seller: { name: 'Student 6', id: '1000014137@dit.edu.in' }, image: 'http://surl.li/rwaqk', category: 'Stationery' },
-    ];
-    setProducts(sampleProducts);
-  }, []);
+  // useEffect(() => {
+  //   // Simulated sample data
+  //   const sampleProducts = [
+  //     { id: 1, name: 'Diary', price: 10, seller: { name: 'Student 1', id: '1000014132@dit.edu.in' }, image: 'http://surl.li/rvebm', category: 'Textbooks' },
+  //     { id: 2, name: 'Wooden Chair', price: 20, seller: { name: 'Student 2', id: '1000014133@dit.edu.in' }, image: 'http://surl.li/rvetu', category: 'Furniture' },
+  //     { id: 3, name: 'Shirt', price: 30, seller: { name: 'Student 3', id: '1000014134@dit.edu.in' }, image: 'http://surl.li/rvfbp', category: 'Clothing' },
+  //     { id: 4, name: 'Electric Iron', price: 40, seller: { name: 'Student 4', id: '1000014135@dit.edu.in' }, image: 'http://surl.li/rvevt', category: 'Appliances' },
+  //     { id: 5, name: 'C-type Charger', price: 50, seller: { name: 'Student 5', id: '1000014136@dit.edu.in' }, image: 'http://surl.li/rvewx', category: 'Electronics' },
+  //     { id: 6, name: 'Drafter scale', price: 60, seller: { name: 'Student 6', id: '1000014137@dit.edu.in' }, image: 'http://surl.li/rwaqk', category: 'Stationery' },
+  //   ];
+  //   setProducts(sampleProducts);
+  // }, []);
 
 
 const handleProductPress = (product) => {
@@ -38,7 +37,7 @@ console.log(orderData);
 
 
 const handleBuyNow = (product) => {
-  const itemExists = orderData.some((item) => item.id === product.id);
+  const itemExists = orderData.some((item) => item.id === product._id);
   if (!itemExists) 
   console.log('Product has been placed for order.', product);{
     setorderData([...orderData, product]);
@@ -48,18 +47,18 @@ const handleBuyNow = (product) => {
     setTimeout(() => {
       setShowNotification(false);
     }, 2000);
-    const updatedCartItems = cartData.filter(item => item.id !== product.id);
+    const updatedCartItems = whislist.filter(item => item.id !== product.id);
     // Update the cart items state with the filtered array
-    setcartData(updatedCartItems);
+    setwhislist(updatedCartItems);
   }
 };
 
 
 const handleRemove = (product) => {
   // Filter out the product that needs to be removed
-  const updatedCartItems = cartData.filter(item => item.id !== product.id);
+  const updatedCartItems = whislist.filter(item => item.id !== product.id);
   // Update the cart items state with the filtered array
-  setcartData(updatedCartItems);
+  setwhislist(updatedCartItems);
 }
 
 
@@ -74,8 +73,8 @@ const Notification = ({ message }) => (
   </View>
 );
 
-const {cartData, setcartData} = useContext(GlobalContext);
-console.log(cartData);
+const {whislist, setwhislist} = useContext(GlobalContext);
+console.log(whislist);
 
 return (
   <ScrollView backgroundColor="white">
@@ -83,26 +82,26 @@ return (
       <CustomHeader navigation={navigation} />
       <Text style={{fontSize: 22, fontWeight: 'bold', margin: 10, alignContent: 'center', color: COLORS.primary}}>Wishlist</Text>
 
-      {cartData.map((item, index) => (
+      {whislist.map((item, index) => (
         <View key={index}>
           <View style={styles.productContainer}>
             <View style={styles.productItem}>
               <TouchableOpacity onPress={() => handleProductPress(item)}>
                 <View style={styles.imageContainer}>
                   {/* Apply opacity style for the image */}
-                  <Image source={{ uri: item.image }} style={[styles.productImage, item.name === 'Drafter scale' && styles.fadedImage]} />
-                  {item.name === 'Drafter scale' && (
+                  <Image source={{ uri: item.productImage }} style={[styles.productImage]} />
+                  {/* {item.name === 'Drafter scale' && (
                     <View style={styles.notAvailableContainer}>
                       <Text style={styles.notAvailableText}>Not Available</Text>
                     </View>
-                  )}
+                  )} */}
                 </View>
               </TouchableOpacity>
 
-              <Text style={styles.productName}>{item.name}</Text>
+              <Text style={styles.productName}>{item.productName}</Text>
               <Text style={styles.productPrice}>Rs {item.price}</Text>
-              <Text style={styles.sellerInfo}>Seller Name: {item.seller.name}</Text>
-              <Text>({item.seller.id})</Text>
+              <Text>{item.productDescription}</Text>
+              <Text>{item.productCondition}</Text>
               <TouchableOpacity
                 style={styles.addToCartButton}
                 onPress={() => handleBuyNow(item)}
@@ -125,7 +124,7 @@ return (
       ))}
 
 {/*     
-      {cartData.length > 1 && (
+      {whislist.length > 1 && (
         <TouchableOpacity
           style={[styles.addToCartButton, styles.buyAllButton]} 
           onPress={handleBuyAll}
