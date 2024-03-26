@@ -5,6 +5,7 @@ import GlobalContext from '../../helpers/GlobalContext';
 import { useContext, useState, useEffect } from 'react';
 import { date } from 'yup';
 import { current } from '@reduxjs/toolkit';
+import {COLORS} from '../../constants/theme';
 
 const OrderScreen = ({navigation}) => {
   const [products, setProducts] = useState([]);
@@ -63,7 +64,7 @@ console.log(orderData);
     <ScrollView backgroundColor="white">
       <View>
         <CustomHeader navigation={navigation} />
-        <Text style={{fontSize: 20, fontWeight: 'bold', margin: 10}}>Your Orders</Text>
+        <Text style={{fontSize: 22, fontWeight: 'bold', margin: 10, color: COLORS.primary}}>Your Orders</Text>
         {orderData.map((item, index) => (
 
     <View>

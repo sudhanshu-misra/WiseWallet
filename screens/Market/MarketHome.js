@@ -80,14 +80,14 @@ const {orderData, setorderData} = useContext(GlobalContext);
           <Text style={styles.productName}>{item.name}</Text>
           <Text style={styles.productPrice}>Rs {item.price}</Text>
           <Text style={styles.sellerInfo}>Seller Name: {item.seller.name}</Text>
-          <Text>({item.seller.id})</Text>
+          <Text style={styles.sellerInfo}>({item.seller.id})</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.addToCartButton}
           onPress={() => handleAddToCart(item)}
         >
           <Text style={styles.addToCartButtonText}>
-            Add to Cart
+            Add to Wishlist
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -214,16 +214,16 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   productName: {
-    fontSize: 18,
+    fontSize: 19,
     marginBottom: 5,
   },
   productPrice:
  {
-    fontSize: 16,
+    fontSize: 17,
     color: '#888',
   },
   sellerInfo: {
-    fontSize: 14,
+    fontSize: 16,
     color: '#666',
   },
   addToCartButton: {
