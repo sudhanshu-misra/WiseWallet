@@ -1,4 +1,4 @@
-import React, {useState,useContext} from 'react';
+import React, {useState, useContext} from 'react';
 import CustomHeader from '../../components/Header';
 import {
   View,
@@ -34,7 +34,7 @@ const SellScreen = ({navigation}) => {
     modaltype: 'failed',
   });
 
-  const {setfetchproducts} = useContext(GlobalContext);
+  const {fetchProducts, setFetchProducts} = useContext(GlobalContext);
   //pick image
   const productImageHandler = async () => {
     try {
@@ -114,7 +114,7 @@ const SellScreen = ({navigation}) => {
           category: category,
           price: parseFloat(values.price),
         };
-         //console.log(data);
+        //console.log(data);
 
         //axios send req
         //send data to backend
@@ -137,7 +137,7 @@ const SellScreen = ({navigation}) => {
 
           if (response.data) {
             SetstatusVisible({visibility: true, modaltype: 'success'});
-            setfetchproducts(true);
+            setFetchProducts(2);
           }
         } catch (err) {
           SetstatusVisible({visibility: true, modaltype: 'failed'});
@@ -158,11 +158,12 @@ const SellScreen = ({navigation}) => {
   };
 
   return (
-    <View className="h-full w-full" backgroundColor= 'white' >
+    <View className="h-full w-full" backgroundColor="white">
       <CustomHeader navigation={navigation} />
       <ScrollView className="h-max m-8 " showsVerticalScrollIndicator={false}>
         <Text
-          style={{color: COLORS.primary}}r
+          style={{color: COLORS.primary}}
+          r
           className="text-2xl text-center font-bold">
           Be a Seller
         </Text>
@@ -170,7 +171,12 @@ const SellScreen = ({navigation}) => {
           Enter your product details here
         </Text>
         <Formik
-          initialValues={{description: '', condition: '', product: '', price: ''}}
+          initialValues={{
+            description: '',
+            condition: '',
+            product: '',
+            price: '',
+          }}
           validationSchema={validationSchema}
           onSubmit={formSubmitHandler}>
           {({
@@ -196,7 +202,7 @@ const SellScreen = ({navigation}) => {
                   onBlur={handleBlur('product')}
                   value={values.product}
                   style={styles.textInput}
-                  placeholder="product name"
+                  placeholder="Enter product name"
                   className={`bg-white ${
                     touched.product && errors.product && 'border-red-600'
                   }`}
@@ -222,32 +228,6 @@ const SellScreen = ({navigation}) => {
                   <Text className="text-red-700 ml-5">{errors.price}</Text>
                 )}
               </View>
-
-              {/* product Image */}
-              <View className="mt-2">
-                <Text className="ml-5 text-lg ">Product Image:</Text>
-                <TouchableOpacity onPress={productImageHandler}>
-                  <View>
-                    {imgUrl ? (
-                      <Image
-                        source={{uri: imgUrl}}
-                        className="mt-1 ml-7 h-16 w-16"
-                        resizeMode="contain"
-                      />
-                    ) : (
-                      <View className="mt-1 ml-7">
-                        <Icon
-                          name="camera"
-                          size={30}
-                          style={{color: COLORS.primary}}></Icon>
-                      </View>
-                    )}
-                  </View>
-                </TouchableOpacity>
-              </View>
-
-
-              
               <View className="mt-2 ">
                 <Text className="ml-5 text-lg">Product description :</Text>
                 <TextInput
@@ -274,12 +254,35 @@ const SellScreen = ({navigation}) => {
                   style={styles.textInput}
                   placeholder="Describe item's condition"
                   className={`bg-white`}
-                  multiline={true}
-                  numberOfLines={2}
+                  // multiline={true}
+                  // numberOfLines={2}
                 />
                 {/* {errors.con && touched.id && (
                   <Text className="text-red-700 ml-5">{errors.id}</Text>
                 )} */}
+              </View>
+
+              {/* product Image */}
+              <View className="mt-2">
+                <Text className="ml-5 text-lg ">Product Image:</Text>
+                <TouchableOpacity onPress={productImageHandler}>
+                  <View>
+                    {imgUrl ? (
+                      <Image
+                        source={{uri: imgUrl}}
+                        className="mt-1 ml-7 h-16 w-16"
+                        resizeMode="contain"
+                      />
+                    ) : (
+                      <View className="mt-1 ml-7">
+                        <Icon
+                          name="camera"
+                          size={30}
+                          style={{color: COLORS.primary}}></Icon>
+                      </View>
+                    )}
+                  </View>
+                </TouchableOpacity>
               </View>
 
               <TouchableOpacity onPress={handleSubmit}>
@@ -303,8 +306,7 @@ const SellScreen = ({navigation}) => {
             (statusVisible.modaltype === 'success' && 'Added Successfully') ||
             (statusVisible.modaltype === 'loader' &&
               'Loaing Image please wait...')
-          }
-          ></StatusModal>
+          }></StatusModal>
       </ScrollView>
     </View>
   );

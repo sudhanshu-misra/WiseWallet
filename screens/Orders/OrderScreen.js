@@ -1,135 +1,165 @@
-import {View, Text, ScrollView, FlatList, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  FlatList,
+  TouchableOpacity,
+  StyleSheet,
+  Image,
+} from 'react-native';
 import React from 'react';
 import CustomHeader from '../../components/Header';
 import GlobalContext from '../../helpers/GlobalContext';
-import { useContext, useState, useEffect } from 'react';
-import { date } from 'yup';
-import { current } from '@reduxjs/toolkit';
+import {useContext, useState, useEffect} from 'react';
+import {date} from 'yup';
+import {current} from '@reduxjs/toolkit';
 import {COLORS} from '../../constants/theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import host from "../../constants/host.js"
+import host from '../../constants/host.js';
 import axios from 'axios';
 
 const OrderScreen = ({navigation}) => {
-  const [orderData,setOrderData] = useState([]);
+  const [orderData, setOrderData] = useState([]);
 
-  const {fetchorders,setfetchorders} = useContext(GlobalContext);
+  const {fetchOrders, setFetchOrders} = useContext(GlobalContext);
 
-  useEffect(()=>{
-    try{ getOrders();} 
-    finally{
-      setfetchorders(false);
+  useEffect(() => {
+    try {
+      getOrders();
+    } finally {
+      setFetchOrders(0);
     }
-},[fetchorders])
+  }, [fetchOrders]);
 
-const getOrders = async () => {
-const token = await AsyncStorage.getItem('token');
-try {
-  let config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
+  const getOrders = async () => {
+    const token = await AsyncStorage.getItem('token');
+    try {
+      let config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const response = await axios.get(
+        `${host.apiUrl}/api/order/get-orders-by-buyer`,
+        config,
+      );
+      console.log(response.data.orders);
+
+      if (response.data.orders) {
+        console.log('products ordered');
+        setOrderData(response.data.orders);
+      } else {
+        console.log('products not found');
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
-  const response = await axios.get(
-    `${host.apiUrl}/api/order/get-orders-by-buyer`,
-    config,
+
+  const handleProductPress = product => {
+    // Navigate to product details screen or perform any action
+    console.log('Product pressed:', product);
+  };
+
+  // const handleBuyNow = (product) => {
+  //   navigation.navigate('Buy', { product });
+  // }
+
+  const handleCancel = async order => {
+    const token = await AsyncStorage.getItem('token');
+    console.log(token);
+    let config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    console.log(order);
+    try {
+      const response = await axios.delete(
+        `${host.apiUrl}/api/order/delete-order/${order._id}`,
+        config,
+      );
+      console.log(response.data);
+      // Filter out the product that needs to be canceled
+      const updatedOrderData = orderData.filter(item => item.id !== order.id);
+      // Update the order data state with the filtered array
+      setOrderData(updatedOrderData);
+      setFetchOrders(4);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const Notification = ({message}) => (
+    <View style={styles.notificationContainer}>
+      <Text style={styles.notificationText}>{message}</Text>
+    </View>
   );
-   console.log(response.data.orders);
 
-  if (response.data.orders) {
-    console.log('products ordered');
-   setOrderData(response.data.orders);
-  } else {
-    console.log('products not found');
-  }
-} catch (error) {
-  console.log(error);
-}
-}
+  const currentDate = new Date().toLocaleDateString('en-GB'); // 'en-GB' locale format: dd/mm/yyyy
 
+  const currentTime = new Date().toLocaleTimeString();
 
-const handleProductPress = (product) => {
-  // Navigate to product details screen or perform any action
-  console.log('Product pressed:', product);
-};
-
-
-// const handleBuyNow = (product) => {
-//   navigation.navigate('Buy', { product });  
-// }
-
-const handleCancel = (product) => {
-  // Filter out the product that needs to be canceled
-  const updatedOrderData = orderData.filter(item => item.id !== product.id);
-  // Update the order data state with the filtered array
-         //send product._id
-}
-
-const Notification = ({ message }) => (
-  <View style={styles.notificationContainer}>
-    <Text style={styles.notificationText}>{message}</Text>
-  </View>
-);
-
-const currentDate = new Date().toLocaleDateString('en-GB'); // 'en-GB' locale format: dd/mm/yyyy
-
-const currentTime = new Date().toLocaleTimeString();
-
-//console.log(orderData);
-
+  //console.log(orderData);
 
   return (
     <ScrollView backgroundColor="white">
       <View>
         <CustomHeader navigation={navigation} />
-        <Text style={{fontSize: 22, fontWeight: 'bold', margin: 10, color: COLORS.primary}}>Your Orders</Text>
+        <Text
+          style={{
+            fontSize: 22,
+            fontWeight: 'bold',
+            margin: 10,
+            color: COLORS.primary,
+          }}>
+          Your Orders
+        </Text>
         {orderData.map((item, index) => (
-
-    <View>
-      <View style={styles.productContainer}>
-      <View style={styles.productItem}>
-        <TouchableOpacity onPress={() => handleProductPress(item)}>
-          <View style={styles.imageContainer}>
-            {/* Apply opacity style for the image */}
-            <Image source={{ uri: item.productImage }} style={[styles.productImage]} />
-            {/* {item.productName === 'Drafter scale' && (
+          <View key={index}>
+            <View style={styles.productContainer}>
+              <View style={styles.productItem}>
+                <TouchableOpacity onPress={() => handleProductPress(item)}>
+                  <View style={styles.imageContainer}>
+                    {/* Apply opacity style for the image */}
+                    <Image
+                      source={{uri: item.product.productImage}}
+                      style={[styles.productImage]}
+                    />
+                    {/* {item.productName === 'Drafter scale' && (
               <View style={styles.notAvailableContainer}>
                 <Text style={styles.notAvailableText}>Not Available</Text>
               </View>
             )} */}
+                  </View>
+                </TouchableOpacity>
+
+                <Text style={styles.productName}>
+                  {item.product.productName}
+                </Text>
+                <Text style={styles.productPrice}>Rs {item.price}</Text>
+                {/* <Text style={styles.sellerInfo}>Seller Name: {item.seller.name}</Text> */}
+                {/* <Text>({item})</Text> */}
+
+                <TouchableOpacity
+                  style={styles.addToCartButton}
+                  onPress={() => handleCancel(item)}>
+                  <Text style={styles.addToCartButtonText}>Cancel Order</Text>
+                </TouchableOpacity>
+
+                <Text size="large">
+                  {' '}
+                  Order date and time: {item.orderDate.slice(0, 10)}{' '}
+                </Text>
+                <Text> {item.orderDate.slice(11, 16)} </Text>
+              </View>
+            </View>
           </View>
-        </TouchableOpacity>
-
-         <Text style={styles.productName}>{item.productName}</Text>
-          <Text style={styles.productPrice}>Rs {item.price}</Text>
-          {/* <Text style={styles.sellerInfo}>Seller Name: {item.seller.name}</Text> */}
-          {/* <Text>({item})</Text> */}
-
-        <TouchableOpacity
-          style={styles.addToCartButton}
-          onPress={() => handleCancel(item)}
-        >
-          <Text style={styles.addToCartButtonText}>
-          Cancel Order
-          </Text>
-        </TouchableOpacity>
-
-        <Text size = "large"> Order date and time: {currentDate}  </Text>
-        <Text> {currentTime} </Text>
-    </View>
-   
-  </View>
-
-    </View>
-    
-  ))}
-
+        ))}
       </View>
-      
     </ScrollView>
   );
 };
-
 
 const styles = StyleSheet.create({
   container: {
@@ -186,8 +216,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginBottom: 5,
   },
-  productPrice:
- {
+  productPrice: {
     fontSize: 16,
     color: '#888',
   },
@@ -210,7 +239,7 @@ const styles = StyleSheet.create({
     bottom: 1,
     left: '50%',
     bottom: '50%',
-    transform: [{ translateX: 20 }, { translateY: 20 }],
+    transform: [{translateX: 20}, {translateY: 20}],
     backgroundColor: 'rgba(0, 0, 0, 0.7)',
     padding: 10,
     borderRadius: 5,
@@ -219,7 +248,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     textAlign: 'center',
   },
- fadedImage: {
+  fadedImage: {
     opacity: 0.5, // Set opacity to make the image look faded
   },
   notAvailableContainer: {

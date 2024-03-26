@@ -4,7 +4,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import MarketHome from '../screens/Market/MarketHome';
 import SellScreen from '../screens/Sell/SellScreen';
 import OrdersScreen from '../screens/Orders/OrderScreen';
-import CartScreen from '../screens/Cart/CartScreen';
+import WishlistScreen from '../screens/Wishlist/WishlistScreen';
 import {COLORS} from '../constants/theme';
 
 const Tab = createBottomTabNavigator();
@@ -107,8 +107,8 @@ export default function MarketBottomTab() {
         }}
       />
       <Tab.Screen
-        name="Cart"
-        component={CartScreen}
+        name="Wishlist"
+        component={WishlistScreen}
         options={{
           tabBarLabel: ({focused, color}) => (
             <Text
@@ -117,7 +117,7 @@ export default function MarketBottomTab() {
                 color: focused ? COLORS.white : COLORS.warning,
               }}
               className="text-sm mb-1">
-         Wishlist
+              Wishlist
             </Text>
           ),
           tabBarIcon: ({focused}) => (
