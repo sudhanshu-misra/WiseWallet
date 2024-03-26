@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useContext} from 'react';
 import CustomHeader from '../../components/Header';
 import {
   View,
@@ -23,6 +23,7 @@ import StatusModal from '../../components/Modal/StatusModal.js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import host from '../../constants/host.js';
 import axios from 'axios';
+import GlobalContext from '../../helpers/GlobalContext.js';
 
 const SellScreen = ({navigation}) => {
   const [categoryError, setCategoryError] = useState('');
@@ -33,6 +34,7 @@ const SellScreen = ({navigation}) => {
     modaltype: 'failed',
   });
 
+  const {setfetchproducts} = useContext(GlobalContext);
   //pick image
   const productImageHandler = async () => {
     try {
@@ -130,11 +132,12 @@ const SellScreen = ({navigation}) => {
             data,
             config,
           );
-          // console.log(response);
+
           //response is done //
 
           if (response.data) {
             SetstatusVisible({visibility: true, modaltype: 'success'});
+            setfetchproducts(true);
           }
         } catch (err) {
           SetstatusVisible({visibility: true, modaltype: 'failed'});

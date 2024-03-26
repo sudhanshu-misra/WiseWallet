@@ -5,6 +5,7 @@ import GlobalContext from '../../helpers/GlobalContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import host from "../../constants/host.js"
 import axios from 'axios';
+import StatusModal from '../../components/Modal/StatusModal';
 
 const MarketHome = ({ navigation }) => {
   const [products, setProducts] = useState([]);
@@ -13,28 +14,27 @@ const MarketHome = ({ navigation }) => {
   const [showNotification, setShowNotification] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState("");
 
+  const [statusVisible, SetstatusVisible] = useState({
+    visibility: false,
+    modaltype: 'failed',
+    message:""
+  });
+
+
   const categories = ['Textbooks', 'Electronics', 'Furniture', 'Clothing', 'Appliances', 'Sports Equipment', 'Stationery', 'Musical Instruments', 'Kitchenware', 'Books', 'Art Supplies', 'Room Decor', 'Fitness & Wellness', 'Tickets & Events', 'Miscellaneous'];
 
-const {cartData, setcartData} = useContext(GlobalContext);
+const {whislist, setwhislist} = useContext(GlobalContext);
 
-const {orderData, setorderData} = useContext(GlobalContext);
+const { setfetchorders} = useContext(GlobalContext);
 
- 
-    
-    // const sampleProducts = [
-    //   { id: 1, name: 'Diary', price: 10, seller: { name: 'Student 1', id: '1000014132@dit.edu.in' }, image: 'http://surl.li/rvebm', category: 'Textbooks' },
-    //   { id: 2, name: 'Wooden Chair', price: 20, seller: { name: 'Student 2', id: '1000014133@dit.edu.in' }, image: 'http://surl.li/rvetu', category: 'Furniture' },
-    //   { id: 3, name: 'Shirt', price: 30, seller: { name: 'Student 3', id: '1000014134@dit.edu.in' }, image: 'http://surl.li/rvfbp', category: 'Clothing' },
-    //   { id: 4, name: 'Electric Iron', price: 40, seller: { name: 'Student 4', id: '1000014135@dit.edu.in' }, image: 'http://surl.li/rvevt', category: 'Appliances' },
-    //   { id: 5, name: 'C-type Charger', price: 50, seller: { name: 'Student 5', id: '1000014136@dit.edu.in' }, image: 'http://surl.li/rvewx', category: 'Electronics' },
-    //   { id: 6, name: 'Drafter scale', price: 60, seller: { name: 'Student 6', id: '1000014137@dit.edu.in' }, image: 'http://surl.li/rwaqk', category: 'Stationery' },
-    // ];
-
-    //fetch data from backend
+const {fetchproducts,setfetchproducts}=useContext(GlobalContext)
 
      useEffect(()=>{
-          getProducts();
-   },[])
+        try{ getProducts();} 
+        finally{
+          setfetchproducts(false);
+        }
+   },[fetchproducts])
 
   const getProducts = async () => {
     const token = await AsyncStorage.getItem('token');
@@ -48,7 +48,7 @@ const {orderData, setorderData} = useContext(GlobalContext);
         `${host.apiUrl}/api/product/get-products`,
         config,
       );
-      console.log(response.data.products);
+     // console.log(response.data.products);
 
       if (response.data) {
         console.log('products received');
@@ -60,24 +60,63 @@ const {orderData, setorderData} = useContext(GlobalContext);
       console.log(error);
     }
   }
+  //Buy 
+  const buyproduct = async (product)=>{
+    const token = await AsyncStorage.getItem('token');
+    try {
+      let config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+    // console.log("buyproduct" ,product);
+    
+   const response=  await axios.post(
+        `${host.apiUrl}/api/order/create-order`,
+          {
+            product:product._id,
+            price:product.price,
+            orderStatus: "pending",
+          },
+        config
+      )
+     // console.log("resposen buy",response.data);
+      if(response.data){
+        setfetchorders(true);
+        setfetchproducts(true);
+        SetstatusVisible({visibility: true, modaltype: 'success' , message:"Order successfull"});
+      }
+    }
+    catch(err){
+      console.log(err);
+      SetstatusVisible({visibility: true, modaltype: 'failed' , message:"Order failed ... please try again"});
+    }
 
+  }
 
+//handleStatus
+const handleStatus=()=>{
+  SetstatusVisible(prev => {
+    return {visibility: false, modaltype: prev.modaltype , message:''};
+  });
+}
 
-  
+ // console.log("this",products);
   
 //not working
   const handleProductPress = (product) => {
     // Navigate to product details screen or perform any action
-    console.log('Product pressed:', product);
+   // console.log('Product pressed:', product);
   };
 
   
   const handleAddToCart = (product) => {
-    const itemExists = cartData.some((item) => item.id === product._id);
+    const itemExists = whislist.some((item) => item.id === product._id);
 
     if (!itemExists) 
-    console.log('Product added to cart:', product);{
-      setcartData([...cartData, product]);
+   { console.log('Product added to cart:', product);
+      setwhislist([...whislist, product]);
+      SetstatusVisible({visibility: true, modaltype: 'success' , message:"product added to Cart"});
       setNotificationMessage(`${product.productName} added to your cart.`);
       setShowNotification(true);
 
@@ -85,13 +124,16 @@ const {orderData, setorderData} = useContext(GlobalContext);
         setShowNotification(false);
       }, 2000);
     }
+    else{
+      SetstatusVisible({visibility: true, modaltype: 'failed' , message:"failed to add product to  cart"});
+    }
   };
 
-  const handleBuyNow = (product) => {
-    const itemExists = cartData.some((item) => item.id === product.id);
+  const handleBuyNow = async (product) => {
+    const itemExists = whislist.some((item) => item.id === product.id);
     if (!itemExists) 
     console.log('Product has been placed for order.', product);{
-      setorderData([...orderData, product]);
+      await  buyproduct(product) ;
       setNotificationMessage(`${product.productName} added to your cart.`);
       setShowNotification(true);
 
@@ -101,14 +143,17 @@ const {orderData, setorderData} = useContext(GlobalContext);
     }
   };
   
-  const renderProductItem = ({ item, index }) => (
+  const renderProductItem = ({ item, index }) => {
+ // console.log(item);
+  return (
+  
     <View style={styles.productContainer}>
       <View style={styles.productItem}>
         <TouchableOpacity onPress={() => handleProductPress(item)}>
           <View style={styles.imageContainer}>
             {/* Apply opacity style for the image */}
-            <Image source={{ uri: item.productImage }} style={[styles.productImage, item.category === 'Drafter scale' && styles.fadedImage]} />
-            {item.category === 'Drafter scale' && (
+            <Image source={{ uri: item.productImage }} style={[styles.productImage, item.isSold === false && styles.fadedImage]} />
+            {item.isSold === true && (
               <View style={styles.notAvailableContainer}>
                 <Text style={styles.notAvailableText}>Not Available</Text>
               </View>
@@ -116,19 +161,21 @@ const {orderData, setorderData} = useContext(GlobalContext);
           </View>
           <Text style={styles.productName}>{item.productName}</Text>
           <Text style={styles.productPrice}>Rs {item.price}</Text>
-          {/* <Text style={styles.sellerInfo}></Text> */}
+          <Text style={styles.sellerInfo}>{}</Text>
           <Text>Description : {item.productDescription}</Text>
           <Text>Condition : {item.productCondition}</Text>
         </TouchableOpacity>
-        <TouchableOpacity
+       { !item.isSold  && 
+         <TouchableOpacity
           style={styles.addToCartButton}
           onPress={() => handleAddToCart(item)}
         >
           <Text style={styles.addToCartButtonText}>
             Add to Cart
           </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
+        </TouchableOpacity>}
+        {!item.isSold &&
+         <TouchableOpacity
           style={styles.addToCartButton}
           onPress={() => handleBuyNow(item)}
         >
@@ -136,7 +183,8 @@ const {orderData, setorderData} = useContext(GlobalContext);
             Buy Now
           </Text>
         </TouchableOpacity>
-        {index === 5 && ( // Add button below the sixth image
+        }
+        {item.isSold===true && ( // Add button below the sixth image
           <View style={styles.notifyButtonContainer}>
             <TouchableOpacity
               style={styles.notifyButton}
@@ -149,8 +197,9 @@ const {orderData, setorderData} = useContext(GlobalContext);
           </View>
         )}
       </View>
-    </View>
-  );
+    </View>)
+    }
+  
   
 
   const renderCategoryItem = ({ item }) => (
@@ -196,6 +245,13 @@ const {orderData, setorderData} = useContext(GlobalContext);
           {showNotification && <Notification message={notificationMessage} />}
         </View>
       </View>
+      <StatusModal
+        modalType={statusVisible.modaltype}
+        modalState={statusVisible.visibility}
+        hideModal={handleStatus}
+        message={
+      statusVisible.message
+        }></StatusModal>
     </ScrollView>
   );
 };
@@ -289,7 +345,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
  fadedImage: {
-    opacity: 0.5, // Set opacity to make the image look faded
+    opacity: 0.8, // Set opacity to make the image look faded
+    
   },
   notAvailableContainer: {
     position: 'absolute',
