@@ -3,7 +3,7 @@ import React from 'react';
 import CustomHeader from '../../components/Header';
 import GlobalContext from '../../helpers/GlobalContext';
 import { useContext, useState, useEffect } from 'react';
-
+import {COLORS} from '../../constants/theme';
 
 
 const CartScreen = ({navigation}) => {
@@ -63,10 +63,9 @@ const handleRemove = (product) => {
 }
 
 
-const handleBuyAll = (product) => {
-
+const handleBuyAll = () => {
+  // Implement logic for buying all items in the cart
 }
-
 
 
 const Notification = ({ message }) => (
@@ -75,107 +74,109 @@ const Notification = ({ message }) => (
   </View>
 );
 
-  const {cartData, setcartData} = useContext(GlobalContext);
-  console.log(cartData);
+const {cartData, setcartData} = useContext(GlobalContext);
+console.log(cartData);
 
-  return (
-    <ScrollView backgroundColor="white">
-      <View>
-        <CustomHeader navigation={navigation} />
-        <Text style={{fontSize: 20, fontWeight: 'bold', margin: 10}}>Your Cart</Text>
-
-        {cartData.map((item, index) => (
+return (
+  <ScrollView backgroundColor="white">
     <View>
-      <View style={styles.productContainer}>
-      <View style={styles.productItem}>
-        <TouchableOpacity onPress={() => handleProductPress(item)}>
-          <View style={styles.imageContainer}>
-            {/* Apply opacity style for the image */}
-            <Image source={{ uri: item.image }} style={[styles.productImage, item.name === 'Drafter scale' && styles.fadedImage]} />
-            {item.name === 'Drafter scale' && (
-              <View style={styles.notAvailableContainer}>
-                <Text style={styles.notAvailableText}>Not Available</Text>
-              </View>
-            )}
+      <CustomHeader navigation={navigation} />
+      <Text style={{fontSize: 22, fontWeight: 'bold', margin: 10, alignContent: 'center', color: COLORS.primary}}>Wishlist</Text>
+
+      {cartData.map((item, index) => (
+        <View key={index}>
+          <View style={styles.productContainer}>
+            <View style={styles.productItem}>
+              <TouchableOpacity onPress={() => handleProductPress(item)}>
+                <View style={styles.imageContainer}>
+                  {/* Apply opacity style for the image */}
+                  <Image source={{ uri: item.image }} style={[styles.productImage, item.name === 'Drafter scale' && styles.fadedImage]} />
+                  {item.name === 'Drafter scale' && (
+                    <View style={styles.notAvailableContainer}>
+                      <Text style={styles.notAvailableText}>Not Available</Text>
+                    </View>
+                  )}
+                </View>
+              </TouchableOpacity>
+
+              <Text style={styles.productName}>{item.name}</Text>
+              <Text style={styles.productPrice}>Rs {item.price}</Text>
+              <Text style={styles.sellerInfo}>Seller Name: {item.seller.name}</Text>
+              <Text>({item.seller.id})</Text>
+              <TouchableOpacity
+                style={styles.addToCartButton}
+                onPress={() => handleBuyNow(item)}
+              >
+                <Text style={styles.addToCartButtonText}>
+                  Buy Now
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.addToCartButton}
+                onPress={() => handleRemove(item)}
+              >
+                <Text style={styles.addToCartButtonText}>
+                  Remove
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        </TouchableOpacity>
+        </View>
+      ))}
 
-         <Text style={styles.productName}>{item.name}</Text>
-          <Text style={styles.productPrice}>Rs {item.price}</Text>
-          <Text style={styles.sellerInfo}>Seller Name: {item.seller.name}</Text>
-          <Text>({item.seller.id})</Text>
-          <TouchableOpacity
-          style={styles.addToCartButton}
-          onPress={() => handleBuyNow(item)}
-        >
-          <Text style={styles.addToCartButtonText}>
-            Buy Now
-          </Text>
-        </TouchableOpacity>
+{/*     
+      {cartData.length > 1 && (
         <TouchableOpacity
-          style={styles.addToCartButton}
-          onPress={() => handleRemove(item)}
+          style={[styles.addToCartButton, styles.buyAllButton]} 
+          onPress={handleBuyAll}
         >
           <Text style={styles.addToCartButtonText}>
-          Remove
+            Buy All
           </Text>
         </TouchableOpacity>
-    </View>
-   
-  </View>
+      )} */}
 
     </View>
-    
-  ))}
-
-      </View>
-      <TouchableOpacity
-          style={styles.addToCartButton}
-          onPress={() => handleRemove(item)}
-        >
-          <Text style={styles.buyAllButtonText}>
-          Buy All
-          </Text>
-        </TouchableOpacity>
-    </ScrollView>
-  );
+  </ScrollView>
+);
 };
 
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'white',
-    paddingHorizontal: 20,
-    paddingTop: 20,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-  },
-  categories: {
-    marginBottom: 10,
-  },
-  categoryItem: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 20,
-    marginRight: 10,
-    backgroundColor: '#f0f0f0',
-  },
-  selectedCategory: {
-    backgroundColor: '#007bff',
-  },
-  categoryText: {
-    fontSize: 16,
-    color: '#333',
-  },
-  productList: {
-    flexGrow: 1,
-  },
-  productContainer: {
-    flexDirection: 'row',
+container: {
+  flex: 1,
+  backgroundColor: 'white',
+  paddingHorizontal: 20,
+  paddingTop: 20,
+},
+title: {
+  fontSize: 24,
+  fontWeight: 'bold',
+  marginBottom: 20,
+},
+categories: {
+  marginBottom: 10,
+},
+categoryItem: {
+  paddingHorizontal: 16,
+  paddingVertical: 8,
+  borderRadius: 20,
+  marginRight: 10,
+  backgroundColor: '#f0f0f0',
+},
+selectedCategory: {
+  backgroundColor: '#007bff',
+},
+categoryText: {
+  fontSize: 16,
+  color: '#333',
+},
+productList: {
+  flexGrow: 1,
+},
+productContainer: {
+  flexDirection
+: 'row',
     justifyContent: 'space-between',
     marginBottom: 20,
   },
@@ -263,6 +264,13 @@ const styles = StyleSheet.create({
   buyAllButtonText: {
     color: '#fff',
     textAlign: 'center',
+  },
+  buyAllButton: {
+    backgroundColor: '#007bff',
+    paddingHorizontal: 30,
+    borderRadius: 5,
+    marginBottom: 25,
+    
   }
 });
 

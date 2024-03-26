@@ -136,7 +136,7 @@ const cloudinaryUpload = async photo => {
   };
 
   return (
-    <View className="h-full w-full">
+    <View className="h-full w-full" backgroundColor= 'white' >
       <CustomHeader navigation={navigation} />
       <ScrollView className="h-max m-8 ">
         <Text
