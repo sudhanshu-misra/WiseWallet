@@ -6,27 +6,46 @@ import { useContext, useState, useEffect } from 'react';
 import { date } from 'yup';
 import { current } from '@reduxjs/toolkit';
 import {COLORS} from '../../constants/theme';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import host from "../../constants/host.js"
+import axios from 'axios';
 
 const OrderScreen = ({navigation}) => {
-  const [products, setProducts] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [cartItems, setCartItems] = useState([]);
-  const [showNotification, setShowNotification] = useState(false);
-  const [notificationMessage, setNotificationMessage] = useState("");
+  const [orderData,setOrderData] = useState([]);
 
+  const {fetchorders,setfetchorders} = useContext(GlobalContext);
 
-  useEffect(() => {
-    // Simulated sample data
-    const sampleProducts = [
-      { id: 1, name: 'Diary', price: 10, seller: { name: 'Student 1', id: '1000014132@dit.edu.in' }, image: 'http://surl.li/rvebm', category: 'Textbooks' },
-      { id: 2, name: 'Wooden Chair', price: 20, seller: { name: 'Student 2', id: '1000014133@dit.edu.in' }, image: 'http://surl.li/rvetu', category: 'Furniture' },
-      { id: 3, name: 'Shirt', price: 30, seller: { name: 'Student 3', id: '1000014134@dit.edu.in' }, image: 'http://surl.li/rvfbp', category: 'Clothing' },
-      { id: 4, name: 'Electric Iron', price: 40, seller: { name: 'Student 4', id: '1000014135@dit.edu.in' }, image: 'http://surl.li/rvevt', category: 'Appliances' },
-      { id: 5, name: 'C-type Charger', price: 50, seller: { name: 'Student 5', id: '1000014136@dit.edu.in' }, image: 'http://surl.li/rvewx', category: 'Electronics' },
-      { id: 6, name: 'Drafter scale', price: 60, seller: { name: 'Student 6', id: '1000014137@dit.edu.in' }, image: 'http://surl.li/rwaqk', category: 'Stationery' },
-    ];
-    setProducts(sampleProducts);
-  }, []);
+  useEffect(()=>{
+    try{ getOrders();} 
+    finally{
+      setfetchorders(false);
+    }
+},[fetchorders])
+
+const getOrders = async () => {
+const token = await AsyncStorage.getItem('token');
+try {
+  let config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const response = await axios.get(
+    `${host.apiUrl}/api/order/get-orders-by-buyer`,
+    config,
+  );
+   console.log(response.data.orders);
+
+  if (response.data.orders) {
+    console.log('products ordered');
+   setOrderData(response.data.orders);
+  } else {
+    console.log('products not found');
+  }
+} catch (error) {
+  console.log(error);
+}
+}
 
 
 const handleProductPress = (product) => {
@@ -35,15 +54,15 @@ const handleProductPress = (product) => {
 };
 
 
-const handleBuyNow = (product) => {
-  navigation.navigate('Buy', { product });  
-}
+// const handleBuyNow = (product) => {
+//   navigation.navigate('Buy', { product });  
+// }
 
 const handleCancel = (product) => {
   // Filter out the product that needs to be canceled
   const updatedOrderData = orderData.filter(item => item.id !== product.id);
   // Update the order data state with the filtered array
-  setorderData(updatedOrderData);
+         //send product._id
 }
 
 const Notification = ({ message }) => (
@@ -56,8 +75,7 @@ const currentDate = new Date().toLocaleDateString('en-GB'); // 'en-GB' locale fo
 
 const currentTime = new Date().toLocaleTimeString();
 
-const {orderData, setorderData} = useContext(GlobalContext);
-console.log(orderData);
+//console.log(orderData);
 
 
   return (
@@ -73,19 +91,19 @@ console.log(orderData);
         <TouchableOpacity onPress={() => handleProductPress(item)}>
           <View style={styles.imageContainer}>
             {/* Apply opacity style for the image */}
-            <Image source={{ uri: item.image }} style={[styles.productImage, item.name === 'Drafter scale' && styles.fadedImage]} />
-            {item.name === 'Drafter scale' && (
+            <Image source={{ uri: item.productImage }} style={[styles.productImage]} />
+            {/* {item.productName === 'Drafter scale' && (
               <View style={styles.notAvailableContainer}>
                 <Text style={styles.notAvailableText}>Not Available</Text>
               </View>
-            )}
+            )} */}
           </View>
         </TouchableOpacity>
 
-         <Text style={styles.productName}>{item.name}</Text>
+         <Text style={styles.productName}>{item.productName}</Text>
           <Text style={styles.productPrice}>Rs {item.price}</Text>
-          <Text style={styles.sellerInfo}>Seller Name: {item.seller.name}</Text>
-          <Text>({item.seller.id})</Text>
+          {/* <Text style={styles.sellerInfo}>Seller Name: {item.seller.name}</Text> */}
+          {/* <Text>({item})</Text> */}
 
         <TouchableOpacity
           style={styles.addToCartButton}
