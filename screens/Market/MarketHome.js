@@ -7,15 +7,15 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
+  Button,
 } from 'react-native';
 import CustomHeader from '../../components/Header';
 import GlobalContext from '../../helpers/GlobalContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import host from '../../constants/host.js';
 import axios from 'axios';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import StatusModal from '../../components/Modal/StatusModal';
-
-
 
 const MarketHome = ({navigation}) => {
   const [products, setProducts] = useState([]);
@@ -79,6 +79,7 @@ const MarketHome = ({navigation}) => {
       if (response.data) {
         console.log('products received');
         setProducts(response.data.products);
+        console.log('products', products);
       } else {
         console.log('products not found');
       }
@@ -117,7 +118,7 @@ const MarketHome = ({navigation}) => {
         });
       }
     } catch (err) {
-      console.log(err);
+      console.log(err.response.data.message);
       SetstatusVisible({
         visibility: true,
         modaltype: 'failed',
@@ -131,14 +132,6 @@ const MarketHome = ({navigation}) => {
     SetstatusVisible(prev => {
       return {visibility: false, modaltype: prev.modaltype, message: ''};
     });
-  };
-
-  // console.log("this",products);
-
-  //not working
-  const handleProductPress = product => {
-    // Navigate to product details screen or perform any action
-    // console.log('Product pressed:', product);
   };
 
   const handleAddToWishlist = product => {
@@ -214,404 +207,122 @@ const MarketHome = ({navigation}) => {
     }
   };
 
-  const renderProductItem = ({item, index}) => {
-    // console.log(item);
-    return (
-      <View style={styles.productContainer}>
-        <View style={styles.productItem}>
-          <TouchableOpacity onPress={() => handleProductPress(item)}>
-            <View style={styles.imageContainer}>
-              {/* Apply opacity style for the image */}
-              <Image
-                source={{uri: item.productImage}}
-                style={[
-                  styles.productImage,
-                  item.isSold === false && styles.fadedImage,
-                ]}
-              />
-              {item.isSold === true && (
-                <View style={styles.notAvailableContainer}>
-                  <Text style={styles.notAvailableText}>Not Available</Text>
-                </View>
-              )}
-            </View>
-            <View>
-              <View className="flex flex-row justify-between">
-                <Text style={styles.productName}>{item.productName}</Text>
-                <Text style={styles.productPrice}>Rs {item.price}</Text>
-              </View>
-
-              <Text>Description : {item.productDescription}</Text>
-              <Text>Condition : {item.productCondition}</Text>
-            </View>
-            {/* <Text style={styles.sellerInfo}>{}</Text> */}
-          </TouchableOpacity>
-          {!item.isSold && (
-            <TouchableOpacity
-              style={styles.addToCartButton}
-              onPress={() => handleAddToWishlist(item)}>
-              <Text style={styles.addToCartButtonText}>Add to wishlist</Text>
-            </TouchableOpacity>
-          )}
-          {!item.isSold && (
-            <TouchableOpacity
-              style={styles.addToCartButton}
-              onPress={() => handleBuyNow(item)}>
-              <Text style={styles.addToCartButtonText}>Buy Now</Text>
-            </TouchableOpacity>
-          )}
-          {item.isSold === true && ( // Add button below the sixth image
-            <View style={styles.notifyButtonContainer}>
-              <TouchableOpacity
-                style={styles.notifyButton}
-                onPress={() => handleNotificationWhenAvailable(item)}>
-                <Text style={styles.notifyButtonText}>
-                  Notify Me When Available
-                </Text>
-              </TouchableOpacity>
-            </View>
-          )}
-        </View>
-      </View>
-    );
-  };
-
-  const renderCategoryItem = ({item}) => (
-    <TouchableOpacity
-      style={[
-        styles.categoryItem,
-        item === selectedCategory && styles.selectedCategory,
-      ]}
-      onPress={() => {
-        setSelectedCategory(selectedCategory === item ? null : item);
-      }}>
-      <Text style={styles.categoryText}>{item}</Text>
-    </TouchableOpacity>
-  );
-
   const Notification = ({message}) => (
     <View style={styles.notificationContainer}>
       <Text style={styles.notificationText}>{message}</Text>
     </View>
   );
 
-  const sortByPrice = () => {
-    // Implement sorting logic here
-  };
-
   return (
-    <ScrollView showsVerticalScrollIndicator={false} backgroundColor="white">
-      <View>
-        <CustomHeader navigation={navigation} />
-        <View style={styles.container}>
-      
-          <View style={styles.sortContainer}>
-          <TouchableOpacity style={styles.sortButton} onPress={sortByPrice}>
-      
-
-              <Text style={styles.sortButtonText}> Sort By</Text>
-            </TouchableOpacity>
-
-
-            {/* <FlatList
-              data={categories}
-              renderItem={renderCategoryItem}
-              keyExtractor={item => item}
-              horizontal
-              showsHorizontalScrollIndicator={true}
-            /> */}
-          
-          <TouchableOpacity style={styles.sortButton} onPress={sortByPrice}>
-      
-
-              <Text style={styles.sortButtonText}>Filter</Text>
-            </TouchableOpacity>
-
-</View> 
-<View style={styles.divider} />
-
-<View style={styles.productContainer} >
-          <View>
-            {/* <Image source={productImage} style={styles.productImage} /> */}
-            <View style={styles.productDetailsContainer}>
-              <Text style={styles.productName}>Mini Drafter</Text>
-              <Text style={styles.productPrice}>Rs 300</Text>
-              <TouchableOpacity style={styles.favoriteButton}>
-                {/* Heart-shaped icon */}
-              </TouchableOpacity>
-              <Text style={styles.productDescription}>tool used in technical drawing, consisting of a
-pair of scales mounted to form a right angle on
-an articulated protractor head that allows an
-angular rotation.
-
- </Text>
- <TouchableOpacity style={styles.branchButton}>
-                <Text style={styles.branchText}>Btech CSE</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.semesterButton}>
-                <Text style={styles.SemesterText}>Semester II </Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.buyNowButton}>
-                <Text style={styles.buyNowText}>Buy Now</Text>
-              </TouchableOpacity>
-            </View>
-            
-          </View>
-          
-          {/* <View style={styles.categoryContainer}>
-            <TouchableOpacity style={styles.categoryButton}>
-              <Text style={styles.categoryButtonText}>BTech Cse</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.categoryButton}>
-              <Text style={styles.categoryButtonText}>Semester II</Text>
-            </TouchableOpacity>
-          </View> */}
+    <View className="bg-white" style={styles.container}>
+      <CustomHeader navigation={navigation} />
+      <View className="m-4 flex flex-row">
+        <View className="border-2 border-[#d9d9d9] rounded-md flex flex-row justify-between items-center p-2">
+          <Icon name="sort" size={20} color="black" />
+          <Text className="pl-2 text-black">Sort By</Text>
         </View>
-        <View style={styles.divider2} />
-
-        <View style={styles.productDetailsContainer}>
-              <Text style={styles.productName}>Drawing Sheet Holder</Text>
-              <Text style={styles.productPrice}>Rs 300</Text>
-              <TouchableOpacity style={styles.favoriteButton}>
-                {/* Heart-shaped icon */}
-              </TouchableOpacity>
-              <Text style={styles.productDescription}>tool used in technical drawing, consisting of a
-pair of scales mounted to form a right angle on
-an articulated protractor head that allows an
-angular rotation.
-
- </Text>
- <TouchableOpacity style={styles.branchButton}>
-                <Text style={styles.branchText}>Btech CSE</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.semesterButton}>
-                <Text style={styles.SemesterText}>Semester </Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.buyNowButton}>
-                <Text style={styles.buyNowText}>Buy Now</Text>
-              </TouchableOpacity>
-            </View>
-
-          {/* <FlatList
-            data={products.filter(
-              product =>
-                !selectedCategory || product.category === selectedCategory,
-            )}
-            renderItem={renderProductItem}
-            keyExtractor={item => item._id}
-            contentContainerStyle={styles.productList}
-          />
-
-          {showNotification && <Notification message={notificationMessage} />} */}
+        <View className="border-2 border-[#d9d9d9] rounded-md flex flex-row justify-between items-center p-2 ml-2">
+          <Icon name="filter" size={20} color="black" />
+          <Text className="pl-2 text-black">Filter</Text>
         </View>
       </View>
-      <StatusModal
-        modalType={statusVisible.modaltype}
-        modalState={statusVisible.visibility}
-        hideModal={handleStatus}
-        message={statusVisible.message}></StatusModal>
-    </ScrollView>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        backgroundColor="#d9d9d9">
+        <View className="pb-[28%]">
+          {products.map((product, index) => (
+            <View key={index} className="bg-white mt-1 ">
+              <View className="flex flex-row w-[100%]">
+                <View className="w-[40%] p-2 relative">
+                  <Image
+                    source={{uri: product.productImage}}
+                    style={styles.productImage}
+                  />
+                  {product.isSold ? (
+                    <View className="absolute bg-[#CA4343] bottom-0 p-2 m-2 w-[150px]">
+                      <Text className="text-white text-center">
+                        Out of Stock
+                      </Text>
+                    </View>
+                  ) : null}
+                </View>
+                <View className="flex flex-col w-[60%] p-3 justify-between">
+                  <View className="">
+                    <View className="flex flex-row items-center justify-between">
+                      <Text className="text-base text-black font-semibold">
+                        {product.productName}
+                      </Text>
+                      <TouchableOpacity
+                        onPress={() => handleAddToWishlist(product)}>
+                        {wishlistData.some(item => item.id === product._id) ? (
+                          <Icon name="heart" size={20} color="red" />
+                        ) : (
+                          <Icon name="heart-o" size={20} color="black" />
+                        )}
+                      </TouchableOpacity>
+                    </View>
+                    <Text className="text-base text-black font-semibold">
+                      ₹ {product.price}
+                    </Text>
+                    <Text className="text-sm text-black">
+                      {product.productDescription}
+                    </Text>
+                  </View>
+                  {product.isSold ? (
+                    <TouchableOpacity
+                      onPress={() => handleNotificationWhenAvailable(product)}>
+                      <View className="bg-[#497320] w-full flex items-center py-2 rounded-xl">
+                        <Text className="text-white">
+                          Notify when available
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                  ) : (
+                    <TouchableOpacity onPress={() => handleBuyNow(product)}>
+                      <View className="bg-[#497320] w-full flex items-center py-2 rounded-xl">
+                        <Text className="text-white">Buy Now</Text>
+                      </View>
+                    </TouchableOpacity>
+                  )}
+                </View>
+              </View>
+              <View className="m-2 flex flex-row flex-wrap">
+                <View className="border-2 p-1 border-[#d9d9d9]">
+                  <Text>{product.category}</Text>
+                </View>
+                {product.courseName && (
+                  <View className="border-2 p-1 border-[#d9d9d9] ml-2">
+                    <Text>{product.courseName}</Text>
+                  </View>
+                )}
+                {product.semester && (
+                  <View className="m-1 border-2 p-1 border-[#d9d9d9] ml-2">
+                    <Text>Semester {product.semester}</Text>
+                  </View>
+                )}
+              </View>
+            </View>
+          ))}
+        </View>
+        <StatusModal
+          modalType={statusVisible.modaltype}
+          modalState={statusVisible.visibility}
+          hideModal={handleStatus}
+          message={statusVisible.message}></StatusModal>
+      </ScrollView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: 'white',
-    paddingHorizontal: 20,
-    paddingTop: 20,
-    // marginBottom: 20,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-  },
-  categories: {
-    marginBottom: 20,
-  },
-  categoryItem: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 20,
-    marginRight: 10,
-    backgroundColor: '#f0f0f0',
-  },
-  selectedCategory: {
-    backgroundColor: '#007bff',
-  },
-  categoryText: {
-    fontSize: 16,
-    color: '#333',
-  },
-  productList: {
-    flexGrow: 1,
-  },
-  productContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 20,
-  },
-  productItem: {
-    flex: 1,
-    padding: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
-  },
-  imageContainer: {
-    alignItems: 'center', // Centering the image within its container
+    fontFamily: 'Roboto, serif',
   },
   productImage: {
     width: 150,
     height: 150,
     marginBottom: 10,
   },
-  productName: {
-    fontSize: 18,
-    marginLeft: 182,
-    color: 'black',
-    marginTop: 10,
-  },
-  productPrice: {
-    fontSize: 16,
-    color: 'black',
-    marginLeft: 182,
-    marginTop: 10,
-
-  },
-  sellerInfo: {
-    fontSize: 14,
-    color: '#666',
-  },
-  addToCartButton: {
-    backgroundColor: '#007bff',
-    padding: 10,
-    borderRadius: 5,
-    marginTop: 10,
-  },
-  addToCartButtonText: {
-    color: '#fff',
-    textAlign: 'center',
-  },
-  notificationContainer: {
-    position: 'absolute',
-    bottom: 1,
-    left: '50%',
-    bottom: '50%',
-    transform: [{translateX: 20}, {translateY: 20}],
-    backgroundColor: 'rgba(0, 0, 0, 0.7)',
-    padding: 10,
-    borderRadius: 5,
-  },
-  notificationText: {
-    color: '#fff',
-    textAlign: 'center',
-  },
-  fadedImage: {
-    opacity: 0.8, // Set opacity to make the image look faded
-  },
-  notAvailableContainer: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: 'rgba(255, 0, 0, 0.5)', // Semi-transparent red background
-    paddingVertical: 5,
-  },
-  notAvailableText: {
-    color: '#fff',
-    textAlign: 'center',
-    fontWeight: 'bold',
-  },
-  notifyButtonContainer: {
-    // position: 'absolute',
-    // top: -8, // Adjust the position as needed
-    // right: 2, // Adjust the position as needed
-  },
-  notifyButton: {
-    // backgroundColor: 'green',
-    // padding: 3,
-    // borderRadius: 5,
-    backgroundColor: '#007bff',
-    padding: 10,
-    borderRadius: 5,
-    marginTop: 10,
-  },
-  notifyButtonText: {
-    color: '#fff',
-    textAlign: 'center',
-  },
-  sortContainer: {
-    flexDirection: 'row', // Arrange children horizontally
-    justifyContent: 'space-between', // Add space between buttons
-    marginBottom: 10,
-  },
-  sortButton: {
-    backgroundColor: 'white', // Example background color
-    padding: 2,
-    borderRadius: 5,
-    borderWidth: 1,
-  },
-  sortButtonText: {
-    color: 'black', // Example text color
-    fontWeight: 'bold',
-
-  },
-  divider: {
-    height: 4, // Adjust the height as needed
-    backgroundColor: 'gray', // Example divider color
-    marginVertical: -1,
-    padding: 2, // Adjust spacing above and below the divider
-  },
-  productDescription: {
-    marginTop: 10,
-    marginBottom: 10,
-    marginLeft: 182,
-  },
-  buyNowButton: {
-    backgroundColor: '#507424', 
-    padding: 4,
-    borderRadius: 8,
-    marginLeft: 182,
-    marginTop: -28,
-  },
-  buyNowText: {
-    color: 'white',
-    marginLeft: 34,
-    
-  },
-divider2: {
-    height: 4, // Adjust the height as needed
-    backgroundColor: 'gray', // Example divider color
-    marginVertical: -1,
-    padding: 2, // Adjust spacing above and below the divider
-  },
-  branchButton: {
-    backgroundColor: 'gray', 
-    borderRadius: 1,
-    marginTop: 10,
-    marginRight: 250,
-  
-
-  },
-  branchText: {
-    color: 'black', // Example text color
-    fontWeight: 'bold',
-  },
-  semesterButton: {
-    backgroundColor: 'gray',
-    borderRadius: 1,
-    marginTop: -19,
-    marginRight: 160,
-    marginLeft: 76,
-
-
-  },
-  SemesterText: {
-    color: 'black', // Example text color
-    fontWeight: 'bold',
-  },
-
 });
 
 export default MarketHome;
