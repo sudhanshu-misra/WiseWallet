@@ -39,7 +39,7 @@ export const collegePrograms=[
   'POSTGRADUATE PROGRAMS',
   'DOCTORAL PROGRAMS'
 ]
-
+ 
 export const undergraduateCourses=[
 'B.Tech in Computer Science & Engineering' ,
 'B.Tech in Information Technology' ,
@@ -111,19 +111,21 @@ export const doctoralPrograms=[
 ]
 
 export const semester=[
-   "I",
-   "II",
-   "III",
-   "IV",
-   "V",
-   "VI",
-   "VII",
-   "VIII"
+ // "All Semesters", 
+   "Semester I",
+   "Semester II",
+   "Semester III",
+   "Semester IV",
+   "Semester V",
+   "Semester VI",
+   "Semester VII",
+   "Semester VIII",
 ]
 
 export const postGrad_semester=[
-  "I",
-  "II",
-  "III",
-  "IV",
+ // "All Semesters", 
+   "Semester I",
+   "Semester II",
+   "Semester III",
+   "Semester IV",
 ]
