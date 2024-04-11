@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react';
+import React, {useState, useContext , useEffect} from 'react';
 import CustomHeader from '../../components/Header';
 import {
   View,
@@ -14,7 +14,7 @@ import * as Yup from 'yup';
 import {globalStyles} from '../../constants/globalStyles';
 import {Button} from 'react-native-paper';
 import IconPicker from '../../components/Form/Icon/IconPicker';
-import {productCategory} from '../../components/Form/Icon/IconData';
+import {productCategory,collegePrograms , undergraduateCourses , postgraduateCourses , doctoralPrograms , semester , postGrad_semester} from '../../components/Form/Icon/IconData';
 import {COLORS} from '../../constants/theme';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {launchImageLibrary} from 'react-native-image-picker';
@@ -25,9 +25,17 @@ import host from '../../constants/host.js';
 import axios from 'axios';
 import GlobalContext from '../../helpers/GlobalContext.js';
 
+
 const SellScreen = ({navigation}) => {
   const [categoryError, setCategoryError] = useState('');
-  const [category, setCategory] = useState('');
+  const [category, setCategory] = useState(''); 
+  const [program,setProgram] = useState('');
+  const [course,setCourse] = useState('');
+  const [sem,setSem] =useState('');
+
+  const [courseList ,setCourseList] = useState(undergraduateCourses);
+  const [semList,setSemList] = useState(semester);
+
   const [imgUrl, setImgUrl] = useState('');
   const [statusVisible, SetstatusVisible] = useState({
     visibility: false,
@@ -69,11 +77,12 @@ const SellScreen = ({navigation}) => {
 
   const cloudinaryUpload = async photo => {
     const data = new FormData();
+
     data.append('file', photo);
     data.append('upload_preset', 'konykusz');
     data.append('cloud_name', 'dkanjxccl');
     SetstatusVisible({visibility: true, modaltype: 'loader'});
-
+     
     const response = await fetch(
       'https://api.cloudinary.com/v1_1/dkanjxccl/image/upload',
       {
@@ -84,16 +93,18 @@ const SellScreen = ({navigation}) => {
           'Content-Type': 'multipart/form-data',
         },
       },
+      
     ).catch(err => {
       console.log(err, 'error');
       SetstatusVisible({visibility: true, modaltype: 'failed'});
     });
-
-    if (response.ok) {
+ 
+    if (response) {
       SetstatusVisible({visibility: false, modaltype: 'loader'});
     }
 
     const imagedata = await response.json();
+
     return imagedata.url;
   };
 
@@ -101,6 +112,15 @@ const SellScreen = ({navigation}) => {
     setCategory(categoryName);
     // category = categoryName;
   };
+  const programData = programName=>{
+    setProgram(programName);
+  }
+  const courseData = courseName =>{
+    setCourse(courseName);
+  }
+  const semesterData = semesterName=>{
+    setSem(semesterName);
+  }
 
   // on submittion
   const formSubmitHandler = async (values, actions) => {
@@ -113,8 +133,11 @@ const SellScreen = ({navigation}) => {
           productName: values.product,
           category: category,
           price: parseFloat(values.price),
+          programName : program,
+          courseName : course,
+          semester:sem
         };
-        //console.log(data);
+        console.log(data);
 
         //axios send req
         //send data to backend
@@ -157,6 +180,23 @@ const SellScreen = ({navigation}) => {
     }
   };
 
+ 
+        useEffect(()=>{
+          if(program === 'POSTGRADUATE PROGRAMS'){
+            setCourseList(postgraduateCourses);
+            setSemList(postGrad_semester);
+          }
+          else if(program === "DOCTORAL PROGRAMS"){
+            setCourseList(doctoralPrograms);
+            setSemList(semester);
+          }
+          else{
+            setCourseList(undergraduateCourses);
+            setSemList(semester);
+          }
+             
+        },[program])
+
   return (
     <View className="h-full w-full" backgroundColor="white">
       <CustomHeader navigation={navigation} />
@@ -188,12 +228,34 @@ const SellScreen = ({navigation}) => {
             touched,
           }) => (
             <View>
-              <IconPicker
+            
+               <IconPicker
                 getIcon={categoryData}
                 iconError={categoryError}
                 iconData={productCategory}
                 title={'Category'}
                 label={'Select category'}></IconPicker>
+
+              <IconPicker
+                getIcon={programData}
+                iconError=''
+                iconData={collegePrograms}
+                title={'program'}
+                label={'Select program'}></IconPicker>
+                
+                <IconPicker
+                getIcon={courseData}
+                iconError=''
+                iconData={courseList}
+                title={'course'}
+                label={'Select course'}></IconPicker>
+              
+               <IconPicker
+                getIcon={semesterData}
+                iconError=''
+                iconData={semList}
+                title={'semester'}
+                label={'Select semester'}></IconPicker>
 
               <View className="mt-2">
                 <Text className="ml-5 text-lg">Product:</Text>
