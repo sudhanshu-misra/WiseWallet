@@ -16,7 +16,7 @@ const WalletForm = ({hideModal, onSubmit}) => {
     setActiveWallet('Card');
   };
   const upiWalletFormHandler = () => {
-    setActiveWallet('UpiWallet');
+    setActiveWallet('UpiWallet'); 
   };
 
   return (

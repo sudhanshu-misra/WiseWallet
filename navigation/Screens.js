@@ -40,6 +40,7 @@ import Payment from '../screens/Market/Payment.js';
 
 //Notification
 import Notification from '../screens/notification/Notification';
+import MarketFilter from '../screens/Market/filter/MarketFilter.js';
 
 const Screens = {
   UNAUTHENTICATED: [
@@ -72,7 +73,7 @@ const Screens = {
     {name: 'Profile', component: Profile},
     {name: 'EditProfile', component: EditProfile},
     {name: 'Payment', component: Payment},
-
+    {name:'MarketFilter' , component:MarketFilter},
     {name:"Notification",component:Notification}
   ],
 };

@@ -7,7 +7,7 @@ import {StyleSheet} from 'react-native';
 export default function SharedModal({modalState, children, hideModal}) {
   return (
     
-    <Modal
+    <Modal 
       visible={modalState}
       transparent={true}
       animationType="fade"

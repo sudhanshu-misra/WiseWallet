@@ -8,6 +8,7 @@ import {
   StyleSheet,
   Image,
   Button,
+  Pressable,
 } from 'react-native';
 import CustomHeader from '../../components/Header';
 import GlobalContext from '../../helpers/GlobalContext';
@@ -16,6 +17,8 @@ import host from '../../constants/host.js';
 import axios from 'axios';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import StatusModal from '../../components/Modal/StatusModal';
+import SortModal from './filter/SortModal.js';
+import Modal from '../../components/Modal/Modal.js';
 
 const MarketHome = ({navigation}) => {
   const [products, setProducts] = useState([]);
@@ -23,6 +26,9 @@ const MarketHome = ({navigation}) => {
   //const [cartItems, setCartItems] = useState([]);
   const [showNotification, setShowNotification] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState('');
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [sortBy, setSortBy] = useState('');
+  //  sortBy values - asc(low to high) ,  desc(high to low) , new(newestfirst)
 
   const [statusVisible, SetstatusVisible] = useState({
     visibility: false,
@@ -207,24 +213,43 @@ const MarketHome = ({navigation}) => {
     }
   };
 
-  const Notification = ({message}) => (
-    <View style={styles.notificationContainer}>
-      <Text style={styles.notificationText}>{message}</Text>
-    </View>
-  );
+  // const Notification = ({message}) => (
+  //   <View style={styles.notificationContainer}>
+  //     <Text style={styles.notificationText}>{message}</Text>
+  //   </View>
+  // );
+
+  //sort By modal handler
+  const sortByModalHandler = () => {
+    setModalVisible(true);
+  };
+  const handleSortField = sort => {
+    setSortBy(sort);
+    // console.log(sort)
+  };
+  const filterHandler = () => {
+    navigation.navigate('MarketFilter');
+  };
 
   return (
     <View className="bg-white" style={styles.container}>
       <CustomHeader navigation={navigation} />
       <View className="m-4 flex flex-row">
-        <View className="border-2 border-[#d9d9d9] rounded-md flex flex-row justify-between items-center p-2">
+      <TouchableOpacity  onPress={sortByModalHandler}>
+        <View
+          className="border-2 border-[#d9d9d9] rounded-md flex flex-row justify-between items-center p-2"
+         >
           <Icon name="sort" size={20} color="black" />
           <Text className="pl-2 text-black">Sort By</Text>
         </View>
-        <View className="border-2 border-[#d9d9d9] rounded-md flex flex-row justify-between items-center p-2 ml-2">
+        </TouchableOpacity>
+        <TouchableOpacity  onPress={filterHandler}>
+        <View
+          className="border-2 border-[#d9d9d9] rounded-md flex flex-row justify-between items-center p-2 ml-2">
           <Icon name="filter" size={20} color="black" />
           <Text className="pl-2 text-black">Filter</Text>
         </View>
+        </TouchableOpacity>
       </View>
       <ScrollView
         showsVerticalScrollIndicator={false}
@@ -304,6 +329,13 @@ const MarketHome = ({navigation}) => {
             </View>
           ))}
         </View>
+
+        <Modal modalState={isModalVisible}>
+          <SortModal
+            hideModal={() => setModalVisible(false)}
+            sortData={handleSortField}></SortModal>
+        </Modal>
+
         <StatusModal
           modalType={statusVisible.modaltype}
           modalState={statusVisible.visibility}
