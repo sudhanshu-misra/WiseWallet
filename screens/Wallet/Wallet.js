@@ -179,7 +179,7 @@ export default function WalletHome({navigation}) {
             })}
           </View>
 
-          <Modal
+          <Modal 
             modalState={isModalVisible}
             hideModal={() => SetModalVisible(false)}>
             <WalletForm

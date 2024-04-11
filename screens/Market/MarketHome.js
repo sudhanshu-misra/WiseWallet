@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
+  Pressable,
 } from 'react-native';
 import CustomHeader from '../../components/Header';
 import GlobalContext from '../../helpers/GlobalContext';
@@ -14,6 +15,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import host from '../../constants/host.js';
 import axios from 'axios';
 import StatusModal from '../../components/Modal/StatusModal';
+import SortModal from './filter/SortModal.js';
+import Modal from '../../components/Modal/Modal.js';
 
 const MarketHome = ({navigation}) => {
   const [products, setProducts] = useState([]);
@@ -21,6 +24,9 @@ const MarketHome = ({navigation}) => {
   //const [cartItems, setCartItems] = useState([]);
   const [showNotification, setShowNotification] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState('');
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [sortBy, setSortBy] = useState('');
+  //  sortBy values - asc(low to high) ,  desc(high to low) , new(newestfirst)
 
   const [statusVisible, SetstatusVisible] = useState({
     visibility: false,
@@ -81,7 +87,7 @@ const MarketHome = ({navigation}) => {
         console.log('products not found');
       }
     } catch (error) {
-      console.log(error);
+      console.log(error); 
     }
   };
   //Buy
@@ -130,14 +136,10 @@ const MarketHome = ({navigation}) => {
       return {visibility: false, modaltype: prev.modaltype, message: ''};
     });
   };
-
-  // console.log("this",products);
-
-  //not working
   const handleProductPress = product => {
-    // Navigate to product details screen or perform any action
-    // console.log('Product pressed:', product);
+ 
   };
+  // console.log("this",products);
 
   const handleAddToWishlist = product => {
     const itemExists = wishlistData.some(item => item.id === product._id);
@@ -293,11 +295,29 @@ const MarketHome = ({navigation}) => {
     </View>
   );
 
+  //sort By modal handler
+  const sortByModalHandler = () => {
+    setModalVisible(true);
+  };
+  const handleSortField = sort => {
+    setSortBy(sort);
+    // console.log(sort)
+  };
+const filterHandler =()=>{
+  navigation.navigate('MarketFilter');
+}
+
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View backgroundColor="white">
         <CustomHeader navigation={navigation} />
         <View style={styles.container}>
+          <Pressable onPress={sortByModalHandler}>
+            <Text>Sort by</Text>
+          </Pressable>
+          <Pressable onPress={filterHandler}>
+            <Text>Filter</Text>
+          </Pressable>
           <View style={styles.categories}>
             <FlatList
               data={categories}
@@ -322,6 +342,16 @@ const MarketHome = ({navigation}) => {
           {showNotification && <Notification message={notificationMessage} />}
         </View>
       </View>
+
+      <Modal
+        modalState={isModalVisible}
+        // hideModal={() => setModalVisible(false)}
+      >
+        <SortModal
+          hideModal={() => setModalVisible(false)}
+          sortData={handleSortField}></SortModal>
+      </Modal>
+
       <StatusModal
         modalType={statusVisible.modaltype}
         modalState={statusVisible.visibility}
