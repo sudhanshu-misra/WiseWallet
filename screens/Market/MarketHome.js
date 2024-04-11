@@ -15,6 +15,8 @@ import host from '../../constants/host.js';
 import axios from 'axios';
 import StatusModal from '../../components/Modal/StatusModal';
 
+
+
 const MarketHome = ({navigation}) => {
   const [products, setProducts] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -293,23 +295,104 @@ const MarketHome = ({navigation}) => {
     </View>
   );
 
+  const sortByPrice = () => {
+    // Implement sorting logic here
+  };
+
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
-      <View backgroundColor="white">
+    <ScrollView showsVerticalScrollIndicator={false} backgroundColor="white">
+      <View>
         <CustomHeader navigation={navigation} />
         <View style={styles.container}>
-          <View style={styles.categories}>
-            <FlatList
+      
+          <View style={styles.sortContainer}>
+          <TouchableOpacity style={styles.sortButton} onPress={sortByPrice}>
+      
+
+              <Text style={styles.sortButtonText}> Sort By</Text>
+            </TouchableOpacity>
+
+
+            {/* <FlatList
               data={categories}
               renderItem={renderCategoryItem}
               keyExtractor={item => item}
               horizontal
               showsHorizontalScrollIndicator={true}
-            />
-          </View>
-          {/* <Text style={styles.title}>BUY</Text> */}
+            /> */}
+          
+          <TouchableOpacity style={styles.sortButton} onPress={sortByPrice}>
+      
 
-          <FlatList
+              <Text style={styles.sortButtonText}>Filter</Text>
+            </TouchableOpacity>
+
+</View> 
+<View style={styles.divider} />
+
+<View style={styles.productContainer} >
+          <View>
+            {/* <Image source={productImage} style={styles.productImage} /> */}
+            <View style={styles.productDetailsContainer}>
+              <Text style={styles.productName}>Mini Drafter</Text>
+              <Text style={styles.productPrice}>Rs 300</Text>
+              <TouchableOpacity style={styles.favoriteButton}>
+                {/* Heart-shaped icon */}
+              </TouchableOpacity>
+              <Text style={styles.productDescription}>tool used in technical drawing, consisting of a
+pair of scales mounted to form a right angle on
+an articulated protractor head that allows an
+angular rotation.
+
+ </Text>
+ <TouchableOpacity style={styles.branchButton}>
+                <Text style={styles.branchText}>Btech CSE</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.semesterButton}>
+                <Text style={styles.SemesterText}>Semester II </Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.buyNowButton}>
+                <Text style={styles.buyNowText}>Buy Now</Text>
+              </TouchableOpacity>
+            </View>
+            
+          </View>
+          
+          {/* <View style={styles.categoryContainer}>
+            <TouchableOpacity style={styles.categoryButton}>
+              <Text style={styles.categoryButtonText}>BTech Cse</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.categoryButton}>
+              <Text style={styles.categoryButtonText}>Semester II</Text>
+            </TouchableOpacity>
+          </View> */}
+        </View>
+        <View style={styles.divider2} />
+
+        <View style={styles.productDetailsContainer}>
+              <Text style={styles.productName}>Drawing Sheet Holder</Text>
+              <Text style={styles.productPrice}>Rs 300</Text>
+              <TouchableOpacity style={styles.favoriteButton}>
+                {/* Heart-shaped icon */}
+              </TouchableOpacity>
+              <Text style={styles.productDescription}>tool used in technical drawing, consisting of a
+pair of scales mounted to form a right angle on
+an articulated protractor head that allows an
+angular rotation.
+
+ </Text>
+ <TouchableOpacity style={styles.branchButton}>
+                <Text style={styles.branchText}>Btech CSE</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.semesterButton}>
+                <Text style={styles.SemesterText}>Semester </Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.buyNowButton}>
+                <Text style={styles.buyNowText}>Buy Now</Text>
+              </TouchableOpacity>
+            </View>
+
+          {/* <FlatList
             data={products.filter(
               product =>
                 !selectedCategory || product.category === selectedCategory,
@@ -319,7 +402,7 @@ const MarketHome = ({navigation}) => {
             contentContainerStyle={styles.productList}
           />
 
-          {showNotification && <Notification message={notificationMessage} />}
+          {showNotification && <Notification message={notificationMessage} />} */}
         </View>
       </View>
       <StatusModal
@@ -385,11 +468,16 @@ const styles = StyleSheet.create({
   },
   productName: {
     fontSize: 18,
-    marginBottom: 5,
+    marginLeft: 182,
+    color: 'black',
+    marginTop: 10,
   },
   productPrice: {
     fontSize: 16,
-    color: '#888',
+    color: 'black',
+    marginLeft: 182,
+    marginTop: 10,
+
   },
   sellerInfo: {
     fontSize: 14,
@@ -453,6 +541,77 @@ const styles = StyleSheet.create({
     color: '#fff',
     textAlign: 'center',
   },
+  sortContainer: {
+    flexDirection: 'row', // Arrange children horizontally
+    justifyContent: 'space-between', // Add space between buttons
+    marginBottom: 10,
+  },
+  sortButton: {
+    backgroundColor: 'white', // Example background color
+    padding: 2,
+    borderRadius: 5,
+    borderWidth: 1,
+  },
+  sortButtonText: {
+    color: 'black', // Example text color
+    fontWeight: 'bold',
+
+  },
+  divider: {
+    height: 4, // Adjust the height as needed
+    backgroundColor: 'gray', // Example divider color
+    marginVertical: -1,
+    padding: 2, // Adjust spacing above and below the divider
+  },
+  productDescription: {
+    marginTop: 10,
+    marginBottom: 10,
+    marginLeft: 182,
+  },
+  buyNowButton: {
+    backgroundColor: '#507424', 
+    padding: 4,
+    borderRadius: 8,
+    marginLeft: 182,
+    marginTop: -28,
+  },
+  buyNowText: {
+    color: 'white',
+    marginLeft: 34,
+    
+  },
+divider2: {
+    height: 4, // Adjust the height as needed
+    backgroundColor: 'gray', // Example divider color
+    marginVertical: -1,
+    padding: 2, // Adjust spacing above and below the divider
+  },
+  branchButton: {
+    backgroundColor: 'gray', 
+    borderRadius: 1,
+    marginTop: 10,
+    marginRight: 250,
+  
+
+  },
+  branchText: {
+    color: 'black', // Example text color
+    fontWeight: 'bold',
+  },
+  semesterButton: {
+    backgroundColor: 'gray',
+    borderRadius: 1,
+    marginTop: -19,
+    marginRight: 160,
+    marginLeft: 76,
+
+
+  },
+  SemesterText: {
+    color: 'black', // Example text color
+    fontWeight: 'bold',
+  },
+
 });
 
 export default MarketHome;
