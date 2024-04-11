@@ -44,7 +44,7 @@ const MarketFilter = ({navigation}) => {
     setSemesterValue('');
     setFilterType({
       category: '',
-      price: '',
+      priceRange: '',
       programName: '',
       courseName: '',
       semester: '',
@@ -62,7 +62,7 @@ const MarketFilter = ({navigation}) => {
     console.log(FilterValues);
     setFilterType({
       category: categoryName,
-      price: priceValue,
+      priceRange: priceValue,
       programName: programName,
       courseName: courseName,
       semester: semesterValue,
@@ -212,15 +212,17 @@ const MarketFilter = ({navigation}) => {
             {/* price */}
 
             {selected === 'price' &&
-              priceFilter.map((value, index) => {
+              priceFilter.map((price, index) => {
                 return (
                   <View key={index} className="flex-1 flex-row items-center ">
                     <RadioButton
-                      value={value}
-                      status={priceValue === value ? 'checked' : 'unchecked'}
-                      onPress={() => setPriceValue(value)}
+                      value={price.value}
+                      status={
+                        priceValue === price.value ? 'checked' : 'unchecked'
+                      }
+                      onPress={() => setPriceValue(price.value)}
                     />
-                    <Text className="ml-2 text-sm">{value}</Text>
+                    <Text className="ml-2 text-sm">{price.label}</Text>
                   </View>
                 );
               })}
@@ -246,8 +248,20 @@ const MarketFilter = ({navigation}) => {
 export default MarketFilter;
 
 const priceFilter = [
-  'Rs. 500 and Below',
-  'Rs. 501 - Rs. 1000',
-  'Rs. 1001 - Rs. 5000',
-  'Rs. 5000 and Above',
+  {
+    value: '500AndBelow',
+    label: 'Rs. 500 and Below',
+  },
+  {
+    value: '501To1000',
+    label: 'Rs. 501 - Rs. 1000',
+  },
+  {
+    value: '1001To5000',
+    label: 'Rs. 1001 - Rs. 5000',
+  },
+  {
+    value: '5001AndAbove',
+    label: 'Rs. 5001 and Above',
+  },
 ];

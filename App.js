@@ -23,7 +23,7 @@ const App = () => {
   const [sortType, setSortType] = useState('');
   const [filterType, setFilterType] = useState({
     category: '',
-    price: '',
+    priceRange: '',
     programName: '',
     courseName: '',
     semester: '',
