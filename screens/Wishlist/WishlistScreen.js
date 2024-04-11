@@ -23,11 +23,6 @@ const WishlistScreen = ({navigation}) => {
   const {wishlistData, setWishlistData} = useContext(GlobalContext);
   const {fetchOrders, setFetchOrders, fetchProducts, setFetchProducts} =
     useContext(GlobalContext);
-  // const [products, setProducts] = useState([]);
-  // const [selectedCategory, setSelectedCategory] = useState(null);
-  // const [cartItems, setCartItems] = useState([]);
-  // const [showNotification, setShowNotification] = useState(false);
-  // const [notificationMessage, setNotificationMessage] = useState("");
 
   // Status Modal Data
   const [statusVisible, SetstatusVisible] = useState({
@@ -62,8 +57,8 @@ const WishlistScreen = ({navigation}) => {
         config,
       );
       console.log(response.data);
-      console.log("whis",wishlistData);
-      console.log("produt",product)
+      console.log('whis', wishlistData);
+      console.log('produt', product);
       setWishlistData(wishlistData.filter(item => item._id !== product._id));
       console.log(fetchOrders, 'space', fetchProducts);
       setFetchOrders(3);
@@ -81,21 +76,6 @@ const WishlistScreen = ({navigation}) => {
         message: 'Failed to place order',
       });
     }
-    // const itemExists = orderData.some(item => item.id === product._id);
-    // if (!itemExists) console.log('Product has been placed for order.', product);
-    // {
-    //   setorderData([...orderData, product]);
-    //   setNotificationMessage(`${product.name} added to your cart.`);
-    //   setShowNotification(true);
-    //   setTimeout(() => {
-    //     setShowNotification(false);
-    //   }, 2000);
-    //   const updatedCartItems = wishlistData.filter(
-    //     item => item.id !== product.id,
-    //   );
-    //   // Update the cart items state with the filtered array
-    //   setWishlistData(updatedCartItems);
-    // }
   };
 
   const handleRemove = product => {
@@ -107,218 +87,108 @@ const WishlistScreen = ({navigation}) => {
     setWishlistData(updatedCartItems);
   };
 
-  const Notification = ({message}) => (
-    <View style={styles.notificationContainer}>
-      <Text style={styles.notificationText}>{message}</Text>
-    </View>
-  );
+  // const Notification = ({message}) => (
+  //   <View style={styles.notificationContainer}>
+  //     <Text style={styles.notificationText}>{message}</Text>
+  //   </View>
+  // );
 
   // console.log(wishlistData);
 
   return (
-    <ScrollView backgroundColor="white">
-      <View>
-        <CustomHeader navigation={navigation} />
-        <Text
-          style={{
-            fontSize: 22,
-            fontWeight: 'bold',
-            margin: 10,
-            alignContent: 'center',
-            color: COLORS.primary,
-          }}>
-          Wishlist
-        </Text>
+    <View className="bg-white" style={styles.container}>
+      <CustomHeader navigation={navigation} />
 
-        {wishlistData.map((item, index) => (
-          <View key={index}>
-            <View style={styles.productContainer}>
-              <View style={styles.productItem}>
-                <TouchableOpacity onPress={() => handleProductPress(item)}>
-                  <View style={styles.imageContainer}>
-                    {/* Apply opacity style for the image */}
-                    <Image
-                      source={{uri: item.productImage}}
-                      style={[styles.productImage]}
-                    />
-                    {/* {item.name === 'Drafter scale' && (
-                    <View style={styles.notAvailableContainer}>
-                      <Text style={styles.notAvailableText}>Not Available</Text>
-                    </View>
-                  )} */}
-                  </View>
-                </TouchableOpacity>
-                <View>
-                  <View className="flex flex-row justify-between">
-                    <Text style={styles.productName}>{item.productName}</Text>
-                    <Text style={styles.productPrice}>Rs {item.price}</Text>
-                  </View>
-                  <Text>{item.productDescription}</Text>
-                  <Text>{item.productCondition}</Text>
+      <Text
+        className="m-auto mt-2 font-bold text-2xl"
+        style={{
+          color: COLORS.primary,
+        }}>
+        Your Wishlist
+      </Text>
+
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        backgroundColor="#d9d9d9"
+        className="h-full mt-5"
+        >
+        <View className="pb-[5%]">
+          {wishlistData.map((item, index) => (
+            <View key={index} className="bg-white mt-1 ">
+              <View className="flex flex-row w-[100%]">
+                <View className="w-[40%] p-2 relative">
+                  <Image
+                    source={{uri: item.productImage}}
+                    style={[styles.productImage]}
+                  />
                 </View>
 
-                <TouchableOpacity
-                  style={styles.addToCartButton}
-                  onPress={() => handleBuyNow(item)}>
-                  <Text style={styles.addToCartButtonText}>Buy Now</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.addToCartButton}
-                  onPress={() => handleRemove(item)}>
-                  <Text style={styles.addToCartButtonText}>Remove</Text>
-                </TouchableOpacity>
+                <View className="flex flex-col w-[60%] p-3 justify-between">
+                  <View className="">
+                    <View className="flex flex-row items-center justify-between">
+                      <Text className="text-base text-black font-semibold">
+                        {item.productName}
+                      </Text>
+                    </View>
+                    <Text className="text-base text-black font-semibold">
+                      ₹ {item.price}
+                    </Text>
+                    {/* <Text className="text-sm text-black">
+                      {item.productDescription}
+                    </Text> */}
+                  </View>
+                  <View className=" flex gap-2">
+                  <TouchableOpacity onPress={() => handleBuyNow(item)}>
+                    <View className="bg-[#497320] w-full flex items-center py-2 rounded-xl">
+                      <Text className="text-white">Buy Now</Text>
+                    </View>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={() => handleRemove(item)}>
+                    <View className="bg-[#497320] w-full flex items-center py-2 rounded-xl">
+                      <Text className="text-white">Remove</Text>
+                    </View>
+                  </TouchableOpacity>
+                  </View>
+                </View>
+
+                {/* <View className="m-2 flex flex-row flex-wrap">
+                  <View className="border-2 p-1 border-[#d9d9d9]">
+                    <Text>{item.category}</Text>
+                  </View>
+                  {item.courseName && (
+                    <View className="border-2 p-1 border-[#d9d9d9] ml-2">
+                      <Text>{item.courseName}</Text>
+                    </View>
+                  )}
+                  {item.semester && (
+                    <View className="m-1 border-2 p-1 border-[#d9d9d9] ml-2">
+                      <Text>Semester {item.semester}</Text>
+                    </View>
+                  )}
+                </View> */}
               </View>
             </View>
-          </View>
-        ))}
+          ))}
+        </View>
 
-        {/*     
-      {wishlistData.length > 1 && (
-        <TouchableOpacity
-          style={[styles.addToCartButton, styles.buyAllButton]} 
-          onPress={handleBuyAll}
-        >
-          <Text style={styles.addToCartButtonText}>
-            Buy All
-          </Text>
-        </TouchableOpacity>
-      )} */}
-      </View>
-      <StatusModal
-        modalType={statusVisible.modaltype}
-        modalState={statusVisible.visibility}
-        hideModal={handleStatus}
-        message={statusVisible.message}></StatusModal>
-    </ScrollView>
+        <StatusModal
+          modalType={statusVisible.modaltype}
+          modalState={statusVisible.visibility}
+          hideModal={handleStatus}
+          message={statusVisible.message}></StatusModal>
+      </ScrollView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: 'white',
-    paddingHorizontal: 20,
-    paddingTop: 20,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-  },
-  categories: {
-    marginBottom: 10,
-  },
-  categoryItem: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 20,
-    marginRight: 10,
-    backgroundColor: '#f0f0f0',
-  },
-  selectedCategory: {
-    backgroundColor: '#007bff',
-  },
-  categoryText: {
-    fontSize: 16,
-    color: '#333',
-  },
-  productList: {
-    flexGrow: 1,
-  },
-  productContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 20,
-  },
-  productItem: {
-    flex: 1,
-    padding: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
-  },
-  imageContainer: {
-    alignItems: 'center', // Centering the image within its container
+    fontFamily: 'Roboto, serif',
   },
   productImage: {
     width: 150,
     height: 150,
     marginBottom: 10,
-  },
-  productName: {
-    fontSize: 18,
-    marginBottom: 5,
-  },
-  productPrice: {
-    fontSize: 16,
-    color: '#888',
-  },
-  sellerInfo: {
-    fontSize: 14,
-    color: '#666',
-  },
-  addToCartButton: {
-    backgroundColor: '#007bff',
-    padding: 10,
-    borderRadius: 5,
-    marginTop: 10,
-  },
-  addToCartButtonText: {
-    color: '#fff',
-    textAlign: 'center',
-  },
-  notificationContainer: {
-    position: 'absolute',
-    bottom: 1,
-    left: '50%',
-    bottom: '50%',
-    transform: [{translateX: 20}, {translateY: 20}],
-    backgroundColor: 'rgba(0, 0, 0, 0.7)',
-    padding: 10,
-    borderRadius: 5,
-  },
-  notificationText: {
-    color: '#fff',
-    textAlign: 'center',
-  },
-  fadedImage: {
-    opacity: 0.5, // Set opacity to make the image look faded
-  },
-  notAvailableContainer: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: 'rgba(255, 0, 0, 0.5)', // Semi-transparent red background
-    paddingVertical: 5,
-  },
-  notAvailableText: {
-    color: '#fff',
-    textAlign: 'center',
-    fontWeight: 'bold',
-  },
-  notifyButtonContainer: {
-    position: 'absolute',
-    top: -8, // Adjust the position as needed
-    right: 2, // Adjust the position as needed
-  },
-  notifyButton: {
-    backgroundColor: 'green',
-    padding: 3,
-    borderRadius: 5,
-  },
-  notifyButtonText: {
-    color: '#fff',
-    textAlign: 'center',
-  },
-  buyAllButtonText: {
-    color: '#fff',
-    textAlign: 'center',
-  },
-  buyAllButton: {
-    backgroundColor: '#007bff',
-    paddingHorizontal: 30,
-    borderRadius: 5,
-    marginBottom: 25,
   },
 });
 
