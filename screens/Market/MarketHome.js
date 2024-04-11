@@ -27,7 +27,7 @@ const MarketHome = ({navigation}) => {
   const [showNotification, setShowNotification] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState('');
   const [isModalVisible, setModalVisible] = useState(false);
-  const [sortBy, setSortBy] = useState('');
+  // const [sortBy, setSortBy] = useState('');
   //  sortBy values - asc(low to high) ,  desc(high to low) , new(newestfirst)
 
   const [statusVisible, SetstatusVisible] = useState({
@@ -54,11 +54,17 @@ const MarketHome = ({navigation}) => {
     'Miscellaneous',
   ];
 
-  const {wishlistData, setWishlistData} = useContext(GlobalContext);
-
-  const {fetchOrders, setFetchOrders} = useContext(GlobalContext);
-
-  const {fetchProducts, setFetchProducts} = useContext(GlobalContext);
+  const {
+    wishlistData,
+    setWishlistData,
+    fetchProducts,
+    setFetchProducts,
+    setFetchOrders,
+    fetchOrders,
+    sortType,
+    setSortType,
+    filterType,
+  } = useContext(GlobalContext);
 
   useEffect(() => {
     try {
@@ -66,7 +72,7 @@ const MarketHome = ({navigation}) => {
     } finally {
       setFetchProducts(0);
     }
-  }, [fetchProducts]);
+  }, [fetchProducts, sortType, filterType]);
 
   const getProducts = async () => {
     const token = await AsyncStorage.getItem('token');
@@ -76,8 +82,11 @@ const MarketHome = ({navigation}) => {
           Authorization: `Bearer ${token}`,
         },
       };
+      console.log(
+        `${host.apiUrl}/api/product/get-products?sortBy=${sortType}&category=${filterType.category}&priceRange=${filterType.priceRange}&programName=${filterType.programName}&courseName=${filterType.courseName}&semester=${filterType.semester}`,
+      );
       const response = await axios.get(
-        `${host.apiUrl}/api/product/get-products`,
+        `${host.apiUrl}/api/product/get-products?sortBy=${sortType}&category=${filterType.category}&priceRange=${filterType.priceRange}&programName=${filterType.programName}&courseName=${filterType.courseName}&semester=${filterType.semester}`,
         config,
       );
       // console.log(response.data.products);
@@ -224,7 +233,9 @@ const MarketHome = ({navigation}) => {
     setModalVisible(true);
   };
   const handleSortField = sort => {
-    setSortBy(sort);
+    // setSortType(sort);
+    // setFetchProducts(8);
+    console.log(sortType);
     // console.log(sort)
   };
   const filterHandler = () => {
@@ -235,20 +246,17 @@ const MarketHome = ({navigation}) => {
     <View className="bg-white" style={styles.container}>
       <CustomHeader navigation={navigation} />
       <View className="m-4 flex flex-row">
-      <TouchableOpacity  onPress={sortByModalHandler}>
-        <View
-          className="border-2 border-[#d9d9d9] rounded-md flex flex-row justify-between items-center p-2"
-         >
-          <Icon name="sort" size={20} color="black" />
-          <Text className="pl-2 text-black">Sort By</Text>
-        </View>
+        <TouchableOpacity onPress={sortByModalHandler}>
+          <View className="border-2 border-[#d9d9d9] rounded-md flex flex-row justify-between items-center p-2">
+            <Icon name="sort" size={20} color="black" />
+            <Text className="pl-2 text-black">Sort By</Text>
+          </View>
         </TouchableOpacity>
-        <TouchableOpacity  onPress={filterHandler}>
-        <View
-          className="border-2 border-[#d9d9d9] rounded-md flex flex-row justify-between items-center p-2 ml-2">
-          <Icon name="filter" size={20} color="black" />
-          <Text className="pl-2 text-black">Filter</Text>
-        </View>
+        <TouchableOpacity onPress={filterHandler}>
+          <View className="border-2 border-[#d9d9d9] rounded-md flex flex-row justify-between items-center p-2 ml-2">
+            <Icon name="filter" size={20} color="black" />
+            <Text className="pl-2 text-black">Filter</Text>
+          </View>
         </TouchableOpacity>
       </View>
       <ScrollView
@@ -321,7 +329,7 @@ const MarketHome = ({navigation}) => {
                   </View>
                 )}
                 {product.semester && (
-                  <View className="m-1 border-2 p-1 border-[#d9d9d9] ml-2">
+                  <View className="border-2 p-1 border-[#d9d9d9] ml-2">
                     <Text>Semester {product.semester}</Text>
                   </View>
                 )}

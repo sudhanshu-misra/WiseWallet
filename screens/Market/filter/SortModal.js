@@ -1,12 +1,13 @@
 import {View, Text, StyleSheet} from 'react-native';
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {RadioButton} from 'react-native-paper';
+import GlobalContext from '../../../helpers/GlobalContext';
 
 const SortModal = ({hideModal, sortData}) => {
-  const [sort, setSort] = useState('');
+  const {sortType, setSortType} = useContext(GlobalContext);
 
-  sortData(sort);
+  sortData(sortType);
   return (
     <View>
       <View className="flex m-4 flex-row justify-center">
@@ -17,30 +18,30 @@ const SortModal = ({hideModal, sortData}) => {
       </View>
 
       <View className=" border-black w-3/4 m-auto mt-3 ">
-        <View className ="flex-1 flex-row justify-between">
-        <Text className="text-lg text-black">Price -- Low to High</Text>
+        <View className="flex-1 flex-row justify-between">
+          <Text className="text-lg text-black">Price -- Low to High</Text>
           <RadioButton
-            value="asc"
-            status={sort === 'asc' ? 'checked' : 'unchecked'}
-            onPress={() => setSort('asc')}
+            value="priceLowToHigh"
+            status={sortType === 'priceLowToHigh' ? 'checked' : 'unchecked'}
+            onPress={() => setSortType('priceLowToHigh')}
           />
         </View>
 
-        <View className ="flex-1 flex-row justify-between">
-        <Text className="text-lg text-black">Price -- High to Low</Text>
+        <View className="flex-1 flex-row justify-between">
+          <Text className="text-lg text-black">Price -- High to Low</Text>
           <RadioButton
-            value="desc"
-            status={sort === 'desc' ? 'checked' : 'unchecked'}
-            onPress={() => setSort('desc')}
+            value="priceHighToLow"
+            status={sortType === 'priceHighToLow' ? 'checked' : 'unchecked'}
+            onPress={() => setSortType('priceHighToLow')}
           />
         </View>
 
-        <View className ="flex-1 flex-row justify-between">
-        <Text className="text-lg text-black">Newest First</Text>
+        <View className="flex-1 flex-row justify-between">
+          <Text className="text-lg text-black">Newest First</Text>
           <RadioButton
-            value="new"
-            status={sort === 'new' ? 'checked' : 'unchecked'}
-            onPress={() => setSort('new')}
+            value="newest"
+            status={sortType === 'newest' ? 'checked' : 'unchecked'}
+            onPress={() => setSortType('newest')}
           />
         </View>
       </View>

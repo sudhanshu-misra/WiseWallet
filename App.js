@@ -20,6 +20,14 @@ const App = () => {
   const [profileData, setProfileData] = useState({});
   const [fetchOrders, setFetchOrders] = useState(0);
   const [fetchProducts, setFetchProducts] = useState(0);
+  const [sortType, setSortType] = useState('');
+  const [filterType, setFilterType] = useState({
+    category: '',
+    priceRange: '',
+    programName: '',
+    courseName: '',
+    semester: '',
+  });
 
   const checkAuth = async () => {
     const token = await AsyncStorage.getItem('token');
@@ -76,6 +84,10 @@ const App = () => {
           setProfileData,
           fetchProducts,
           setFetchProducts,
+          sortType,
+          setSortType,
+          filterType,
+          setFilterType,
         }}>
         <NavigationContainer>
           <SafeAreaProvider>
