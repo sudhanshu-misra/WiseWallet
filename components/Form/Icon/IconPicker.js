@@ -11,7 +11,7 @@ const IconPicker = ({getIcon,iconError,iconData,title,label}) => {
                 setRole(itemValue);
                 } 
   return (
-    <View className="mt-2 ">
+    <View className="mt-2">
     <Text className="text-lg  antialiased  mx-5">
       {title}
     </Text>
