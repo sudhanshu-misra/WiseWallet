@@ -90,7 +90,7 @@ const MarketHome = ({navigation}) => {
         console.log('products not found');
       }
     } catch (error) {
-      console.log(error); 
+      console.log(error);
     }
   };
   //Buy
@@ -213,11 +213,11 @@ const MarketHome = ({navigation}) => {
     }
   };
 
-  const Notification = ({message}) => (
-    <View style={styles.notificationContainer}>
-      <Text style={styles.notificationText}>{message}</Text>
-    </View>
-  );
+  // const Notification = ({message}) => (
+  //   <View style={styles.notificationContainer}>
+  //     <Text style={styles.notificationText}>{message}</Text>
+  //   </View>
+  // );
 
   //sort By modal handler
   const sortByModalHandler = () => {
@@ -227,22 +227,29 @@ const MarketHome = ({navigation}) => {
     setSortBy(sort);
     // console.log(sort)
   };
-const filterHandler =()=>{
-  navigation.navigate('MarketFilter');
-}
+  const filterHandler = () => {
+    navigation.navigate('MarketFilter');
+  };
 
   return (
     <View className="bg-white" style={styles.container}>
       <CustomHeader navigation={navigation} />
       <View className="m-4 flex flex-row">
-        <View className="border-2 border-[#d9d9d9] rounded-md flex flex-row justify-between items-center p-2">
+      <TouchableOpacity  onPress={sortByModalHandler}>
+        <View
+          className="border-2 border-[#d9d9d9] rounded-md flex flex-row justify-between items-center p-2"
+         >
           <Icon name="sort" size={20} color="black" />
           <Text className="pl-2 text-black">Sort By</Text>
         </View>
-        <View className="border-2 border-[#d9d9d9] rounded-md flex flex-row justify-between items-center p-2 ml-2">
+        </TouchableOpacity>
+        <TouchableOpacity  onPress={filterHandler}>
+        <View
+          className="border-2 border-[#d9d9d9] rounded-md flex flex-row justify-between items-center p-2 ml-2">
           <Icon name="filter" size={20} color="black" />
           <Text className="pl-2 text-black">Filter</Text>
         </View>
+        </TouchableOpacity>
       </View>
       <ScrollView
         showsVerticalScrollIndicator={false}
@@ -322,6 +329,13 @@ const filterHandler =()=>{
             </View>
           ))}
         </View>
+
+        <Modal modalState={isModalVisible}>
+          <SortModal
+            hideModal={() => setModalVisible(false)}
+            sortData={handleSortField}></SortModal>
+        </Modal>
+
         <StatusModal
           modalType={statusVisible.modaltype}
           modalState={statusVisible.visibility}

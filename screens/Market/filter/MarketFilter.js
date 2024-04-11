@@ -50,7 +50,7 @@ const submitFilterValues=()=>{
       <HeadBack title="FILTER" navigation={navigation} />
 
       <View className=" w-full h-full flex  bg-gray-300 " >
-      <View className="flex flex-row w-full flex-[70%]">
+      <View className="flex flex-row w-full flex-[75%]">
         <View className="flex-[40%] mt-1 flex">
           <Pressable
             className={`  p-3 ${selected === 'category' && 'bg-white'}`}
@@ -190,13 +190,13 @@ const submitFilterValues=()=>{
         </View>
 
         {/* Buttons */}
-        <View className="flex-[30%] items-center mt-4">
+        <View className="flex-[24%] items-center mt-4">
              <Pressable className="w-3/5" onPress={submitFilterValues}>
                 <ButtonComp title="Apply"></ButtonComp>
              </Pressable>
              <Pressable className="w-3/5" onPress={clearFilterValues}>
              <View>
-                <Text className="text-center font-bold text-lg mt-3">Clear</Text>
+                <Text className="text-center font-bold text-lg mt-2">Clear</Text>
              </View>
              </Pressable>
         </View>
