@@ -1,4 +1,4 @@
-import {View, Text, ScrollView, Pressable} from 'react-native';
+import {View, Text, ScrollView, TouchableOpacity} from 'react-native';
 import React, {useContext, useState} from 'react';
 import HeadBack from '../../../components/BackHeader';
 import {
@@ -14,15 +14,11 @@ import {RadioButton} from 'react-native-paper';
 import ButtonComp from '../../../components/ButtonComp';
 import GlobalContext from '../../../helpers/GlobalContext';
 
+
 const MarketFilter = ({navigation}) => {
   const [selected, setSelected] = useState('category');
-  const [categoryName, setCategoryName] = useState('');
-  const [programName, setProgramName] = useState('');
-  const [priceValue, setPriceValue] = useState('');
-  const [courseName, setCourseName] = useState('');
-  const [semesterValue, setSemesterValue] = useState('');
 
-  const {setFilterType} = useContext(GlobalContext);
+  const {filterType,setFilterType} = useContext(GlobalContext);
 
   const categoryHandler = () => {
     setSelected('category');
@@ -35,38 +31,22 @@ const MarketFilter = ({navigation}) => {
   const priceHandler = () => {
     setSelected('price');
   };
+  const excludeHandler=()=>{
+    setSelected("exclude");
+  }
 
   const clearFilterValues = () => {
-    setCategoryName('');
-    setProgramName('');
-    setPriceValue('');
-    setCourseName('');
-    setSemesterValue('');
     setFilterType({
       category: '',
       priceRange: '',
       programName: '',
       courseName: '',
       semester: '',
+      exclude:''
     });
     navigation.goBack();
   };
   const submitFilterValues = () => {
-    const FilterValues = {
-      categoryName,
-      programName,
-      courseName,
-      semesterValue,
-      priceValue,
-    };
-    console.log(FilterValues);
-    setFilterType({
-      category: categoryName,
-      priceRange: priceValue,
-      programName: programName,
-      courseName: courseName,
-      semester: semesterValue,
-    });
     navigation.goBack();
   };
 
@@ -77,26 +57,32 @@ const MarketFilter = ({navigation}) => {
       <View className=" w-full h-full flex  bg-gray-300 ">
         <View className="flex flex-row w-full flex-[75%]">
           <View className="flex-[40%] mt-1 flex">
-            <Pressable
+            <TouchableOpacity
               className={`  p-3 ${selected === 'category' && 'bg-white'}`}
               onPress={categoryHandler}>
               <Text className="text-[17px] ml-2 text-black">Category</Text>
-            </Pressable>
-            <Pressable
+            </TouchableOpacity>
+            <TouchableOpacity
               className={`p-3 ${selected === 'program' && 'bg-white'}`}
               onPress={programHandler}>
               <Text className="text-[17px] ml-2 text-black">Program</Text>
-            </Pressable>
-            <Pressable
+            </TouchableOpacity>
+            <TouchableOpacity
               className={`p-3 ${selected === 'price' && 'bg-white'}`}
               onPress={priceHandler}>
               <Text className="text-[17px] ml-2 text-black">Price</Text>
-            </Pressable>
+            </TouchableOpacity>
+            <TouchableOpacity
+              className={`p-3 ${selected === 'exclude' && 'bg-white'}`}
+              onPress={excludeHandler}>
+              <Text className="text-[17px] ml-2 text-black">exclude</Text>
+            </TouchableOpacity>
           </View>
 
           <ScrollView
             className="flex-[60%] mt-1  bg-white "
             showsVerticalScrollIndicator={false}>
+            
             {/* Category */}
             {selected === 'category' &&
               productCategory.map((product, index) => {
@@ -105,9 +91,9 @@ const MarketFilter = ({navigation}) => {
                     <RadioButton
                       value={product}
                       status={
-                        categoryName === product ? 'checked' : 'unchecked'
+                       filterType.category === product ? 'checked' : 'unchecked'
                       }
-                      onPress={() => setCategoryName(product)}
+                      onPress={() => setFilterType(prev=>({...prev,category:product}))}
                     />
                     <Text className="ml-2">{product}</Text>
                   </View>
@@ -117,76 +103,76 @@ const MarketFilter = ({navigation}) => {
             {/* Programs */}
 
             {selected === 'program' &&
-              !programName &&
+              !filterType.programName &&
               collegePrograms.map((program, index) => {
                 return (
                   <View
                     key={index}
                     className="flex-1 flex-row items-center mt-2">
-                    <Pressable onPress={() => setProgramName(program)}>
+                    <TouchableOpacity onPress={()=>setFilterType(prev=>({...prev,programName:program}))}>
                       <Text className="ml-2 text-sm">{program}</Text>
-                    </Pressable>
+                    </TouchableOpacity>
                   </View>
                 );
               })}
 
             {/* courses */}
             {selected === 'program' &&
-              programName === 'UNDERGRADUATE PROGRAMS' &&
-              !courseName &&
+              filterType.programName === 'UNDERGRADUATE PROGRAMS' &&
+              !filterType.courseName &&
               undergraduateCourses.map((course, index) => {
                 return (
                   <View
                     key={index}
                     className="flex-1 flex-row items-center mt-2 ">
-                    <Pressable onPress={() => setCourseName(course)}>
+                    <TouchableOpacity onPress={()=>setFilterType(prev=>({...prev,courseName:course}))}>
                       <Text className="ml-2 text-sm">{course}</Text>
-                    </Pressable>
+                    </TouchableOpacity>
                   </View>
                 );
               })}
             {selected === 'program' &&
-              programName === 'POSTGRADUATE PROGRAMS' &&
-              !courseName &&
+              filterType.programName === 'POSTGRADUATE PROGRAMS' &&
+              ! filterType.courseName &&
               postgraduateCourses.map((course, index) => {
                 return (
                   <View
                     key={index}
                     className="flex-1 flex-row items-center mt-2">
-                    <Pressable onPress={() => setCourseName(course)}>
+                    <TouchableOpacity onPress={()=>setFilterType(prev=>({...prev,courseName:course}))}>
                       <Text className="ml-2 text-sm">{course}</Text>
-                    </Pressable>
+                    </TouchableOpacity>
                   </View>
                 );
               })}
             {selected === 'program' &&
-              programName === 'DOCTORAL PROGRAMS' &&
-              !courseName &&
+            filterType.programName === 'DOCTORAL PROGRAMS' &&
+              ! filterType.courseName &&
               doctoralPrograms.map((course, index) => {
                 return (
                   <View
                     key={index}
                     className="flex-1 flex-row items-center mt-2">
-                    <Pressable onPress={() => setCourseName(course)}>
+                    <TouchableOpacity onPress={()=>setFilterType(prev=>({...prev,courseName:course}))}>
                       <Text className="ml-2 text-sm">{course}</Text>
-                    </Pressable>
+                    </TouchableOpacity>
                   </View>
                 );
-              })}
+              })} 
 
             {/* semester */}
 
-            {selected === 'program' &&
-              (programName === 'DOCTORAL PROGRAMS' ||
-                programName === 'UNDERGRADUATE PROGRAMS') &&
-              courseName &&
+             {selected === 'program' &&
+              ( filterType.programName === 'DOCTORAL PROGRAMS' ||
+              filterType.programName === 'UNDERGRADUATE PROGRAMS') &&
+              filterType.courseName &&
               semester.map((sem, index) => {
                 return (
                   <View key={index} className="flex-1 flex-row items-center ">
                     <RadioButton
                       value={sem}
-                      status={semesterValue === sem ? 'checked' : 'unchecked'}
-                      onPress={() => setSemesterValue(sem)}
+                      status={filterType.semester === sem ? 'checked' : 'unchecked'}
+                      onPress={()=>setFilterType(prev=>({...prev,semester:sem}))}
                     />
                     <Text className="ml-2 text-sm">{sem}</Text>
                   </View>
@@ -194,15 +180,15 @@ const MarketFilter = ({navigation}) => {
               })}
 
             {selected === 'program' &&
-              programName === 'POSTGRADUATE PROGRAMS' &&
-              courseName &&
+            filterType.programName === 'POSTGRADUATE PROGRAMS' &&
+            filterType.courseName &&
               postGrad_semester.map((sem, index) => {
                 return (
                   <View key={index} className="flex-1 flex-row items-center ">
                     <RadioButton
                       value={sem}
-                      status={semesterValue === sem ? 'checked' : 'unchecked'}
-                      onPress={() => setSemesterValue(sem)}
+                      status={filterType.semester=== sem ? 'checked' : 'unchecked'}
+                      onPress={()=>setFilterType(prev=>({...prev,semester:sem}))}
                     />
                     <Text className="ml-2 text-sm">{sem}</Text>
                   </View>
@@ -218,27 +204,43 @@ const MarketFilter = ({navigation}) => {
                     <RadioButton
                       value={price.value}
                       status={
-                        priceValue === price.value ? 'checked' : 'unchecked'
+                        filterType.priceRange === price.value ? 'checked' : 'unchecked'
                       }
-                      onPress={() => setPriceValue(price.value)}
+                      onPress={()=>setFilterType(prev=>({...prev,priceRange:price.value}))}
                     />
                     <Text className="ml-2 text-sm">{price.label}</Text>
                   </View>
                 );
               })}
+
+              {/* exclude */}
+
+              {selected === 'exclude' &&
+                  <View className="flex-1 flex-row items-center ">
+                    <RadioButton
+                      status={
+                          filterType.exclude ==="exclude" ? 'checked' : 'unchecked'
+                      }
+                      onPress={() => setFilterType(prev=>({...prev,exclude:'exclude'}))}
+                    />
+                    <Text className="ml-2">Exclude Out of Stock</Text>
+                  </View>
+               
+              }
+
           </ScrollView>
         </View>
 
         {/* Buttons */}
         <View className="flex-[24%] items-center mt-4">
-          <Pressable className="w-3/5" onPress={submitFilterValues}>
+          <TouchableOpacity className="w-3/5" onPress={submitFilterValues}>
             <ButtonComp title="Apply"></ButtonComp>
-          </Pressable>
-          <Pressable className="w-3/5" onPress={clearFilterValues}>
+          </TouchableOpacity>
+          <TouchableOpacity className="w-3/5" onPress={clearFilterValues}>
             <View>
               <Text className="text-center font-bold text-lg mt-2">Clear</Text>
             </View>
-          </Pressable>
+          </TouchableOpacity>
         </View>
       </View>
     </View>
