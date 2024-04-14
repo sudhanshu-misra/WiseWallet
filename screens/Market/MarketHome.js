@@ -83,10 +83,10 @@ const MarketHome = ({navigation}) => {
         },
       };
       console.log(
-        `${host.apiUrl}/api/product/get-products?sortBy=${sortType}&category=${filterType.category}&priceRange=${filterType.priceRange}&programName=${filterType.programName}&courseName=${filterType.courseName}&semester=${filterType.semester}`,
+        `${host.apiUrl}/api/product/get-products?sortBy=${sortType}&category=${filterType.category}&priceRange=${filterType.priceRange}&programName=${filterType.programName}&courseName=${filterType.courseName}&semester=${filterType.semester}&exclude=${filterType.exclude}`,
       );
       const response = await axios.get(
-        `${host.apiUrl}/api/product/get-products?sortBy=${sortType}&category=${filterType.category}&priceRange=${filterType.priceRange}&programName=${filterType.programName}&courseName=${filterType.courseName}&semester=${filterType.semester}`,
+        `${host.apiUrl}/api/product/get-products?sortBy=${sortType}&category=${filterType.category}&priceRange=${filterType.priceRange}&programName=${filterType.programName}&courseName=${filterType.courseName}&semester=${filterType.semester}&exclude=${filterType.exclude}`,
         config,
       );
       // console.log(response.data.products);

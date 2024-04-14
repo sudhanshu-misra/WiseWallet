@@ -27,6 +27,7 @@ const App = () => {
     programName: '',
     courseName: '',
     semester: '',
+    exclude:''
   });
 
   const checkAuth = async () => {
