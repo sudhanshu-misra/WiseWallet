@@ -19,6 +19,7 @@ const DrawerList = [
   {icon: 'user-circle-o', label: 'Profile', navigateTo: 'Profile'},
   {icon: 'money', label: 'Wallet', navigateTo: 'BottomTab'},
   {icon: 'shopping-bag', label: 'Marketplace', navigateTo: 'MarketBottomTab'},
+  {icon:'user-circle-o' , label:'My listings',navigateTo:'MyListing'}
 ];
 const MarketList = [
   {icon: 'user-circle-o', label: 'Profile', navigateTo: 'Profile'},
@@ -44,6 +45,9 @@ const DrawerLayout = ({icon, label, navigateTo, setIsMarket, isMarket}) => {
           setIsMarket(false);
           navigation.navigate(navigateTo);
         } else if (label == 'Profile') {
+          navigation.navigate(navigateTo);
+        }
+        else if(label === "My listings"){
           navigation.navigate(navigateTo);
         }
       }}

@@ -42,6 +42,10 @@ import Payment from '../screens/Market/Payment.js';
 import Notification from '../screens/notification/Notification';
 import MarketFilter from '../screens/Market/filter/MarketFilter.js';
 
+//My listings
+import MyListing from '../screens/MyListings/MyListing.js';
+import SellScreen from '../screens/Sell/SellScreen.js';
+
 const Screens = {
   UNAUTHENTICATED: [
     {name: 'Onboarding', component: Onboarding},
@@ -64,7 +68,8 @@ const Screens = {
     {name: 'Card', component: Card},
     {name: 'Upi', component: Upi},
     {name: 'Filter', component: Filter},
-    {name:"Notification",component:Notification}
+    {name:"Notification",component:Notification},
+    {name:"MyListing",component:MyListing},
   ],
   MARKET: [
     {name: 'DrawerNav', component: DrawerNav},
@@ -74,7 +79,8 @@ const Screens = {
     {name: 'EditProfile', component: EditProfile},
     {name: 'Payment', component: Payment},
     {name:'MarketFilter' , component:MarketFilter},
-    {name:"Notification",component:Notification}
+    {name:"Notification",component:Notification},
+    {name:"MyListing",component:MyListing},
   ],
 };
 
