@@ -2,7 +2,6 @@ import {
   View,
   Text,
   ScrollView,
-  FlatList,
   TouchableOpacity,
   StyleSheet,
   Image,
@@ -11,8 +10,6 @@ import React from 'react';
 import CustomHeader from '../../components/Header';
 import GlobalContext from '../../helpers/GlobalContext';
 import {useContext, useState, useEffect} from 'react';
-import {current} from '@reduxjs/toolkit';
-import {COLORS} from '../../constants/theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import host from '../../constants/host.js';
 import axios from 'axios';
@@ -20,6 +17,7 @@ import axios from 'axios';
 const OrderScreen = ({navigation}) => {
   const [orderData, setOrderData] = useState([]);
   const [orderScreen, setOrderScreen] = useState('pending');
+  const [groupedOrders, setGroupedOrders] = useState();
 
   const {fetchOrders, setFetchOrders} = useContext(GlobalContext);
 
@@ -53,7 +51,7 @@ const OrderScreen = ({navigation}) => {
         orders.map(order => {
           const date = new Date(order.orderDate);
           const day = date.getDate();
-          const month = monthNames[date.getMonth() - 1];
+          const month = monthNames[date.getMonth()];
           const year = date.getFullYear();
 
           const d = day + ' ' + month;
@@ -71,14 +69,22 @@ const OrderScreen = ({navigation}) => {
     }
   };
 
-  const handleProductPress = product => {
-    // Navigate to product details screen or perform any action
-    console.log('Product pressed:', product);
+  const groupOrdersByMonthAndYear = () => {
+    const groupedOrders = {};
+    orderData.forEach(order => {
+      if (order.orderStatus === 'completed') {
+        const date = new Date(order.completeDate);
+        const monthYear = `${date.toLocaleString('en-us', {
+          month: 'long',
+        })}, ${date.getFullYear()}`;
+        if (!groupedOrders[monthYear]) {
+          groupedOrders[monthYear] = [];
+        }
+        groupedOrders[monthYear].push(order);
+      }
+    });
+    setGroupedOrders(groupedOrders);
   };
-
-  // const handleBuyNow = (product) => {
-  //   navigation.navigate('Buy', { product });
-  // }
 
   const handleCancel = async order => {
     const token = await AsyncStorage.getItem('token');
@@ -105,18 +111,27 @@ const OrderScreen = ({navigation}) => {
     }
   };
 
-  // const Notification = ({message}) => (
-  //   <View style={styles.notificationContainer}>
-  //     <Text style={styles.notificationText}>{message}</Text>
-  //   </View>
-  // );
-
-  // yeeeeeeeeeeeeeeeeeeeeee rahaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-  const handleComplete = () => {
-    // anay
+  const handleComplete = async order => {
+    const token = await AsyncStorage.getItem('token');
+    console.log(token);
+    let config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    try {
+      const response = await axios.put(
+        `${host.apiUrl}/api/order/complete-order/${order._id}`,
+        {},
+        config,
+      );
+      console.log(response.data);
+      setFetchOrders(4);
+    } catch (error) {
+      console.log(error);
+      console.log(error.response.data.message);
+    }
   };
-
-  //console.log(orderData);
 
   return (
     <View className="bg-white" style={styles.container}>
@@ -130,7 +145,11 @@ const OrderScreen = ({navigation}) => {
             Ongoing
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => setOrderScreen('completed')}>
+        <TouchableOpacity
+          onPress={() => {
+            groupOrdersByMonthAndYear();
+            setOrderScreen('completed');
+          }}>
           <Text
             className={`font-bold text-lg ${
               orderScreen === 'completed' ? ' text-green-700' : ''
@@ -173,10 +192,6 @@ const OrderScreen = ({navigation}) => {
                               {item.product.productName}
                             </Text>
                           </View>
-
-                          {/* <Text className="text-sm text-black">
-                      {item.productDescription}
-                    </Text> */}
                         </View>
                         <View className=" flex flex-row gap-5">
                           <TouchableOpacity
@@ -192,7 +207,6 @@ const OrderScreen = ({navigation}) => {
                           </TouchableOpacity>
                         </View>
                       </View>
-                   
                     </View>
                   </View>
                 ),
@@ -201,55 +215,48 @@ const OrderScreen = ({navigation}) => {
         )}
         {orderScreen === 'completed' && (
           <View className="pb-[5%]">
-            {orderData.map(
-              (item, index) =>
-                item.orderStatus === 'completed' && (
-                  <View key={index} className="bg-white mt-1 ">
-                    <View className="flex flex-row w-[100%]">
-                      <View className="w-[25%] p-2 relative flex justify-center items-center">
-                        <Image
-                          source={{uri: item.product.productImage}}
-                          style={[styles.productImage]}
-                        />
-                      </View>
-
-                      <View className="flex flex-col w-[75%] p-3 justify-between">
-                        <View className="">
-                          <View className="flex flex-row items-center justify-between ">
-                            <Text className="text-base text-black font-semibold">
-                              Completed on {item.orderDateString}
-                            </Text>
-                            <Text className="text-base text-black font-semibold">
-                              ₹ {item.price}
-                            </Text>
-                          </View>
-                          <View className="flex flex-row items-center  mt-2">
-                            <Text className="text-sm">
-                              {item.product.productName}
-                            </Text>
+            {Object.keys(groupedOrders).map((monthYear, index) => (
+              <View key={index}>
+                <View className="bg-white mt-1 p-2">
+                  <Text className="text-lg font-medium text-black">
+                    {monthYear}
+                  </Text>
+                </View>
+                {groupedOrders[monthYear].map(
+                  (item, index) =>
+                    item.orderStatus === 'completed' && (
+                      <View key={index} className="bg-white mt-1 ">
+                        <View className="flex flex-row w-[100%]">
+                          <View className="w-[25%] p-2 relative flex justify-center items-center">
+                            <Image
+                              source={{uri: item.product.productImage}}
+                              style={[styles.productImage]}
+                            />
                           </View>
 
-                          {/* <Text className="text-sm text-black">
-                      {item.productDescription}
-                    </Text> */}
-                        </View>
-                        <View className=" flex gap-2">
-                          {/* <TouchableOpacity onPress={() => handleBuyNow(item)}>
-                    <View className="bg-[#497320] w-full flex items-center py-2 rounded-xl">
-                      <Text className="text-white">Buy Now</Text>
-                    </View>
-                  </TouchableOpacity>
-                  <TouchableOpacity onPress={() => handleRemove(item)}>
-                    <View className="bg-[#497320] w-full flex items-center py-2 rounded-xl">
-                      <Text className="text-white">Remove</Text>
-                    </View>
-                  </TouchableOpacity> */}
+                          <View className="flex flex-col w-[75%] p-3 justify-between">
+                            <View className="">
+                              <View className="flex flex-row items-center justify-between ">
+                                <Text className="text-base text-black font-semibold">
+                                  Completed on {item.orderDateString}
+                                </Text>
+                                <Text className="text-base text-black font-semibold">
+                                  ₹ {item.price}
+                                </Text>
+                              </View>
+                              <View className="flex flex-row items-center  mt-2">
+                                <Text className="text-sm">
+                                  {item.product.productName}
+                                </Text>
+                              </View>
+                            </View>
+                          </View>
                         </View>
                       </View>
-                    </View>
-                  </View>
-                ),
-            )}
+                    ),
+                )}
+              </View>
+            ))}
           </View>
         )}
 
@@ -290,5 +297,3 @@ const monthNames = [
   'Nov',
   'Dec',
 ];
-
-

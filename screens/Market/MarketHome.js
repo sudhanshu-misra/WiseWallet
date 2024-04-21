@@ -285,14 +285,18 @@ const MarketHome = ({navigation}) => {
                       <Text className="text-base text-black font-semibold">
                         {product.productName}
                       </Text>
-                      <TouchableOpacity
-                        onPress={() => handleAddToWishlist(product)}>
-                        {wishlistData.some(item => item.id === product._id) ? (
-                          <Icon name="heart" size={20} color="red" />
-                        ) : (
-                          <Icon name="heart-o" size={20} color="black" />
-                        )}
-                      </TouchableOpacity>
+                      {!product.isSold && (
+                        <TouchableOpacity
+                          onPress={() => handleAddToWishlist(product)}>
+                          {wishlistData.some(
+                            item => item.id === product._id,
+                          ) ? (
+                            <Icon name="heart" size={20} color="red" />
+                          ) : (
+                            <Icon name="heart-o" size={20} color="black" />
+                          )}
+                        </TouchableOpacity>
+                      )}
                     </View>
                     <Text className="text-base text-black font-semibold">
                       ₹ {product.price}
