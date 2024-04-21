@@ -94,7 +94,7 @@ const MarketHome = ({navigation}) => {
       if (response.data) {
         console.log('products received');
         setProducts(response.data.products);
-        console.log('products', products);
+        //console.log('products', products);
       } else {
         console.log('products not found');
       }

@@ -166,7 +166,7 @@ const WishlistScreen = ({navigation}) => {
                     </View>
                   )}
                 </View> */}
-              </View>
+              </View> 
             </View>
           ))}
         </View>
