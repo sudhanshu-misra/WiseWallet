@@ -147,7 +147,7 @@ const WishlistScreen = ({navigation}) => {
   
   useEffect(() => {
     try {
-      console.log(fetchWishlist)
+      // console.log(fetchWishlist)
       getWishlist();
     } finally {
       setFetchWishlist(0);
