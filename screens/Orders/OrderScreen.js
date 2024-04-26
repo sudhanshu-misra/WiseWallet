@@ -19,7 +19,7 @@ const OrderScreen = ({navigation}) => {
   const [orderScreen, setOrderScreen] = useState('pending');
   const [groupedOrders, setGroupedOrders] = useState();
 
-  const {fetchOrders, setFetchOrders} = useContext(GlobalContext);
+  const {fetchOrders, setFetchOrders , setFetchProducts} = useContext(GlobalContext);
 
   useEffect(() => {
     try {
@@ -41,7 +41,7 @@ const OrderScreen = ({navigation}) => {
         `${host.apiUrl}/api/order/get-orders-by-buyer`,
         config,
       );
-      console.log('orders', response.data.orders);
+      // console.log('orders', response.data.orders);
 
       if (response.data.orders) {
         console.log('products ordered');
@@ -58,7 +58,7 @@ const OrderScreen = ({navigation}) => {
 
           order.orderDateString = d;
         });
-        console.log('orderDetails', orders);
+        // console.log('orderDetails', orders);
 
         setOrderData(orders);
       } else {
@@ -88,24 +88,25 @@ const OrderScreen = ({navigation}) => {
 
   const handleCancel = async order => {
     const token = await AsyncStorage.getItem('token');
-    console.log(token);
+    // console.log(token);
     let config = {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     };
-    console.log(order);
+    // console.log(order);
     try {
       const response = await axios.delete(
         `${host.apiUrl}/api/order/delete-order/${order._id}`,
         config,
       );
-      console.log(response.data);
+      // console.log(response.data);
       // Filter out the product that needs to be canceled
       const updatedOrderData = orderData.filter(item => item.id !== order.id);
       // Update the order data state with the filtered array
       setOrderData(updatedOrderData);
       setFetchOrders(4);
+      setFetchProducts(4);
     } catch (error) {
       console.log(error);
     }

@@ -20,9 +20,11 @@ import {set} from 'react-native-reanimated';
 
 const WishlistScreen = ({navigation}) => {
   // context data
-  const {wishlistData, setWishlistData} = useContext(GlobalContext);
+  const {fetchWishlist, setFetchWishlist} = useContext(GlobalContext);
   const {fetchOrders, setFetchOrders, fetchProducts, setFetchProducts} =
     useContext(GlobalContext);
+ const [wishlistData,setWishlistData] =useState([]);
+
 
   // Status Modal Data
   const [statusVisible, SetstatusVisible] = useState({
@@ -37,10 +39,11 @@ const WishlistScreen = ({navigation}) => {
     });
   };
 
-  const handleBuyNow = async product => {
-    console.log(product);
+  const handleBuyNow = async item => {
+
+  //  console.log(product);
     const token = await AsyncStorage.getItem('token');
-    console.log(token);
+   // console.log(token);
     let config = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -50,24 +53,35 @@ const WishlistScreen = ({navigation}) => {
       const response = await axios.post(
         `${host.apiUrl}/api/order/create-order`,
         {
-          product: product,
-          price: product.price,
-          orderStatus: 'Pending',
+          product: item.product,
+          price: item.product.price,
+          orderStatus: 'pending',
         },
         config,
       );
-      console.log(response.data);
-      console.log('whis', wishlistData);
-      console.log('produt', product);
-      setWishlistData(wishlistData.filter(item => item._id !== product._id));
-      console.log(fetchOrders, 'space', fetchProducts);
-      setFetchOrders(3);
-      setFetchProducts(3);
-      SetstatusVisible({
-        visibility: true,
-        modaltype: 'success',
-        message: 'Order placed successfully',
-      });
+      // console.log(response.data);
+      // console.log('whis', wishlistData);
+      // console.log('produt', product);
+      // setWishlistData(wishlistData.filter(item => item._id !== product._id));
+      // console.log(fetchOrders, 'space', fetchProducts);
+     
+
+      //removing from wishlist
+      if(response.data){
+        handleRemove(item._id);
+
+        setFetchOrders(3);
+        setFetchProducts(3);
+        SetstatusVisible({
+          visibility: true,
+          modaltype: 'success',
+          message: 'Order placed successfully',
+        });
+  
+      }
+          
+
+
     } catch (error) {
       console.log(error);
       SetstatusVisible({
@@ -78,14 +92,67 @@ const WishlistScreen = ({navigation}) => {
     }
   };
 
-  const handleRemove = product => {
-    // Filter out the product that needs to be removed
-    const updatedCartItems = wishlistData.filter(
-      item => item._id !== product._id,
-    );
-    // Update the cart items state with the filtered array
-    setWishlistData(updatedCartItems);
+  const handleRemove = async wishlistId => {
+    // // Filter out the product that needs to be removed
+    // const updatedCartItems = wishlistData.filter(
+    //   item => item._id !== product._id,
+    // );
+    // // Update the cart items state with the filtered array
+    // setWishlistData(updatedCartItems);
+
+    try{
+      const token = await AsyncStorage.getItem("token");
+         const config={
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+         }
+
+         const response = await axios.delete(`${host.apiUrl}/api/wishlist/delete-from-wishlist/${wishlistId}` ,
+         config
+        )
+        if(response.data){
+          setFetchWishlist(3);
+        }
+    }
+    catch(err){
+       console.log(err);
+    }
+
   };
+
+
+  const getWishlist =async ()=>{
+    try{
+      const token = await AsyncStorage.getItem("token");
+         const config={
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+         }
+
+         const response = await axios.get(`${host.apiUrl}/api/wishlist/get-user-wishlist` ,
+         config
+        )
+        const wishlistInfo = response.data.response;
+          
+         setWishlistData(wishlistInfo)
+          // console.log(wishlistInfo); 
+    }
+    catch(err){
+       console.log(err);
+    }
+  }
+
+  
+  useEffect(() => {
+    try {
+      // console.log(fetchWishlist)
+      getWishlist();
+    } finally {
+      setFetchWishlist(0);
+    }
+  }, [fetchWishlist]);
 
   // const Notification = ({message}) => (
   //   <View style={styles.notificationContainer}>
@@ -93,7 +160,6 @@ const WishlistScreen = ({navigation}) => {
   //   </View>
   // );
 
-  // console.log(wishlistData);
 
   return (
     <View className="bg-white" style={styles.container}>
@@ -118,7 +184,7 @@ const WishlistScreen = ({navigation}) => {
               <View className="flex flex-row w-[100%]">
                 <View className="w-[40%] p-2 relative">
                   <Image
-                    source={{uri: item.productImage}}
+                    source={{uri: item.product.productImage}}
                     style={[styles.productImage]}
                   />
                 </View>
@@ -127,11 +193,11 @@ const WishlistScreen = ({navigation}) => {
                   <View className="">
                     <View className="flex flex-row items-center justify-between">
                       <Text className="text-base text-black font-semibold">
-                        {item.productName}
+                        {item.product.productName}
                       </Text>
                     </View>
                     <Text className="text-base text-black font-semibold">
-                      ₹ {item.price}
+                      ₹ {item.product.price}
                     </Text>
                     {/* <Text className="text-sm text-black">
                       {item.productDescription}
@@ -143,7 +209,7 @@ const WishlistScreen = ({navigation}) => {
                       <Text className="text-white">Buy Now</Text>
                     </View>
                   </TouchableOpacity>
-                  <TouchableOpacity onPress={() => handleRemove(item)}>
+                  <TouchableOpacity onPress={() => handleRemove(item._id)}>
                     <View className="bg-[#497320] w-full flex items-center py-2 rounded-xl">
                       <Text className="text-white">Remove</Text>
                     </View>
