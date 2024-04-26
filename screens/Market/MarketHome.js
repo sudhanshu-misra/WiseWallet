@@ -36,6 +36,8 @@ const MarketHome = ({navigation}) => {
     message: '',
   });
 
+  const [wishlistData,setWishlistData] =useState([]);
+
   const categories = [
     'Textbooks',
     'Electronics',
@@ -55,8 +57,8 @@ const MarketHome = ({navigation}) => {
   ];
 
   const {
-    wishlistData,
-    setWishlistData,
+    fetchWishlist,
+    setFetchWishlist,
     fetchProducts,
     setFetchProducts,
     setFetchOrders,
@@ -69,10 +71,21 @@ const MarketHome = ({navigation}) => {
   useEffect(() => {
     try {
       getProducts();
+      getWishlist();
     } finally {
       setFetchProducts(0);
+      setFetchWishlist(0);
     }
-  }, [fetchProducts, sortType, filterType]);
+  }, [fetchProducts, sortType, filterType,fetchWishlist]);
+
+  useEffect(() => {
+    try {
+      // console.log(fetchWishlist)
+      getWishlist();
+    } finally {
+      setFetchWishlist(0);
+    }
+  }, [fetchWishlist]);
 
   const getProducts = async () => {
     const token = await AsyncStorage.getItem('token');
@@ -149,36 +162,97 @@ const MarketHome = ({navigation}) => {
     });
   };
 
-  const handleAddToWishlist = product => {
-    const itemExists = wishlistData.some(item => item.id === product._id);
+  //wishlist
+  const handleAddToWishlist = async product => {
+    // const itemExists = wishlistData.some(item => item.id === product._id);
 
-    if (!itemExists) {
-      console.log('Product added to wishlist:', product);
-      setWishlistData([...wishlistData, product]);
-      SetstatusVisible({
-        visibility: true,
-        modaltype: 'success',
-        message: 'product added to wishlist',
-      });
-      setNotificationMessage(`${product.productName} added to your wishlist.`);
-      setShowNotification(true);
+    // if (!itemExists) {
+      // console.log('Product added to wishlist:', product);
+      // setWishlistData([...wishlistData, product]);
 
-      setTimeout(() => {
-        setShowNotification(false);
-      }, 2000);
-    } else {
-      SetstatusVisible({
-        visibility: true,
-        modaltype: 'failed',
-        message: 'failed to add product to  wishlist',
-      });
-    }
+
+      const token = await  AsyncStorage.getItem('token')
+      try{
+         const config={
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+         }
+
+          const productId = product._id
+
+         const response = await axios.post(`${host.apiUrl}/api/wishlist/toggle-wishlist`,{
+             productId
+         } ,
+         config
+        )
+        // console.log(response.data);
+        
+        setFetchWishlist(1);
+         
+        if(response.data){
+        // SetstatusVisible({
+        //   visibility: true,
+        //   modaltype: 'success',
+        //   message: 'product added to wishlist',
+        // });
+      }
+      
+
+        // setNotificationMessage(`${product.productName} added to your wishlist.`);
+        // setShowNotification(true);
+  
+        // setTimeout(() => {
+        //   setShowNotification(false);
+        // }, 2000);
+
+      }
+      catch(err){
+        console.log(err.response.data.message);
+        SetstatusVisible({
+          visibility: true,
+          modaltype: 'failed',
+          message: 'Unable to add to wishlist... please try again',
+        });
+      }
+      
+  
+
+    // } else {
+    //   SetstatusVisible({
+    //     visibility: true,
+    //     modaltype: 'failed',
+    //     message: 'failed to add product to  wishlist',
+    //   });
+     // }
   };
 
+  const getWishlist =async ()=>{
+    try{
+      const token = await AsyncStorage.getItem("token");
+         const config={
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+         }
+
+         const response = await axios.get(`${host.apiUrl}/api/wishlist/get-user-wishlist` ,
+         config
+        )
+        const wishlistInfo = response.data.response;
+        setWishlistData(wishlistInfo)
+          // console.log(wishlistInfo); 
+    }
+    catch(err){
+       console.log(err);
+    }
+  }
+
+
   const handleBuyNow = async product => {
-    const itemExists = wishlistData.some(item => item.id === product.id);
-    if (!itemExists) console.log('Product has been placed for order.', product);
-    {
+    // const itemExists = wishlistData.some(item => item.id === product.id);
+    // if (!itemExists) console.log('Product has been placed for order.', product);
+    // {
       await buyproduct(product);
       setNotificationMessage(`${product.productName} added to your wishlist.`);
       setShowNotification(true);
@@ -186,7 +260,7 @@ const MarketHome = ({navigation}) => {
       setTimeout(() => {
         setShowNotification(false);
       }, 2000);
-    }
+    // }
   };
 
   const handleNotificationWhenAvailable = async product => {
@@ -265,7 +339,7 @@ const MarketHome = ({navigation}) => {
         <View className="pb-[28%]">
           {products.map((product, index) => (
             <View key={index} className="bg-white mt-1 ">
-              <View className="flex flex-row w-[100%]">
+              <View className="flex flex-row w-[100%] ">
                 <View className="w-[40%] p-2 relative">
                   <Image
                     source={{uri: product.productImage}}
@@ -288,12 +362,12 @@ const MarketHome = ({navigation}) => {
                       {!product.isSold && (
                         <TouchableOpacity
                           onPress={() => handleAddToWishlist(product)}>
-                          {wishlistData.some(
-                            item => item.id === product._id,
+                          {wishlistData.some(  
+                            item => item.product._id === product._id,
                           ) ? (
                             <Icon name="heart" size={20} color="red" />
                           ) : (
-                            <Icon name="heart-o" size={20} color="black" />
+                            <Icon name="heart-o" size={20} color="black" />  
                           )}
                         </TouchableOpacity>
                       )}

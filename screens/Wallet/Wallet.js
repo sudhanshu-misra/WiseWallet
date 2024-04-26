@@ -122,7 +122,7 @@ export default function WalletHome({navigation}) {
             <Text
               className="text-lg"
               style={{color: `${COLORS.neutral}`}}
-              onPress={() => onClick()}>
+              onPress={() => walletHandler}>
               <Icon name="plus" size={17}>
                 {' '}
               </Icon>{' '}
