@@ -20,13 +20,13 @@ import HeadBack from '../../components/BackHeader.js';
 
 const MyListing = ({navigation}) => {
   const [productData, setProductData] = useState([]);
-  const [monitorDelete ,setMonitorDelete] = useState(0);
+  const [monitorDelete, setMonitorDelete] = useState(0);
   useEffect(() => {
     setMonitorDelete(0);
-     getProductByUser();
+    getProductByUser();
   }, [monitorDelete]);
 
-  const getProductByUser= async () => {
+  const getProductByUser = async () => {
     const token = await AsyncStorage.getItem('token');
     try {
       let config = {
@@ -38,13 +38,11 @@ const MyListing = ({navigation}) => {
         `${host.apiUrl}/api/product/get-products-by-user`,
         config,
       );
-     
 
       if (response.data) {
         console.log('user products');
-            // console.log(response.data) 
+        console.log(response.data.products);
         setProductData(response.data.products);
-      
       } else {
         console.log('products not found');
       }
@@ -69,10 +67,12 @@ const MyListing = ({navigation}) => {
       );
       console.log(response.data);
       // Filter out the product that needs to be canceled
-      const updatedProductData = productData.filter(item => item.id !== product._id);
+      const updatedProductData = productData.filter(
+        item => item.id !== product._id,
+      );
       // Update the order data state with the filtered array
       setProductData(updatedProductData);
-         setMonitorDelete(1);
+      setMonitorDelete(1);
     } catch (error) {
       console.log(error);
     }
@@ -88,69 +88,68 @@ const MyListing = ({navigation}) => {
           My Listings
         </Text>
       </View> */}
-           {!productData &&(
-            <View className="h-full  flex items-center">
-                  <View className="flex items-center mt-40 w-full">
-                <Text className="text-base">Your product list is currently empty .</Text>
-                <Text className="text-base">Time to start listing !</Text>
-                <TouchableOpacity onPress={() => navigation.goBack()}>
-                      <View className="bg-[#497320] flex  mt-3 items-center px-10 py-2  rounded-xl"  >
-                        <Text className="text-white">Add product</Text>
-                      </View>
-                    </TouchableOpacity>
-                    </View>
-            </View>
-           )}
-          {productData &&( <ScrollView
-        showsVerticalScrollIndicator={false}
-        backgroundColor="#d9d9d9"
-        className="h-full mt-3">
-        <View className="pb-[5%] mb-28">
-          {productData.map((item, index) => (
-            <View key={index} className="bg-white mt-1 ">
-              <View className="flex flex-row w-[100%]">
-                <View className="w-[30%] p-2 relative flex justify-center items-center ">
-                  <Image
-                    source={{uri: item.productImage}}
-                    style={[styles.productImage]}
-                  />
-                </View>
-
-                <View className="flex flex-col w-[70%] p-3 justify-between">
-                  <View className="">
-                    <View className="flex flex-row items-center justify-between ">
-                      <Text className="text-lg text-black font-semibold">
-                       {item.productName}
-                      </Text>
-                      <Text className="text-lg text-black font-semibold">
-                        ₹ {item.price}
-                      </Text>
-                    </View>
-                    
+      {!productData && (
+        <View className="h-full  flex items-center">
+          <View className="flex items-center mt-40 w-full">
+            <Text className="text-base">
+              Your product list is currently empty .
+            </Text>
+            <Text className="text-base">Time to start listing !</Text>
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <View className="bg-[#497320] flex  mt-3 items-center px-10 py-2  rounded-xl">
+                <Text className="text-white">Add product</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        </View>
+      )}
+      {productData && (
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          backgroundColor="#d9d9d9"
+          className="h-full mt-3">
+          <View className="pb-[5%] mb-28">
+            {productData.map((item, index) => (
+              <View key={index} className="bg-white mt-1 ">
+                <View className="flex flex-row w-[100%]">
+                  <View className="w-[30%] p-2 relative flex justify-center items-center ">
+                    <Image
+                      source={{uri: item.productImage}}
+                      style={[styles.productImage]}
+                    />
                   </View>
-                  <View className=" flex ">
-                    <TouchableOpacity onPress={() => handleDelete(item)}>
-                      <View className="bg-red-500  flex  w-[50%]  items-center py-2  rounded-xl">
-                        <Text className="text-white">Delete</Text>
+
+                  <View className="flex flex-col w-[70%] p-3 justify-between">
+                    <View className="">
+                      <View className="flex flex-row items-center justify-between ">
+                        <Text className="text-lg text-black font-semibold">
+                          {item.productName}
+                        </Text>
+                        <Text className="text-lg text-black font-semibold">
+                          ₹ {item.price}
+                        </Text>
                       </View>
-                    </TouchableOpacity>
+                    </View>
+                    <View className=" flex ">
+                      <TouchableOpacity onPress={() => handleDelete(item)}>
+                        <View className="bg-red-500  flex  w-[50%]  items-center py-2  rounded-xl">
+                          <Text className="text-white">Delete</Text>
+                        </View>
+                      </TouchableOpacity>
+                    </View>
                   </View>
                 </View>
               </View>
-            </View>
-          ))}
-        </View>
+            ))}
+          </View>
 
-        {/* <StatusModal
+          {/* <StatusModal
             modalType={statusVisible.modaltype}
             modalState={statusVisible.visibility}
             hideModal={handleStatus}
             message={statusVisible.message}></StatusModal> */}
-        </ScrollView>)
-          }
-
-
-
+        </ScrollView>
+      )}
     </View>
   );
 };
@@ -167,4 +166,3 @@ const styles = StyleSheet.create({
 });
 
 export default MyListing;
-
