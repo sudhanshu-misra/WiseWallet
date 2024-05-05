@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
+  ActivityIndicator,
 } from 'react-native';
 import React from 'react';
 import CustomHeader from '../../components/Header';
@@ -21,12 +22,14 @@ import HeadBack from '../../components/BackHeader.js';
 const MyListing = ({navigation}) => {
   const [productData, setProductData] = useState([]);
   const [monitorDelete, setMonitorDelete] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     setMonitorDelete(0);
     getProductByUser();
   }, [monitorDelete]);
 
   const getProductByUser = async () => {
+    setIsLoading(true);
     const token = await AsyncStorage.getItem('token');
     try {
       let config = {
@@ -49,6 +52,7 @@ const MyListing = ({navigation}) => {
     } catch (error) {
       console.log(error);
     }
+    setIsLoading(false);
   };
 
   const handleDelete = async product => {
@@ -88,6 +92,11 @@ const MyListing = ({navigation}) => {
           My Listings
         </Text>
       </View> */}
+      {isLoading ? (
+        <View className="h-full  flex items-center">
+          <ActivityIndicator size="large" color="#497320" />
+        </View>
+      ) : null}
       {!productData && (
         <View className="h-full  flex items-center">
           <View className="flex items-center mt-40 w-full">
