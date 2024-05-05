@@ -27,7 +27,7 @@ import {COLORS} from '../../constants/theme';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {launchImageLibrary} from 'react-native-image-picker';
 import StatusModal from '../../components/Modal/StatusModal.js';
-
+import DateField from '.../../../components/Form/DateField.js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import host from '../../constants/host.js';
 import axios from 'axios';
@@ -42,7 +42,7 @@ const SellScreen = ({navigation}) => {
 
   const [courseList, setCourseList] = useState(undergraduateCourses);
   const [semList, setSemList] = useState(semester);
-
+  const [validityDate, setValidityDate] = useState('');
   const [imgUrl, setImgUrl] = useState('');
   const [statusVisible, SetstatusVisible] = useState({
     visibility: false,
@@ -127,6 +127,9 @@ const SellScreen = ({navigation}) => {
   const semesterData = semesterName => {
     setSem(semesterName);
   };
+  const getDate = selectedDate => {
+    setValidityDate(selectedDate);
+  };
 
   // on submittion
   const formSubmitHandler = async (values, actions) => {
@@ -142,6 +145,7 @@ const SellScreen = ({navigation}) => {
           programName: program,
           courseName: course,
           semester: sem,
+          validityDate: validityDate,
         };
         console.log(data);
 
@@ -202,7 +206,7 @@ const SellScreen = ({navigation}) => {
   return (
     <View className="h-full w-full" backgroundColor="white">
       <CustomHeader navigation={navigation} />
-      <ScrollView className="h-max m-8 " showsVerticalScrollIndicator={false}>
+      <ScrollView className="h-max m-6 " showsVerticalScrollIndicator={false}>
         <Text
           style={{color: COLORS.primary}}
           r
@@ -259,7 +263,7 @@ const SellScreen = ({navigation}) => {
                 label={'Select semester'}></IconPicker>
 
               <View className="mt-2">
-                <Text className="ml-5 text-lg">Product:</Text>
+                <Text className="ml-5 text-base text-gray-600">Product</Text>
                 <TextInput
                   onChangeText={handleChange('product')}
                   onBlur={handleBlur('product')}
@@ -275,7 +279,7 @@ const SellScreen = ({navigation}) => {
                 )}
               </View>
               <View className="mt-2">
-                <Text className="ml-5 text-lg">Price:</Text>
+                <Text className="ml-5 text-base text-gray-600">Price</Text>
                 <TextInput
                   onChangeText={handleChange('price')}
                   onBlur={handleBlur('price')}
@@ -292,7 +296,9 @@ const SellScreen = ({navigation}) => {
                 )}
               </View>
               <View className="mt-2 ">
-                <Text className="ml-5 text-lg">Product description :</Text>
+                <Text className="ml-5 text-base text-gray-600">
+                  Product description
+                </Text>
                 <TextInput
                   onChangeText={handleChange('description')}
                   onBlur={handleBlur('description')}
@@ -308,8 +314,16 @@ const SellScreen = ({navigation}) => {
                 )} */}
               </View>
 
+              <View className="">
+                <DateField
+                  selectedDate={getDate}
+                  dateLabel={'Date'}></DateField>
+              </View>
+
               <View className="mt-2">
-                <Text className="ml-5 text-lg">Product condition:</Text>
+                <Text className="ml-5 text-base text-gray-600">
+                  Product condition
+                </Text>
                 <TextInput
                   onChangeText={handleChange('condition')}
                   onBlur={handleBlur('condition')}
@@ -327,7 +341,9 @@ const SellScreen = ({navigation}) => {
 
               {/* product Image */}
               <View className="mt-2">
-                <Text className="ml-5 text-lg ">Product Image:</Text>
+                <Text className="ml-5 text-base text-gray-600">
+                  Product Image
+                </Text>
                 <TouchableOpacity onPress={productImageHandler}>
                   <View>
                     {imgUrl ? (

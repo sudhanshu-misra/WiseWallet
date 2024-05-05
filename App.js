@@ -16,7 +16,7 @@ const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isMarket, setIsMarket] = useState(false);
-  const [wishlistData, setWishlistData] = useState([]);
+  const [fetchWishlist, setFetchWishlist] = useState(0);
   const [profileData, setProfileData] = useState({});
   const [fetchOrders, setFetchOrders] = useState(0);
   const [fetchProducts, setFetchProducts] = useState(0);
@@ -75,8 +75,8 @@ const App = () => {
         value={{
           isMarket,
           setIsMarket,
-          wishlistData,
-          setWishlistData,
+          fetchWishlist,
+          setFetchWishlist,
           fetchOrders,
           setFetchOrders,
           isAuthenticated,
