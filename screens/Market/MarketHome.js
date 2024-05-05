@@ -265,7 +265,7 @@ const MarketHome = ({navigation}) => {
         <View className="pb-[28%]">
           {products.map((product, index) => (
             <View key={index} className="bg-white mt-1 ">
-              <View className="flex flex-row w-[100%]">
+              <View className="flex flex-row gap-1 w-[100%]">
                 <View className="w-[40%] p-2 relative">
                   <Image
                     source={{uri: product.productImage}}
@@ -363,8 +363,8 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto, serif',
   },
   productImage: {
-    width: 150,
-    height: 150,
+    width: 145,
+    height: 145,
     marginBottom: 10,
   },
 });
