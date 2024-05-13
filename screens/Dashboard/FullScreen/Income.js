@@ -1,117 +1,63 @@
-import React from 'react';
-import { View, ScrollView, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {
+  View,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  ActivityIndicator,
+} from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { MenuProvider, Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu';
+import {
+  MenuProvider,
+  Menu,
+  MenuOptions,
+  MenuOption,
+  MenuTrigger,
+} from 'react-native-popup-menu';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import host from '../../../constants/host';
+import axios from 'axios';
 
-export default function IncomeHome({ navigation }) {
+export default function IncomeHome({navigation}) {
+  const [loading, setLoading] = useState(true);
+  const [incomeData, setIncomeData] = useState([]);
 
-  const IncomeNames = [
-    'Monthly Paycheck',
-    'Mileage Compensation',
-    'Dining Refund',
-    'Pantry Support',
-    'Biweekly Stipend',
-    'Travel Allowance',
-    'Lunch Reimbursement',
-    'Kitchen Supplies Grant',
-    'Weekly Wage',
-    'Gas Reimbursement',
-    'Restaurant Voucher',
-    'Groceries Aid',
-    'Semester Stipend',
-    'Car Mileage Benefit',
-    'Meal Credit',
-    'Food Pantry Assistance',
-    'Salary Bonus',
-    'Transit Subsidy',
-    'Dinner Voucher',
-    'Kitchen Stockings',
-    'Fortnightly Payment',
-    'Vehicle Compensation',
-    'Lunch Expenses',
-    'Home Pantry Support',
-    'Pay Per Month',
-    'Mileage Compensation',
-    'Dining Hall Credit',
-    'Food Storage Assistance',
-    'Payroll Bonus',
-    'Fuel Allowance',
-    'Meal Reimbursement',
-    'Pantry Supplies Grant',
-    'Biweekly Pay',
-    'Monthly Salary',
-    'Travel Reimbursement',
-    'Breakfast Voucher',
-    'Household Supplies Grant'
-  ]
-  
-  const IncomeCategory = ['Salary', 'Transport', 'Restaurant', 'Grocery'];
+  const getIncomeData = async () => {
+    setLoading(true);
+    const token = await AsyncStorage.getItem('token');
+    try {
+      let config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const response = await axios.get(
+        `${host.apiUrl}/api/transaction/get-transactions`,
+        config,
+      );
+      const transactions = response.data.transactions;
+      setIncomeData(
+        transactions.filter(transaction => transaction.type === 'Income'),
+      );
+    } catch (error) {
+      console.log(error);
+    }
+    console.log(incomeData);
+    setLoading(false);
+  };
 
-  const IncomeData = [
-    {value: 160, date: '1 Jan 2024'},
-      {value: 180, date: '2 Jan 2024'},
-      {value: 190, date: '3 Jan 2024'},
-      {value: 180, date: '4 Jan 2024'},
-      {value: 140, date: '5 Jan 2024'},
-      // {value: 190, date: '6 Jan 2024'},
-      {value: 380, date: '6 Jan 2024'},
-      {value: 160, date: '7 Jan 2024'},
-      {value: 200, date: '8 Jan 2024'},
-    
-      {value: 220, date: '9 Jan 2024'},
-      {
-        value: 240,
-        date: '10 Jan 2024',
-        label: '10 Jan',
-        labelTextStyle: {color: 'lightgray', width: 44},
-      },
-      {value: 280, date: '11 Jan 2024'},
-      {value: 260, date: '12 Jan 2024'},
-      {value: 340, date: '13 Jan 2024'},
-      {value: 385, date: '14 Jan 2024'},
-      {value: 280, date: '15 Jan 2024'},
-      {value: 390, date: '16 Jan 2024'},
-    
-      {value: 370, date: '17 Jan 2024'},
-      {value: 285, date: '18 Jan 2024'},
-      {value: 295, date: '19 Jan 2024'},
-      {
-        value: 300,
-        date: '20 Jan 2024',
-        label: '20 Jan',
-        labelTextStyle: {color: 'lightgray', width: 44},
-      },
-      {value: 280, date: '21 Jan 2024'},
-      {value: 295, date: '22 Jan 2024'},
-      {value: 260, date: '23 Jan 2024'},
-      {value: 255, date: '24 Jan 2024'},
-    
-      {value: 190, date: '25 Jan 2024'},
-      {value: 220, date: '26 Jan 2024'},
-      {value: 205, date: '27 Jan 2024'},
-      {value: 230, date: '28 Jan 2024'},
-      {value: 210, date: '29 Jan 2024'},
-      {
-        value: 200,
-        date: '30 Jan 2024',
-        label: '30 Jan',
-        labelTextStyle: {color: 'lightgray', width: 44},
-      },
-      {value: 240, date: '1 Feb 2024'},
-      {value: 250, date: '2 Feb 2024'},
-      {value: 280, date: '3 Feb 2024'},
-      {value: 250, date: '4 Feb 2024'},
-      {value: 210, date: '5 Feb 2024'},
-      
-    // Your ptData array...
-  ];
-  
-  
+  useEffect(() => {
+    getIncomeData();
+  }, []);
+
   return (
     <MenuProvider>
       <View style={styles.container}>
         <View style={styles.header}>
-          <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={styles.backButton}>
             <MaterialIcons name="arrow-back" size={24} color="black" />
           </TouchableOpacity>
 
@@ -122,15 +68,23 @@ export default function IncomeHome({ navigation }) {
           </TouchableOpacity>
         </View>
         <ScrollView contentContainerStyle={styles.scrollViewContent}>
-          <View style={{ flexDirection: 'column', justifyContent: 'space-between', paddingHorizontal: -1 }}>
-            {IncomeData.map((item, index) => (
+          {loading && <ActivityIndicator size="large" color="#497320" />}
+          <View
+            style={{
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              paddingHorizontal: -1,
+            }}>
+            {incomeData.map((item, index) => (
               <View key={index} style={styles.itemContainer}>
-            <View>
-                  <Text style={styles.itemText}>{IncomeNames[index]} ({IncomeCategory[index % IncomeCategory.length]})</Text>
-                  <Text style={styles.dateText}>{item.date}</Text>
+                <View>
+                  <Text style={styles.itemText}>
+                    {item.name} ({item.category})
+                  </Text>
+                  <Text style={styles.dateText}>{item.date.slice(0, 10)}</Text>
                 </View>
-               <View style={{ flex: 1 }}>
-                <Menu style={styles.threeButton}>
+                <View style={{flex: 1}}>
+                  <Menu style={styles.threeButton}>
                     <MenuTrigger>
                       <MaterialIcons name="more-vert" size={20} color="black" />
                     </MenuTrigger>
@@ -138,13 +92,14 @@ export default function IncomeHome({ navigation }) {
                       <MenuOption onSelect={() => console.log('Edit selected')}>
                         <Text>Edit</Text>
                       </MenuOption>
-                      <MenuOption onSelect={() => console.log('Delete selected')}>
+                      <MenuOption
+                        onSelect={() => console.log('Delete selected')}>
                         <Text>Delete</Text>
                       </MenuOption>
                     </MenuOptions>
                   </Menu>
                 </View>
-                <Text style={{marginTop: 20 }}>Rs {item.value}</Text>
+                <Text style={{marginTop: 20}}>Rs {item.amount}</Text>
               </View>
             ))}
           </View>
@@ -171,7 +126,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     color: '#333',
-    
   },
   scrollViewContent: {
     padding: 20,
@@ -202,15 +156,13 @@ const styles = StyleSheet.create({
     fontSize: 19,
     color: '#333',
     marginBottom: -27,
-    marginLeft: 21
+    marginLeft: 21,
   },
-  backButton: {
-  
-  },
-  threeButton:{
+  backButton: {},
+  threeButton: {
     marginLeft: 'auto',
     marginRight: -48,
     marginTop: -25,
-    marginBottom: -20
-  }
+    marginBottom: -20,
+  },
 });

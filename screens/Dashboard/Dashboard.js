@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Dimensions,
-} from 'react-native'; // Make sure to import Text
+} from 'react-native';
 import CustomHeader from '../../components/Header';
 import DashboardSharedUI from '../../components/DashBoardUI/DashBoardSharedUI';
 import Modal from '../../components/Modal/Modal';
@@ -27,119 +27,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import host from '../../constants/host.js';
 import axios from 'axios';
 
-// Assuming ptData is your chart data for the LineChart component
-const IncomeData = [
-  {value: 160, date: '1 Jan 2024'},
-  {value: 180, date: '2 Jan 2024'},
-  {value: 190, date: '3 Jan 2024'},
-  {value: 180, date: '4 Jan 2024'},
-  {value: 140, date: '5 Jan 2024'},
-  // {value: 190, date: '6 Jan 2024'},
-  {value: 380, date: '6 Jan 2024'},
-  {value: 160, date: '7 Jan 2024'},
-  {value: 200, date: '8 Jan 2024'},
-
-  {value: 220, date: '9 Jan 2024'},
-  {
-    value: 240,
-    date: '10 Jan 2024',
-    label: '10 Jan',
-    labelTextStyle: {color: 'lightgray', width: 44},
-  },
-  {value: 280, date: '11 Jan 2024'},
-  {value: 260, date: '12 Jan 2024'},
-  {value: 340, date: '13 Jan 2024'},
-  {value: 385, date: '14 Jan 2024'},
-  {value: 280, date: '15 Jan 2024'},
-  {value: 390, date: '16 Jan 2024'},
-
-  {value: 370, date: '17 Jan 2024'},
-  {value: 285, date: '18 Jan 2024'},
-  {value: 295, date: '19 Jan 2024'},
-  {
-    value: 300,
-    date: '20 Jan 2024',
-    label: '20 Jan',
-    labelTextStyle: {color: 'lightgray', width: 44},
-  },
-  {value: 280, date: '21 Jan 2024'},
-  {value: 295, date: '22 Jan 2024'},
-  {value: 260, date: '23 Jan 2024'},
-  {value: 255, date: '24 Jan 2024'},
-
-  {value: 190, date: '25 Jan 2024'},
-  {value: 220, date: '26 Jan 2024'},
-  {value: 205, date: '27 Jan 2024'},
-  {value: 230, date: '28 Jan 2024'},
-  {value: 210, date: '29 Jan 2024'},
-  {
-    value: 200,
-    date: '30 Jan 2024',
-    label: '30 Jan',
-    labelTextStyle: {color: 'lightgray', width: 44},
-  },
-  {value: 240, date: '1 Feb 2024'},
-  {value: 250, date: '2 Feb 2024'},
-  {value: 280, date: '3 Feb 2024'},
-  {value: 250, date: '4 Feb 2024'},
-  {value: 210, date: '5 Feb 2024'},
-
-  // Your ptData array...
-];
-
-const ExpenseData = [
-  {value: 220, date: '1 Jan 2024'},
-  {value: 410, date: '2 Jan 2024'},
-  {value: 190, date: '3 Jan 2024'},
-  {value: 180, date: '4 Jan 2024'},
-  {value: 320, date: '5 Jan 2024'},
-  {value: 220, date: '6 Jan 2024'},
-  {value: 110, date: '7 Jan 2024'},
-  {value: 335, date: '8 Jan 2024'},
-  {value: 215, date: '9 Jan 2024'},
-  {
-    value: 165,
-    date: '10 Jan 2024',
-    label: '10 Jan',
-    labelTextStyle: {color: 'lightgray', width: 44},
-  },
-  {value: 160, date: '11 Jan 2024'},
-  {value: 155, date: '12 Jan 2024'},
-  {value: 145, date: '13 Jan 2024'},
-  {value: 140, date: '14 Jan 2024'},
-  {value: 135, date: '15 Jan 2024'},
-  {value: 140, date: '16 Jan 2024'},
-  {value: 145, date: '17 Jan 2024'},
-  {value: 120, date: '18 Jan 2024'},
-  {value: 155, date: '19 Jan 2024'},
-  {
-    value: 160,
-    date: '20 Jan 2024',
-    label: '20 Jan',
-    labelTextStyle: {color: 'lightgray', width: 44},
-  },
-  {value: 165, date: '21 Jan 2024'},
-  {value: 150, date: '22 Jan 2024'},
-  {value: 175, date: '23 Jan 2024'},
-  {value: 180, date: '24 Jan 2024'},
-  {value: 185, date: '25 Jan 2024'},
-  {value: 440, date: '26 Jan 2024'},
-  {value: 105, date: '27 Jan 2024'},
-  {value: 200, date: '28 Jan 2024'},
-  {value: 205, date: '29 Jan 2024'},
-  {
-    value: 210,
-    date: '30 Jan 2024',
-    label: '30 Jan',
-    labelTextStyle: {color: 'lightgray', width: 44},
-  },
-  {value: 215, date: '1 Feb 2024'},
-  {value: 220, date: '2 Feb 2024'},
-  {value: 225, date: '3 Feb 2024'},
-  {value: 230, date: '4 Feb 2024'},
-  {value: 235, date: '5 Feb 2024'},
-];
-
 export default function DashboardHome({navigation}) {
   const [isModalVisible, SetModalVisible] = useState(false);
   const [statusVisible, SetstatusVisible] = useState({
@@ -153,26 +40,38 @@ export default function DashboardHome({navigation}) {
   const [incomeTransactions, setIncomeTransactions] = useState([]);
   const [expenseTransactions, setExpenseTransactions] = useState([]);
 
+  // data to use in graph
+  const [incomeGraphData, setIncomeGraphData] = useState([]);
+  const [expenseGraphData, setExpenseGraphData] = useState([]);
+
   const transactionHandler = () => {
     SetModalVisible(true);
   };
 
   const onSubmit = async () => {
     SetModalVisible(false);
-    // Data extraction here
-    //  SetstatusVisible({visibility: true, modaltype: 'loader'});
     console.log('getting transactions');
     getTransactions();
-    // settransactionData(data.transactions);
-    //  console.log(data.transactions);
-    //staus modal should not be here as it will always receives the data and show success status
-    // if (data) {
-    //success modal
-    // SetstatusVisible({visibility: true, modaltype: 'success'});
-    // } else {
-    //failure modal here
-    // SetstatusVisible({visibility: true, modaltype: 'failed'});
-    // }
+  };
+
+  const setGraphData = async () => {
+    let incomeData = [];
+    let expenseData = [];
+    incomeTransactions.forEach(transaction => {
+      incomeData.push({
+        value: transaction.amount,
+        date: transaction.date.slice(0, 10),
+      });
+    });
+    expenseTransactions.forEach(transaction => {
+      expenseData.push({
+        value: transaction.amount,
+        date: transaction.date.slice(0, 10),
+      });
+    });
+    console.log(incomeData);
+    setIncomeGraphData(incomeData);
+    setExpenseGraphData(expenseData);
   };
 
   const getTransactions = async () => {
@@ -187,11 +86,9 @@ export default function DashboardHome({navigation}) {
         `${host.apiUrl}/api/transaction/get-transactions`,
         config,
       );
-      console.log('Transactions Data', response.data.transactions);
       const transactions = response.data.transactions;
-      console.log('setting transaction data');
       setTransactionData(transactions);
-      console.log('Transactions Data 2', transactions);
+      console.log('Transactions Data', transactions);
       console.log('setting income transactions');
       setIncomeTransactions(
         transactions.filter(transaction => transaction.type == 'Income'),
@@ -200,6 +97,7 @@ export default function DashboardHome({navigation}) {
       setExpenseTransactions(
         transactions.filter(transaction => transaction.type == 'Expense'),
       );
+      // setGraphData();
     } catch (error) {
       console.log(error);
     }
@@ -209,6 +107,10 @@ export default function DashboardHome({navigation}) {
     getTransactions();
   }, []);
 
+  useEffect(() => {
+    setGraphData();
+  }, [incomeTransactions, expenseTransactions]);
+
   return (
     <MenuProvider>
       <ScrollView style={{backgroundColor: 'white'}}>
@@ -216,7 +118,7 @@ export default function DashboardHome({navigation}) {
           <CustomHeader navigation={navigation} />
           {/* TRANSACTION ADD HEADER */}
           <View className="my-5 mx-7 flex flex-row justify-between">
-            <Text className="text-xl text-black">Transactions</Text>
+            <Text className="text-xl text-black">Transaction</Text>
             <Text
               className="text-lg"
               style={{color: `${COLORS.neutral}`}}
@@ -273,7 +175,7 @@ export default function DashboardHome({navigation}) {
 
             <LineChart
               areaChart
-              data={switchGraph ? ExpenseData : IncomeData}
+              data={switchGraph ? expenseGraphData : incomeGraphData}
               color={switchGraph ? 'lightblue' : 'lightgreen'}
               numberOfYAxis={2}
               numberOfXAxis={2}

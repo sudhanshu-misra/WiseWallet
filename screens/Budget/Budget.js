@@ -71,21 +71,8 @@ export default function BudgetHome({navigation}) {
 
   const onSubmit = async () => {
     SetModalVisible(false);
-    //  SetstatusVisible({visibility: true, modaltype: 'loader'});
     const data = await getBudget();
-
     setbudgetData(data.budgets);
-
-    //  console.log(data.budgets);
-
-    //staus modal should not be here as it will always receives the data and show success status
-    if (data) {
-      //success modal
-      SetstatusVisible({visibility: true, modaltype: 'success'});
-    } else {
-      //failure modal here
-      SetstatusVisible({visibility: true, modaltype: 'failed'});
-    }
   };
 
   const getBudgetData = async () => {
