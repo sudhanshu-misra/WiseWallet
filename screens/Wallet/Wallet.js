@@ -32,7 +32,7 @@ export default function WalletHome({navigation}) {
     modaltype: 'failed',
   });
   // this is the data fetched from the backend
-  const [walletData, setwalletData] = useState({});
+  const [walletData, setWalletData] = useState({});
 
   const walletHandler = () => {
     SetModalVisible(true);
@@ -40,26 +40,9 @@ export default function WalletHome({navigation}) {
 
   const onSubmit = async () => {
     SetModalVisible(false);
-    //data extraction here
     const data = await getWallet();
-
-    setwalletData(data.wallets);
-
-    //  console.log(" fetched wallet data : ",data.wallets);
-
-    //staus modal should not be here as it will always receives the data and show success status
-    if (data) {
-      //success modal
-      SetstatusVisible({visibility: true, modaltype: 'success'});
-    } else {
-      //failure modal here
-      SetstatusVisible({visibility: true, modaltype: 'failed'});
-    }
+    setWalletData(data.wallets);
   };
-
-  useEffect(() => {
-    getWallet();
-  }, []);
 
   const getWallet = async () => {
     const token = await AsyncStorage.getItem('token');
@@ -73,13 +56,16 @@ export default function WalletHome({navigation}) {
         `${host.apiUrl}/api/wallet/get-wallets`,
         config,
       );
-      setwalletData(response.data.wallets);
+      console.log(response.data.wallets);
+      setWalletData(response.data.wallets);
     } catch (error) {
       console.log(error);
     }
   };
 
-  //console.log(walletData);
+  useEffect(() => {
+    getWallet();
+  }, []);
 
   let card = [];
   let paytm = [];
@@ -114,15 +100,15 @@ export default function WalletHome({navigation}) {
 
   return (
     <MenuProvider>
-      <ScrollView>
-        <View className="bg-white">
+      <ScrollView style={{backgroundColor: 'white'}}>
+        <View>
           <CustomHeader navigation={navigation} />
-          <View className="mx-7 flex flex-row justify-between">
+          <View className="mt-5 mx-7 flex flex-row justify-between">
             <Text className="text-xl text-black">Payment Methods</Text>
             <Text
               className="text-lg"
               style={{color: `${COLORS.neutral}`}}
-              onPress={() => walletHandler}>
+              onPress={() => walletHandler()}>
               <Icon name="plus" size={17}>
                 {' '}
               </Icon>{' '}
@@ -130,56 +116,60 @@ export default function WalletHome({navigation}) {
             </Text>
           </View>
 
-          <DashboardSharedUI
-            name="Payment Methods"
-            icon="credit-card"
-            onClick={walletHandler}
-            data={walletData}></DashboardSharedUI>
+          {walletData?.length == 0 && (
+            <DashboardSharedUI
+              name="Payment Methods"
+              icon="credit-card"
+              onClick={walletHandler}></DashboardSharedUI>
+          )}
 
-          <View className="my-5 h-full px-10 flex">
-            {/* wallet data here */}
-            {/* Cash */}
-            <View className="h-max rounded-xl p-5 mt-4 bg-[#ECFFDA]">
-              <Text className="text-lg text-[#277320]">Cash</Text>
-              <Text className="text-lg">Amount : Rs.{cash_amount}</Text>
-            </View>
-            {/*UPI */}
-            <View className="h-max rounded-xl p-5 mt-4  bg-[#ECFFDA]">
-              <Text className="text-lg text-[#277320]">UPI</Text>
-              <View className="mt-1">
-                <View className=" rounded-xl px-3 py-1 mt-[8px] ">
-                  <Text className="text-lg text-black">Gpay</Text>
-                  <Text className="text-lg">Amount : Rs.{gpay_amount}</Text>
-                </View>
-                <View className="rounded-xl px-3 py-1 mt-[8px]">
-                  <Text className="text-lg text-black">Phonepe</Text>
-                  <Text className="text-lg">Amount : Rs.{phonepe_amount}</Text>
-                </View>
-                <View className=" rounded-xl px-3 py-1 mt-[8px]">
-                  <Text className="text-lg text-black">Paytm</Text>
-                  <Text className="text-lg">Amount : Rs.{paytm_amount}</Text>
+          {walletData?.length > 0 && (
+            <View className="my-5 h-full px-10 flex">
+              {/* Cash */}
+              <View className="h-max rounded-xl p-5 mt-4 bg-[#ECFFDA]">
+                <Text className="text-lg text-[#277320]">Cash</Text>
+                <Text className="text-lg">Amount : Rs.{cash_amount}</Text>
+              </View>
+              {/*UPI */}
+              <View className="h-max rounded-xl p-5 mt-4  bg-[#ECFFDA]">
+                <Text className="text-lg text-[#277320]">UPI</Text>
+                <View className="mt-1">
+                  <View className=" rounded-xl px-3 py-1 mt-[8px] ">
+                    <Text className="text-lg text-black">GPay</Text>
+                    <Text className="text-lg">Amount : Rs.{gpay_amount}</Text>
+                  </View>
+                  <View className="rounded-xl px-3 py-1 mt-[8px]">
+                    <Text className="text-lg text-black">PhonePe</Text>
+                    <Text className="text-lg">
+                      Amount : Rs.{phonepe_amount}
+                    </Text>
+                  </View>
+                  <View className=" rounded-xl px-3 py-1 mt-[8px]">
+                    <Text className="text-lg text-black">Paytm</Text>
+                    <Text className="text-lg">Amount : Rs.{paytm_amount}</Text>
+                  </View>
                 </View>
               </View>
+              {/*Card  */}
+              {card.map(item => {
+                return (
+                  <View
+                    key={item._id}
+                    className="h-max rounded-xl p-5 mt-4 bg-white">
+                    <Text className="text-lg text-black">Card</Text>
+                    <Text className="text-lg">Bank name :{item.bankName}</Text>
+                    <Text className="text-lg">
+                      Card number :{item.cardNumber}
+                    </Text>
+                    <Text className="text-lg">Amount : Rs.{item.amount}</Text>
+                    <Text className="text-lg">Expiry : 04/26</Text>
+                  </View>
+                );
+              })}
             </View>
-            {/*Card  */}
-            {card.map(item => {
-              return (
-                <View
-                  key={item._id}
-                  className="h-max rounded-xl p-5 mt-4 bg-white">
-                  <Text className="text-lg text-black">Card</Text>
-                  <Text className="text-lg">Bank name :{item.bankName}</Text>
-                  <Text className="text-lg">
-                    Card number :{item.cardNumber}
-                  </Text>
-                  <Text className="text-lg">Amount : Rs.{item.amount}</Text>
-                  <Text className="text-lg">Expiry : 04/26</Text>
-                </View>
-              );
-            })}
-          </View>
+          )}
 
-          <Modal 
+          <Modal
             modalState={isModalVisible}
             hideModal={() => SetModalVisible(false)}>
             <WalletForm

@@ -9,11 +9,13 @@ import {
 } from 'react-native';
 import CustomHeader from '../../components/Header';
 import GoalSharedUI from '../../components/GoalUI/GoalSharedUI';
+import DashBoardSharedUI from '../../components/DashBoardUI/DashBoardSharedUI.js';
 import Modal from '../../components/Modal/Modal';
 import GoalForm from './GoalForm/GoalForm';
 import StatusModal from '../../components/Modal/StatusModal';
 import PieChart from 'react-native-pie-chart';
-
+import Icon from 'react-native-vector-icons/FontAwesome';
+import {COLORS} from '../../constants/theme.js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import host from '../../constants/host.js';
 import axios from 'axios';
@@ -62,11 +64,11 @@ export default function GoalHome({navigation}) {
   const [showAllItems, setShowAllItems] = useState(false);
 
   // this is the data fetched from the backend
-  const [goalData, setgoalData] = useState({});
+  const [goalData, setGoalData] = useState([]);
 
   //get data from backend
 
-  const getGoal = async () => {
+  const getGoalData = async () => {
     const token = await AsyncStorage.getItem('token');
     try {
       let config = {
@@ -78,14 +80,15 @@ export default function GoalHome({navigation}) {
         `${host.apiUrl}/api/goal/get-goals`,
         config,
       );
-      setgoalData(response.data.goals);
+      console.log(response.data.goals);
+      setGoalData(response.data.goals);
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-    getGoal();
+    getGoalData();
   }, []);
 
   const goalHandler = () => {
@@ -95,16 +98,7 @@ export default function GoalHome({navigation}) {
   const onSubmit = async () => {
     SetModalVisible(false);
     const data = await getGoal();
-    setgoalData(data.goals);
-    //console.log(data.goals)
-    //staus modal should not be here as it will always receives the data and show success status
-    if (data) {
-      //success modal
-      SetstatusVisible({visibility: true, modaltype: 'success'});
-    } else {
-      //failure modal here
-      SetstatusVisible({visibility: true, modaltype: 'failed'});
-    }
+    setGoalData(data.goals);
   };
 
   const widthAndHeight = 170;
@@ -137,11 +131,11 @@ export default function GoalHome({navigation}) {
         ]}>
         <View style={styles.itemLeft}>
           <Text style={styles.itemTitle}>{item.key}</Text>
-          <Text>Start Date: {item.startDate}</Text>
-          <Text>End Date: {item.endDate}</Text>
+          <Text>Start Date: {item.startDate.slice(0, 10)}</Text>
+          <Text>End Date: {item.endDate.slice(0, 10)}</Text>
         </View>
         <View style={styles.itemRight}>
-          <Text style={styles.amountText}> Amount: {totalAmount}</Text>
+          <Text style={styles.amountText}> Amount: {item.amount}</Text>
           <Text>Rupees Left: {item.rsLeft}</Text>
           <Text>Total Rupees Saving: {item.totalRsSaving}</Text>
         </View>
@@ -184,6 +178,19 @@ export default function GoalHome({navigation}) {
     <View style={styles.container}>
       <CustomHeader navigation={navigation} />
       <ScrollView>
+        <View className="my-5 mx-7 flex flex-row justify-between">
+          <Text className="text-xl text-black">Goal</Text>
+          <Text
+            className="text-lg"
+            style={{color: `${COLORS.neutral}`}}
+            onPress={() => goalHandler()}>
+            <Icon name="plus" size={17}>
+              {' '}
+            </Icon>{' '}
+            Add new{' '}
+          </Text>
+        </View>
+
         <View style={styles.chartContainer}>
           <PieChart
             widthAndHeight={widthAndHeight}
@@ -198,24 +205,35 @@ export default function GoalHome({navigation}) {
             <Text style={styles.totalAmountText}>Rs {totalAmount}</Text>
           </View>
         </View>
-        <View style={styles.flatListContainer}>
-          <FlatList
-            data={data}
-            renderItem={renderItem}
-            keyExtractor={item => item.key}
-            style={styles.flatList}
-          />
-          {data.length > 2 && (
-            <TouchableOpacity
-              onPress={toggleItems}
-              style={styles.viewAllButton}>
-              <Text style={styles.viewAllText}>
-                {showAllItems ? 'View Less' : 'View All'}
-              </Text>
-            </TouchableOpacity>
-          )}
-        </View>
-        <GoalSharedUI name="Goal" icon="track-changes" onClick={goalHandler} />
+
+        {goalData?.length == 0 && (
+          <DashBoardSharedUI
+            name="Goal"
+            icon="track-changes"
+            onClick={goalHandler}></DashBoardSharedUI>
+        )}
+
+        {goalData?.length > 0 && <GoalSharedUI data={goalData} />}
+
+        {goalData?.length > 0 && (
+          <View style={styles.flatListContainer}>
+            <FlatList
+              data={goalData}
+              renderItem={renderItem}
+              keyExtractor={item => item.key}
+              style={styles.flatList}
+            />
+            {goalData.length > 2 && (
+              <TouchableOpacity
+                onPress={toggleItems}
+                style={styles.viewAllButton}>
+                <Text style={styles.viewAllText}>
+                  {showAllItems ? 'View Less' : 'View All'}
+                </Text>
+              </TouchableOpacity>
+            )}
+          </View>
+        )}
       </ScrollView>
       <Modal
         modalState={isModalVisible}
